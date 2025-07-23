@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    // Modern JS environment
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "types": ["jest", "node"],
+
+    // Bun-style ESM imports
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,  //remember to ask about this if want to keep it true or not 
+
+    // Bun compiles TS at runtime — no emit needed
+    "noEmit": true,
+
+    // Useful flags
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "tests"],
+  "exclude": ["node_modules"]
+}
