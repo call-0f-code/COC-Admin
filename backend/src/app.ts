@@ -3,6 +3,8 @@ import { json,urlencoded } from 'body-parser';
 import cors from 'cors';
 import config from './config';
 import { errorHandler } from './utils/apiError';
+import routes from './routes';
+
 
 const app = express();
 
@@ -17,8 +19,10 @@ app.use(
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+app.use("/api/v1",routes());
+
+app.use((req, res) => {
+  res.status(404).json({ message: "Not Found" });
 });
 
 app.use(errorHandler);
