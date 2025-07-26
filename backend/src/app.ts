@@ -4,6 +4,7 @@ import cors from 'cors';
 import config from './config';
 import { errorHandler } from './utils/apiError';
 import routes from './routes';
+import multer from "multer";
 
 
 const app = express();
@@ -18,8 +19,9 @@ app.use(
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
+const upload = multer({ storage: multer.memoryStorage() });
 
-app.use("/api/v1",routes());
+app.use("/api/v1",routes(upload));
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
@@ -28,3 +30,4 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 export default app;
+
