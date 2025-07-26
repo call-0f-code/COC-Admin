@@ -38,7 +38,8 @@ export const CreateUserSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
   name: nameSchema,
-  passoutYear: z.number()
+  passoutYear: z.number(),
+  provider: z.enum(['credentials' , 'github', 'google'])
 });
 
 export const SigninSchema = z.object({

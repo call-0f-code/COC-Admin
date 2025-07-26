@@ -5,13 +5,11 @@ import bcrypt from 'bcrypt';
 import config from "../config";
 import jwt from 'jsonwebtoken';
 import axios from "axios";
-import { ApiError } from "../utils/apiError";
 import FormData from "form-data";
 
 //image url logic pending
 export const createAdmin = async(req: Request, res:Response) => {
 
-  if(!req.file) throw new ApiError("Missing file", 401);
   let parsed = JSON.parse(req.body.adminData);
   const parsedData = CreateUserSchema.safeParse(parsed);
   if (!parsedData.success) {
@@ -27,7 +25,7 @@ export const createAdmin = async(req: Request, res:Response) => {
 
   const formData = new FormData();
 
-  formData.append('file', file.buffer, file.originalname);
+  if(file) formData.append('file', file.buffer, file.originalname);
 
   const hashedPassword = await bcrypt.hash(password, Number(config.SALTING));
   parsed.password = hashedPassword;
@@ -35,6 +33,7 @@ export const createAdmin = async(req: Request, res:Response) => {
   formData.append('name', parsed.name);
   formData.append('password', hashedPassword);
   formData.append('passoutYear', String(parsed.passoutYear));
+  formData.append('provider', parsed.provider);
 
   const newUser = await axios.post(`${config.API_URL}/api/v1/members/`, formData, {
     headers: formData.getHeaders(),
@@ -56,35 +55,33 @@ export const login = async(req: Request, res:Response) => {
 
     const parsedData = SigninSchema.safeParse(req.body);
     if (!parsedData.success) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: parsedData.error.message,
       });
-      return;
     }
 
     const { email, password } = parsedData.data;
-
-    const check = await api.get(`members/?email=${email}&password=${password}`);
+    const check = await api.get(`${config.API_URL}api/v1/members/?email=${email}&password=${password}`);
 
     if(!check.data.success) {
-      res.status(400).json({message: "Error signing in"});
+      return res.status(400).json({message: "Error signing in"});
     }
 
-    const adminId = check.data.id;
-    const hashedPassword = check.data.password;
-    const isManager = check.data.isManager;
+    const adminId = check.data.user.id;
+    const hashedPassword = check.data.user.accounts[0];
+    const isManager = check.data.user.isManager;
 
     if(!isManager) {
-      res.status(403).json({
+      return res.status(403).json({
         success: false,
         message: "Unauthorized access detected"
       })
     }
 
-    const isPasswordValid = await bcrypt.compare(password, hashedPassword);
+    const isPasswordValid = await bcrypt.compare(password, hashedPassword.password);
     if(!isPasswordValid) {
-      res.status(403).json({
+      return res.status(403).json({
         success: false,
         message: "Invalid password"
       })
@@ -99,26 +96,27 @@ export const login = async(req: Request, res:Response) => {
       message: "Signin successful",
       token,
     });
-    return;
 }
 
 export const getunapprovedMembers = async(req: Request, res: Response) => {
-    
-    const members = await api.get('members/unapproved');
+   try {
+    const members = await axios.get(`${config.API_URL}members/unapproved`);
+
 
     if(!members.data.success) {
-        res.status(400).json({
-            success: false,
-            message: members.data.message
-        })
-
-        return;
+      return res.status(400).json({
+          success: false,
+          message: members.data.message
+      })
     }
 
     res.json({
-        success: true,
-        members: members.data
+        members: members.data.unapprovedMembers
     })
+  }
+  catch(err) {
+    console.log(err);
+  }
 }
 
 export const approveMember = async(req: Request, res: Response) => {
