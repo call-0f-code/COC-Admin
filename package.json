@@ -7,7 +7,6 @@
     "backend-dev": "cd backend && bun run dev",
     "frontend-dev": "cd frontend && bun run dev"
   },
-
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",

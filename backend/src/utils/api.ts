@@ -1,11 +1,10 @@
 import axios from "axios";
 import { ApiError } from "./apiError";
-import { APIError } from "better-auth";
 
 const apiurl = process.env.API_URL;
 
 const api = axios.create({
-  baseURL: `${apiurl}`,
+  baseURL: `${apiurl}/api/v1`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,7 +18,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 api.interceptors.response.use(
   (response) => {
     return response;

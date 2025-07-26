@@ -4,7 +4,7 @@ import cors from 'cors';
 import config from './config';
 import { errorHandler } from './utils/apiError';
 import routes from './routes';
-
+import multer from 'multer';
 
 const app = express();
 
@@ -19,7 +19,12 @@ app.use(
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
-app.use("/api/v1",routes());
+const upload = multer({ storage: multer.memoryStorage(),
+  limits: { fileSize: 2 * 1024 * 1024 }
+});
+
+
+app.use("/api/v1",routes(upload));
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
