@@ -29,7 +29,7 @@ export const updateProjectSchema = z.object({
 })
 
 export const memberIdSchema = z.object({
-    memberId : z.array
+    memberId : z.array(z.string())
 })
 
 
