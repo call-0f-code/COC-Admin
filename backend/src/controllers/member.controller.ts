@@ -99,24 +99,20 @@ export const login = async(req: Request, res:Response) => {
 }
 
 export const getunapprovedMembers = async(req: Request, res: Response) => {
-   try {
-    const members = await axios.get(`${config.API_URL}members/unapproved`);
+  const members = await axios.get(`${config.API_URL}members/unapproved`);
 
 
-    if(!members.data.success) {
-      return res.status(400).json({
-          success: false,
-          message: members.data.message
-      })
-    }
-
-    res.json({
-        members: members.data.unapprovedMembers
+  if(!members.data.success) {
+    return res.status(400).json({
+        success: false,
+        message: members.data.message
     })
   }
-  catch(err) {
-    console.log(err);
-  }
+
+  res.json({
+      members: members.data.unapprovedMembers
+  })
+
 }
 
 export const approveMember = async(req: Request, res: Response) => {
