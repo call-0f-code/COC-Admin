@@ -39,12 +39,10 @@ export const getAchievementById = async (req: Request, res: Response) => {
 };
 
 
-
-// create 
 export const createAchievement = async (req: Request, res: Response) => {
   const file = req.file;
-  // const memberId = req.memberId; // Assuming added via auth middleware
-const memberId = "725f05b6-8053-4610-80c2-9e48c9d27b9e"
+  const memberId = req.memberId;
+
   if (!file) {
     throw new ApiError("Image file is missing", 400);
   }
@@ -72,7 +70,7 @@ const memberId = "725f05b6-8053-4610-80c2-9e48c9d27b9e"
   );
 
   const response = await api.post("/achievements", formData, {
-    headers: formData.getHeaders(), // Required for multipart boundary
+    headers: formData.getHeaders(),
   });
 
   const achievement = response.data;
@@ -84,15 +82,10 @@ const memberId = "725f05b6-8053-4610-80c2-9e48c9d27b9e"
 };
 
 
-
-// update
-
 export const updateAchievement = async (req: Request, res: Response) => {
   const file = req.file;
   const achievementId = req.params.achievementId;
-  // const memberId = req.memberId; // middleware injected
-  const memberId = "725f05b6-8053-4610-80c2-9e48c9d27b9e"
-
+  const memberId = req.memberId;
 
   if (!achievementId) {
     throw new ApiError("Achievement ID is required", 400);
@@ -102,7 +95,6 @@ export const updateAchievement = async (req: Request, res: Response) => {
     throw new ApiError("Member ID is missing", 400);
   }
 
-  // Parse achievementData from form-data
   let parsedBody = req.body.achievementData;
   if (typeof parsedBody === "string") {
     try {
@@ -112,24 +104,33 @@ export const updateAchievement = async (req: Request, res: Response) => {
     }
   }
 
-  // Append updatedById to payload
   parsedBody.updatedById = memberId;
 
-  // Validate payload with Zod
   const validated = updateAchievementValidator.safeParse(parsedBody);
   if (!validated.success) {
     const message = validated.error.issues[0]?.message || "Invalid input";
     throw new ApiError(message, 400);
   }
 
-  // Prepare form-data
+  const hasUpdateField =
+    validated.data.title ||
+    validated.data.description ||
+    validated.data.achievedAt ||
+    (Array.isArray(validated.data.memberIds) && validated.data.memberIds.length > 0);
+
+  if (!hasUpdateField && !file) {
+    throw new ApiError(
+      "At least one field (title, description, achievedAt, memberIds or image) is required for update",
+      400
+    );
+  }
+
   const formData = new FormData();
   formData.append("achievementData", JSON.stringify(validated.data));
   if (file) {
     formData.append("image", file.buffer, file.originalname);
   }
 
-  // Send request to API backend
   const response = await api.patch(`/achievements/${achievementId}`, formData, {
     headers: formData.getHeaders(),
   });
@@ -141,10 +142,6 @@ export const updateAchievement = async (req: Request, res: Response) => {
     data: updatedAchievement,
   });
 };
-
-
-
-
 
 
 export const deleteAchievementById = async (req: Request, res: Response) => {

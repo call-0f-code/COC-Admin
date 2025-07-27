@@ -10,13 +10,11 @@ export const createAchievementValidator = z.object({
   memberIds: z.array(z.string().min(1)).min(1, "At least one member is required"),
 });
 
+
 export const updateAchievementValidator = z.object({
-  title: z.string().optional(),
-  description: z.string().optional(),
-  achievedAt: z.coerce.date().optional(),
-  memberIds: z.array(z.string().uuid()).optional(),
-  updatedById: z.string().uuid(),
-}).refine(data =>
-  data.title || data.description || data.achievedAt || data.memberIds, {
-  message: "At least one field (title, description, achievedAt, or memberIds) is required for update"
+  title: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
+  achievedAt: z.string().optional(),
+  memberIds: z.array(z.string()).optional(),
+  updatedById: z.string(),
 });
