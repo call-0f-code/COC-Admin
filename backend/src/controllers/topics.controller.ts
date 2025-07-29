@@ -3,16 +3,15 @@ import { ApiError } from "../utils/apiError";
 import api from "../utils/api";
 
 
-//check if api throw error for invalid topic id
 export const addQuestionBytopicId = async(req:Request,res:Response) =>{
     const topicId = req.params.topicId;
     const adminId = req.AdminId;
     const {questionName,link,difficulty} = req.body;
-    if(!topicId || !questionName || !link || !difficulty ){
+    if(!topicId || !adminId){
         throw new ApiError("missing required field",400);
     }
     const response = await api.post(`/topics/${topicId}/questions`,{questionName,link,difficulty,adminId});
-    const {newquestion} = response.data
+    const newquestion = response.data.question
     res.status(200).json({
         status:"SUCCESS",
         question:newquestion
@@ -21,8 +20,8 @@ export const addQuestionBytopicId = async(req:Request,res:Response) =>{
 
 export const createNewTopic = async(req:Request,res:Response)=>{
     const {title,description} = req.body;
-    const adminId = req.body.adminId;
-    if(!title || !description){
+    const adminId = req.AdminId;
+    if(!adminId){
         throw new ApiError("missing required field",400);
     }
     const response = await api.post('/topics',{title,description,adminId});
@@ -73,16 +72,17 @@ export const getQusetionBytopicId = async(req:Request,res:Response)=>{
 export const updateTopic = async(req:Request,res:Response)=>{
     const {topicId} =req.params;
     const {updateData} = req.body;
+     const adminId = req.AdminId;
     if(!topicId){
         throw new ApiError("missing required field",400);
     }
-    const response = await api.patch(`topics/${topicId}`,{updateData});
+    const response = await api.patch(`topics/${topicId}`,{updateData,adminId});
 
-    const {updatedTopic} = response.data;
+    const updatedTopic = response.data;
 
     res.status(200).json({
         status:"SUCCESS",
-        updateData
+        updatedTopic
     })
 }   
 

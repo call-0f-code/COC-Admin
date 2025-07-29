@@ -17,7 +17,9 @@ export const deleteQuestionById = async(req:Request,res:Response)=>{
 }
 
 export const getQuestionByQuestionId = async(req:Request,res:Response)=>{
+
     const {questionId} = req.params;
+
     if(!questionId){
         throw new ApiError("missing required field",400);
     }
@@ -36,11 +38,12 @@ export const getQuestionByQuestionId = async(req:Request,res:Response)=>{
 export const updateQuestionById = async(req:Request,res:Response)=>{
     const {questionId} = req.params
     const {questionData} =req.body;
+    const adminId = req.AdminId;
     if(!questionData){
         throw new ApiError("missing required field",400);
     }
 
-    const response = await api.patch(`/questions/${questionId}`,{questionData});
+    const response = await api.patch(`/questions/${questionId}`,{questionData,adminId});
     const {question} = response.data;
     res.status(200).json({
         status:"SUCCESS",
