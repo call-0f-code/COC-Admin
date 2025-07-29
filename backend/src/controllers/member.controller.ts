@@ -4,7 +4,6 @@ import { SigninSchema } from "../validation/member.validator";
 import bcrypt from 'bcrypt';
 import config from "../config";
 import jwt from 'jsonwebtoken';
-import axios from "axios";
 
 
 export const login = async(req: Request, res:Response) => {
@@ -18,7 +17,7 @@ export const login = async(req: Request, res:Response) => {
     }
 
     const { email, password } = parsedData.data;
-    const check = await api.get(`${config.API_URL}api/v1/members/?email=${email}&password=${password}`);
+    const check = await api.get(`/members/?email=${email}&password=${password}`);
 
     if(!check.data.success) {
       return res.status(400).json({message: "Error signing in"});
@@ -55,7 +54,7 @@ export const login = async(req: Request, res:Response) => {
 }
 
 export const getunapprovedMembers = async(req: Request, res: Response) => {
-  const members = await axios.get(`${config.API_URL}members/unapproved`);
+  const members = await api.get('/members/unapproved');
 
 
   if(!members.data.success) {
