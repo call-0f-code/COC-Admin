@@ -8,7 +8,6 @@ export default function memberRouter(
 ) {
     const router = Router();
     
-    router.post('/signup', upload.single('file') ,memberCtrl.createAdmin);
     router.post('/signin', memberCtrl.login);
 
     router.use(auth);

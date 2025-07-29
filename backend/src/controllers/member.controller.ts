@@ -1,55 +1,11 @@
 import { Request, Response } from "express";
 import api from "../utils/api";
-import { CreateUserSchema, SigninSchema } from "../validation/member.validator";
+import { SigninSchema } from "../validation/member.validator";
 import bcrypt from 'bcrypt';
 import config from "../config";
 import jwt from 'jsonwebtoken';
 import axios from "axios";
-import FormData from "form-data";
 
-//image url logic pending
-export const createAdmin = async(req: Request, res:Response) => {
-
-  let parsed = JSON.parse(req.body.adminData);
-  const parsedData = CreateUserSchema.safeParse(parsed);
-  if (!parsedData.success) {
-    res.status(403).json({
-      error: true,
-      message: parsedData.error.message,
-    });
-    return;
-  }
-  
-  const password = parsed.password;
-  const file = req.file;
-
-  const formData = new FormData();
-
-  if(file) formData.append('file', file.buffer, file.originalname);
-
-  const hashedPassword = await bcrypt.hash(password, Number(config.SALTING));
-  parsed.password = hashedPassword;
-  formData.append('email', parsed.email);
-  formData.append('name', parsed.name);
-  formData.append('password', hashedPassword);
-  formData.append('passoutYear', String(parsed.passoutYear));
-  formData.append('provider', parsed.provider);
-
-  const newUser = await axios.post(`${config.API_URL}/api/v1/members/`, formData, {
-    headers: formData.getHeaders(),
-  })
-
-  if(!newUser.data.success) {
-      return res.status(403).json({
-          error: true,
-          message: newUser.data.message
-      })
-  }
-  res.status(201).json({
-      success: true,
-      message: newUser.data.message
-  })
-}
 
 export const login = async(req: Request, res:Response) => {
 
