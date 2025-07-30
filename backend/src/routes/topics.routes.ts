@@ -1,14 +1,12 @@
 import { Router } from "express";
 
-import { addQuestionBytopicId, createNewTopic, deleteTopic, getAllTopics, getQusetionBytopicId, updateTopic } from "../controllers/topics.controller";
+import { addQuestionBytopicId, createNewTopic, deleteTopic, getAllTopics, getQuestionBytopicId, updateTopic } from "../controllers/topics.controller";
 import { validate } from "../middleware/validates";
 import { questionSchema, topicSchema, updateTopicSchema } from "../validation/topic.validation";
 import { middleware } from "../middleware/example.middleware";
 
 export default function topicRouter(){
     const router = Router();
-
-    router.get('/:topicId/questions', getQusetionBytopicId);
 
     router.post('/:topicId/questions',middleware,validate(questionSchema),addQuestionBytopicId);
 
@@ -18,7 +16,7 @@ export default function topicRouter(){
 
     router.get('/',getAllTopics);
 
-    router.get('/:topicId/questions',getQusetionBytopicId);
+    router.get('/:topicId/questions',getQuestionBytopicId);
 
     router.patch('/:topicId',middleware,validate(updateTopicSchema),updateTopic);
 

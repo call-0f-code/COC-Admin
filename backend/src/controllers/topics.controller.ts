@@ -54,7 +54,7 @@ export const getAllTopics = async(req:Request,res:Response)=>{
     }) 
 }
 
-export const getQusetionBytopicId = async(req:Request,res:Response)=>{
+export const getQuestionBytopicId = async(req:Request,res:Response)=>{
     const {topicId} = req.params;
     if(!topicId){
         throw new ApiError("missing required field",400);
