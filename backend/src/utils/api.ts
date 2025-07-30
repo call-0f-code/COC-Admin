@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ApiError } from "./apiError";
-import { APIError } from "better-auth";
+
 
 const apiurl = process.env.API_URL;
 
@@ -26,7 +26,6 @@ api.interceptors.response.use(
   },
   (error) => {
     
-    // Handle 500 server errors
     if (error.response && error.response.status >= 500) {
       throw new ApiError('Internal Server Error', 500);
     }
