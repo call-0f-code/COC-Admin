@@ -2,9 +2,8 @@ import { z } from 'zod';
 
 // Email Schema
 export const emailSchema = z
-  .string()
+  .email()
   .trim()
-  .email({ message: "Please enter a valid email address" })
   .nonempty({ message: "Email is required" });
 
 

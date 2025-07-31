@@ -1,6 +1,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import  config from '../config/index'
 import { Request, Response, NextFunction } from 'express';
+import { ApiError } from '../utils/apiError';
 
 export const auth = async(req: Request, res: Response, next: NextFunction) => {
   let token;
@@ -24,5 +25,8 @@ export const auth = async(req: Request, res: Response, next: NextFunction) => {
 
     req.adminId = (decoded as JwtPayload).adminId;
     next();
+  }
+  else {
+    throw new ApiError('Token not found', 403);
   }
 };

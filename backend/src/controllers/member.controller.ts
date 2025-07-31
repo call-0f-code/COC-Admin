@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import api from "../utils/api";
 import { SigninSchema } from "../validation/member.validator";
 import bcrypt from 'bcrypt';
+import axios from "axios";
 import config from "../config";
 import jwt from 'jsonwebtoken';
 
@@ -17,12 +18,12 @@ export const login = async(req: Request, res:Response) => {
     }
 
     const { email, password } = parsedData.data;
-    const check = await api.get(`/members/?email=${email}&password=${password}`);
+    const check = await axios.get(`${config.API_URL}/api/v1/members/?email=${email}&password=${password}`);
 
     if(!check.data.success) {
       return res.status(400).json({message: "Error signing in"});
     }
-
+    console.log(check.data.user);
     const adminId = check.data.user.id;
     const hashedPassword = check.data.user.accounts[0];
     const isManager = check.data.user.isManager;
@@ -33,7 +34,6 @@ export const login = async(req: Request, res:Response) => {
         message: "Unauthorized access detected"
       })
     }
-
     const isPasswordValid = await bcrypt.compare(password, hashedPassword.password);
     if(!isPasswordValid) {
       return res.status(403).json({
@@ -54,8 +54,9 @@ export const login = async(req: Request, res:Response) => {
 }
 
 export const getunapprovedMembers = async(req: Request, res: Response) => {
-  const members = await api.get('/members/unapproved');
 
+  console.log("reached here");
+  const members = await axios.get('http://localhost:3000/api/v1/members/unapproved');
 
   if(!members.data.success) {
     return res.status(400).json({
