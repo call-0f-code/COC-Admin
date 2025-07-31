@@ -2,13 +2,15 @@ import { Router } from "express";
 import * as memberCtrl from "../controllers/member.controller";
 import { auth } from "../middleware/adminAuth";
 import {Multer} from "multer";
+import { validate } from "../middleware/validates";
+import { SigninSchema } from "../validation/member.validator";
 
 export default function memberRouter(
     upload: Multer,
 ) {
     const router = Router();
     
-    router.post('/signin', memberCtrl.login);
+    router.post('/signin', validate(SigninSchema), memberCtrl.login);
 
     router.use(auth);
 

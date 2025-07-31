@@ -23,7 +23,6 @@ export const login = async(req: Request, res:Response) => {
     if(!check.data.success) {
       return res.status(400).json({message: "Error signing in"});
     }
-    console.log(check.data.user);
     const adminId = check.data.user.id;
     const hashedPassword = check.data.user.accounts[0];
     const isManager = check.data.user.isManager;
@@ -55,8 +54,7 @@ export const login = async(req: Request, res:Response) => {
 
 export const getunapprovedMembers = async(req: Request, res: Response) => {
 
-  console.log("reached here");
-  const members = await axios.get('http://localhost:3000/api/v1/members/unapproved');
+  const members = await api.get('members/unapproved');
 
   if(!members.data.success) {
     return res.status(400).json({
@@ -66,6 +64,7 @@ export const getunapprovedMembers = async(req: Request, res: Response) => {
   }
 
   res.json({
+      success: true,
       members: members.data.unapprovedMembers
   })
 

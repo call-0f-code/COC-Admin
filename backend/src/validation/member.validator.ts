@@ -13,5 +13,5 @@ export const SigninSchema = z.object({
     .string()
     .trim()
     .nonempty({ message: "Password is required" })
-    .min(8, { message: "Password must be at least 8 characters long" }),
+    .min(8, { message: "Password must be at least 8 characters long" })
 });
