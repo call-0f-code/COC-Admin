@@ -16,7 +16,7 @@ export const login = async(req: Request, res:Response) => {
     }
 
     const { email, password } = parsedData.data;
-    const check = await axios.get(`${config.API_URL}/api/v1/members/?email=${email}&password=${password}`);
+    const check = await axios.get(`${config.API_URL}/api/v1/members/?email=${email}`);
 
     const adminId = check.data.user.id;
     const hashedPassword = check.data.user.accounts[0];
