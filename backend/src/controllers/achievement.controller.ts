@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import api from "../utils/api";
-import { createAchievementValidator, updateAchievementValidator } from "../validators/achievement.validator";
 import { ApiError } from "../utils/apiError";
 import FormData from "form-data";
 
@@ -41,7 +40,8 @@ export const getAchievementById = async (req: Request, res: Response) => {
 
 export const createAchievement = async (req: Request, res: Response) => {
   const file = req.file;
-  const memberId = req.memberId;
+  // const memberId = req.memberId;
+  const memberId = "1b5933a9-5d50-4246-861a-ca0d30bd581f";
 
   if (!file) {
     throw new ApiError("Image file is missing", 400);
@@ -51,12 +51,7 @@ export const createAchievement = async (req: Request, res: Response) => {
     throw new ApiError("Member ID is missing", 400);
   }
 
-  const parsed = createAchievementValidator.safeParse(req.body.achievementData);
-
-  if (!parsed.success) {
-    const firstError = parsed.error.issues[0]?.message || "Invalid input data";
-    throw new ApiError(firstError, 400);
-  }
+  const achievementData = req.body.achievementData;
 
   const formData = new FormData();
 
@@ -64,7 +59,7 @@ export const createAchievement = async (req: Request, res: Response) => {
   formData.append(
     "achievementData",
     JSON.stringify({
-      ...parsed.data,
+      ...achievementData,
       createdById: memberId,
     })
   );
@@ -85,7 +80,8 @@ export const createAchievement = async (req: Request, res: Response) => {
 export const updateAchievement = async (req: Request, res: Response) => {
   const file = req.file;
   const achievementId = req.params.achievementId;
-  const memberId = req.memberId;
+  // const memberId = req.memberId;
+   const memberId = "1b5933a9-5d50-4246-861a-ca0d30bd581f";
 
   if (!achievementId) {
     throw new ApiError("Achievement ID is required", 400);
@@ -95,28 +91,17 @@ export const updateAchievement = async (req: Request, res: Response) => {
     throw new ApiError("Member ID is missing", 400);
   }
 
-  let parsedBody = req.body.achievementData;
-  if (typeof parsedBody === "string") {
-    try {
-      parsedBody = JSON.parse(parsedBody);
-    } catch {
-      throw new ApiError("Invalid JSON in achievementData field", 400);
-    }
-  }
-
-  parsedBody.updatedById = memberId;
-
-  const validated = updateAchievementValidator.safeParse(parsedBody);
-  if (!validated.success) {
-    const message = validated.error.issues[0]?.message || "Invalid input";
-    throw new ApiError(message, 400);
-  }
+  
+  const achievementData = {
+    ...req.body.achievementData,
+    updatedById: memberId,
+  };
 
   const hasUpdateField =
-    validated.data.title ||
-    validated.data.description ||
-    validated.data.achievedAt ||
-    (Array.isArray(validated.data.memberIds) && validated.data.memberIds.length > 0);
+    achievementData.title ||
+    achievementData.description ||
+    achievementData.achievedAt ||
+    (Array.isArray(achievementData.memberIds) && achievementData.memberIds.length > 0);
 
   if (!hasUpdateField && !file) {
     throw new ApiError(
@@ -126,7 +111,7 @@ export const updateAchievement = async (req: Request, res: Response) => {
   }
 
   const formData = new FormData();
-  formData.append("achievementData", JSON.stringify(validated.data));
+  formData.append("achievementData", JSON.stringify(achievementData));
   if (file) {
     formData.append("image", file.buffer, file.originalname);
   }
@@ -179,4 +164,3 @@ export const removeMemberFromAchievement = async (req: Request, res: Response) =
     message: response.data?.message || "Member removed from achievement successfully",
   });
 };
-

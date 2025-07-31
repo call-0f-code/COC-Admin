@@ -1,7 +1,9 @@
 import { Router } from "express";
 import * as achievementCtrl from "../controllers/achievement.controller";
 import { Response, Request, NextFunction} from "express";
+import { createAchievementSchema, updateAchievementSchema } from "../validators/achievement.validator";
 import type { Multer } from "multer";
+import { validate } from "../middleware/validates";
 
 export function parseAchievementData(req: Request, res: Response, next: NextFunction) {
   if (req.body.achievementData) {
@@ -18,13 +20,14 @@ export default function achievementRouter(upload: Multer) {
   const router = Router();
 
   // Create achievement
-  router.post("/", upload.single("image"), parseAchievementData, achievementCtrl.createAchievement);
+  router.post("/", upload.single("image"), parseAchievementData, validate(createAchievementSchema), achievementCtrl.createAchievement);
   router.get("/", achievementCtrl.getAchievements);
   router.get("/:achievementId", achievementCtrl.getAchievementById);
   router.patch(
   "/:achievementId",
   upload.single("image"),
   parseAchievementData,
+  validate(updateAchievementSchema),
   achievementCtrl.updateAchievement
 );
   router.delete("/:achievementId", achievementCtrl.deleteAchievementById);
