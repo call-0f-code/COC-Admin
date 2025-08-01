@@ -38,8 +38,8 @@ export const getQuestionByQuestionId = async(req:Request,res:Response)=>{
 export const updateQuestionById = async(req:Request,res:Response)=>{
     const {questionId} = req.params
     const {questionData} =req.body;
-    const adminId = req.AdminId;
-    if(!questionData){
+    const adminId = req.adminId;
+    if(!questionData || !questionId){
         throw new ApiError("missing required field",400);
     }
 

@@ -21,7 +21,7 @@ export const validate = (schema:z.ZodSchema) =>{
                 return next( new ApiError(`validation error, ${errorMessage}`,400));
             }
 
-            return next(new ApiError(`validation error occure ${error}`,500));
+            return next(new ApiError(`validation error occured ${error}`,500));
 
         }
     }

@@ -1,10 +1,11 @@
 import "express";
+import {MulterFile} from 'multer';
 
 declare global {
     namespace Express {
         interface Request {
-            AdminId?:string;
-            UserId?: string;
+            adminId?: string;
+            file?: MulterFile;
         }
     }
 }

@@ -5,7 +5,7 @@ import api from "../utils/api";
 
 export const addQuestionBytopicId = async(req:Request,res:Response) =>{
     const topicId = req.params.topicId;
-    const adminId = req.AdminId;
+    const adminId = req.adminId;
     const {questionName,link,difficulty} = req.body;
     if(!topicId || !adminId){
         throw new ApiError("missing required field",400);
@@ -20,8 +20,8 @@ export const addQuestionBytopicId = async(req:Request,res:Response) =>{
 
 export const createNewTopic = async(req:Request,res:Response)=>{
     const {title,description} = req.body;
-    const adminId = req.AdminId;
-    if(!adminId){
+    const adminId = req.adminId;
+    if(!adminId || !title || !description){
         throw new ApiError("missing required field",400);
     }
     const response = await api.post('/topics',{title,description,adminId});
@@ -72,8 +72,8 @@ export const getQuestionBytopicId = async(req:Request,res:Response)=>{
 export const updateTopic = async(req:Request,res:Response)=>{
     const {topicId} =req.params;
     const {updateData} = req.body;
-     const adminId = req.AdminId;
-    if(!topicId){
+     const adminId = req.adminId;
+    if(!topicId || !updateData){
         throw new ApiError("missing required field",400);
     }
     const response = await api.patch(`topics/${topicId}`,{updateData,adminId});
