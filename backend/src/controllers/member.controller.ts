@@ -10,13 +10,8 @@ import { ApiError } from "../utils/apiError";
 
 export const login = async(req: Request, res:Response) => {
 
-    const parsedData = SigninSchema.safeParse(req.body);
-    if (!parsedData.success) {
-      throw new ApiError(parsedData.error.message, 500);
-    }
-
-    const { email, password } = parsedData.data;
-    const check = await axios.get(`${config.API_URL}/api/v1/members/?email=${email}`);
+    const { email, password } = req.body;
+    const check = await api.get(`/members/?email=${email}`);
 
     const adminId = check.data.user.id;
     const hashedPassword = check.data.user.accounts[0];
@@ -32,7 +27,10 @@ export const login = async(req: Request, res:Response) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ adminId }, config.JWT_SECRET as string, { expiresIn: "1d" });
+    if(!config.JWT_SECRET){
+      throw new ApiError("JWT_SECRET is not configured");
+    }
+    const token = jwt.sign({ adminId }, config.JWT_SECRET, { expiresIn: "1d" });
 
     // Send response
     res.status(200).json({
@@ -44,13 +42,9 @@ export const login = async(req: Request, res:Response) => {
 
 export const getunapprovedMembers = async(req: Request, res: Response) => {
 
-  const members = await api.get('members/unapproved');
+  const members = await api.get('/members/unapproved');
 
-  if(!members.data.success) {
-        throw new ApiError(members.data.message, 500);
-  }
-
-  res.json({
+  res.status(200).json({
       success: true,
       members: members.data.unapprovedMembers
   })
@@ -64,9 +58,6 @@ export const approveMember = async(req: Request, res: Response) => {
     const adminId = req.adminId;
 
     const approval = await api.patch(`/members/approve/${memberId}`, {isApproved, adminId});
-    if(!approval.data.success) {
-      throw new ApiError(approval.data.message, 500);
-    }
     
     res.status(200).json({
       success: true,
