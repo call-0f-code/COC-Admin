@@ -11,17 +11,13 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (!token) {
-        res.status(401);
-        throw new Error('Not authorized, no token');
+        throw new ApiError('not authorized, no token',401)
     }
 
     const decoded = await jwt.verify(token, config.JWT_SECRET);
 
     if (!decoded) {
-        return res.status(401).json({
-            success: false,
-            message: "Invalid or expired token"
-        })
+        throw new ApiError('Invalid token or token expired',401)
     }
 
     req.adminId = (decoded as JwtPayload).adminId;

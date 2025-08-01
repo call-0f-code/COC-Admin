@@ -57,6 +57,10 @@ export const approveMember = async(req: Request, res: Response) => {
     const {isApproved} = req.body;
     const adminId = req.adminId;
 
+    if(!isApproved===undefined || !memberId) {
+      throw new ApiError(" required field missing", 400);
+    }
+
     const approval = await api.patch(`/members/approve/${memberId}`, {isApproved, adminId});
     
     res.status(200).json({
