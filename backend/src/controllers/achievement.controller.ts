@@ -40,14 +40,13 @@ export const getAchievementById = async (req: Request, res: Response) => {
 
 export const createAchievement = async (req: Request, res: Response) => {
   const file = req.file;
-  // const memberId = req.memberId;
-  const memberId = "1b5933a9-5d50-4246-861a-ca0d30bd581f";
+  const adminId = req.adminId;
 
   if (!file) {
     throw new ApiError("Image file is missing", 400);
   }
 
-  if (!memberId) {
+  if (!adminId) {
     throw new ApiError("Member ID is missing", 400);
   }
 
@@ -60,7 +59,7 @@ export const createAchievement = async (req: Request, res: Response) => {
     "achievementData",
     JSON.stringify({
       ...achievementData,
-      createdById: memberId,
+      createdById: adminId,
     })
   );
 
@@ -80,21 +79,20 @@ export const createAchievement = async (req: Request, res: Response) => {
 export const updateAchievement = async (req: Request, res: Response) => {
   const file = req.file;
   const achievementId = req.params.achievementId;
-  // const memberId = req.memberId;
-   const memberId = "1b5933a9-5d50-4246-861a-ca0d30bd581f";
+  const adminId = req.adminId;
 
   if (!achievementId) {
     throw new ApiError("Achievement ID is required", 400);
   }
 
-  if (!memberId) {
+  if (!adminId) {
     throw new ApiError("Member ID is missing", 400);
   }
 
   
   const achievementData = {
     ...req.body.achievementData,
-    updatedById: memberId,
+    updatedById: adminId,
   };
 
   const hasUpdateField =
