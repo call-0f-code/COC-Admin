@@ -26,11 +26,8 @@ export const login = async(req: Request, res:Response) => {
         throw new ApiError("Invalid password", 403)
     }
 
-    // Generate JWT token
-    if(!config.JWT_SECRET){
-      throw new ApiError("JWT_SECRET is not configured");
-    }
-    const token = jwt.sign({ adminId }, config.JWT_SECRET, { expiresIn: "1d" });
+
+    const token = jwt.sign({ adminId }, config.JWT_SECRET(), { expiresIn: "1d" });
 
     // Send response
     res.status(200).json({
