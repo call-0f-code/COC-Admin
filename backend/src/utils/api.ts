@@ -1,12 +1,12 @@
 import axios from "axios";
 import { ApiError } from "./apiError";
+import config from "../config";
 
 
-
-const apiurl = process.env.API_URL;
+const apiurl = config.API_URL();
 
 const api = axios.create({
-  baseURL: `${apiurl}`,
+  baseURL: `${apiurl}/api/v1`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -20,13 +20,12 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 api.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle 500 server errors
+    
     if (error.response && error.response.status >= 500) {
       throw new ApiError('Internal Server Error', 500);
     }
