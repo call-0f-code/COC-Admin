@@ -11,7 +11,6 @@ import { ApiError } from "../utils/apiError";
 export const login = async(req: Request, res:Response) => {
 
     const { email, password } = req.body;
-    console.log(email)
     const check = await api.get(`/members/?email=${email}`);
 
     const adminId = check.data.user.id;
