@@ -6,8 +6,7 @@ import { constants } from "buffer";
 import { imageSchema, memberIdSchema } from "../validation/projects.validators";
 
 export const createProject = async (req: Request, res: Response) => {
-
-    console.log("control reach here !!!");
+    
     const file = req.file;
     const parseFile = imageSchema.safeParse(file);
 

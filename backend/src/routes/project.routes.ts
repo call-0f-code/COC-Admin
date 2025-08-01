@@ -5,7 +5,6 @@ import { validate } from "../middleware/validates";
 import { createProjectSchema, memberIdSchema, updateProjectSchema } from "../validation/projects.validators";
 
 function parseProjectData(req: Request, res: Response, next: NextFunction) {
-    console.log("control reach here !!!")
     if (req.body.projectData) {
         try {
             const parse = JSON.parse(req.body.projectData);

@@ -5,7 +5,6 @@ import { ApiError } from '../utils/apiError';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
     let token;
-    console.log("control reach here !!!")
     if (req.headers.authorization?.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
     }

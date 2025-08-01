@@ -5,9 +5,8 @@ import { ApiError } from '../utils/apiError';
 export const validate = (schema:z.ZodSchema) =>{
     return (req:Request , res:Response ,next:NextFunction)=>{
         try{
-           console.log("control rech at validate!!!");
+           
             const validatedData = schema.parse(req.body);
-            console.log(validatedData)
             req.body = validatedData;
             
             next();
