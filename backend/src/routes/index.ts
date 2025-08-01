@@ -6,9 +6,8 @@ import { Multer } from "multer";
 import { auth } from "../middleware/adminAuth";
 
 import projetRouter from "./project.routes";
-import { Multer } from 'multer';
 
-export default function routes(upload: Multer upload : Multer){
+export default function routes(upload: Multer ){
 
     const router = Router();
 
@@ -20,6 +19,7 @@ export default function routes(upload: Multer upload : Multer){
 
     router.use('/questions',questionRoutes());
 
-    router.use('/projects', projetRouter( upload ))
+    router.use('/projects', projetRouter( upload ));
+
     return router;
 }

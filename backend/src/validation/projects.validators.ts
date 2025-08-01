@@ -2,9 +2,11 @@ import * as z from 'zod';
 type MulterFile = Express.Multer.File;
 
 export const createProjectSchema = z.object({
-    name : z.string(),
+   projectData : z.object({
+     name : z.string(),
     githubUrl : z.string(),
     deployUrl : z.string(),
+   })
 })
 
 export const imageSchema = z.custom<MulterFile>((file) => {
@@ -23,9 +25,11 @@ export const imageSchema = z.custom<MulterFile>((file) => {
 
 
 export const updateProjectSchema = z.object({
-    name : z.string().optional(),
-    githubUrl : z.string().optional(),
-    deployUrl : z.string().optional()
+    projectData: z.object({
+        name : z.string().optional(),
+        githubUrl : z.string().optional(),
+        deployUrl : z.string().optional()
+    })
 })
 
 export const memberIdSchema = z.object({

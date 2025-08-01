@@ -3,28 +3,26 @@ import { ApiError } from "../utils/apiError";
 import api from "../utils/api";
 import FormData from 'form-data';
 import { constants } from "buffer";
-import { createProjectSchema, imageSchema, memberIdSchema, updateProjectSchema } from "../Validators/projects.validators";
-import axios from "axios";
+import { imageSchema, memberIdSchema } from "../validation/projects.validators";
 
 export const createProject = async (req: Request, res: Response) => {
 
+    console.log("control reach here !!!");
     const file = req.file;
     const parseFile = imageSchema.safeParse(file);
-    // const adminId = req.AdminId;
-    const adminId = "4037653b-a434-460f-8a81-ca8cb46375aa";
+
+    const adminId = req.adminId;
 
     if ( !parseFile || !file) throw new ApiError("Image is not Uploaded in correct format !!!", 401);
-
-    const parseData = createProjectSchema.safeParse(req.body.projectData);
-    if( !parseData.success ) throw new ApiError(" Send the correct data" , 401);
 
     const  formData = new FormData();
 
     let data = req.body.projectData;
     data.adminId = adminId
-
-    formData.append("projectData", JSON.stringify(req.body.projectData));
+    
+    formData.append("projectData", JSON.stringify(data));
     formData.append("image", file.buffer, file.originalname);
+
 
     const response = await api.post('/projects',  formData , {
                 headers: formData.getHeaders(), 
@@ -91,7 +89,7 @@ export const updateProjet = async (req: Request, res: Response) => {
     if (!projectId) throw new ApiError('The projectId is missing ', 401);
 
      // const adminId = req.AdminId;
-    const adminId = "4037653b-a434-460f-8a81-ca8cb46375aa";
+    const adminId = req.adminId;
 
     const file = req.file;
     const formData = new FormData();
@@ -101,9 +99,6 @@ export const updateProjet = async (req: Request, res: Response) => {
         if( !parseFile.success) throw new ApiError("File is not correct format !!!" , 401);
         formData.append('image', file.buffer, file.originalname);
     }
-
-    const parseData = updateProjectSchema.safeParse(req.body.projectData);
-    if( !parseData.success ) throw new ApiError("Send The data in correct format")
 
     let data = req.body.projectData;
     data.updatedById = adminId;
