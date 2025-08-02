@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import api from "../utils/api";
-import { SigninSchema } from "../validation/member.validator";
 import bcrypt from 'bcrypt';
-import axios from "axios";
 import config from "../config";
 import jwt from 'jsonwebtoken';
 import { ApiError } from "../utils/apiError";

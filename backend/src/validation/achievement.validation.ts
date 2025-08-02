@@ -14,7 +14,7 @@ export const updateAchievementSchema = z.object({
   achievementData: z.object({
     title: z.string().min(1).optional(),
     description: z.string().min(1).optional(),
-    achievedAt: z.string().optional(),
+    achievedAt: z.union([z.string(), z.date()]),
     memberIds: z.array(z.string()).optional()
   })
 });

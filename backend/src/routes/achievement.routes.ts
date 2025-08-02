@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as achievementCtrl from "../controllers/achievement.controller";
 import { Response, Request, NextFunction} from "express";
-import { createAchievementSchema, updateAchievementSchema } from "../validation/achievement.validaton";
+import { createAchievementSchema, updateAchievementSchema } from "../validation/achievement.validation";
 import type { Multer } from "multer";
 import { validate } from "../middleware/validates";
 
