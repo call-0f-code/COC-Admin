@@ -9,7 +9,7 @@ export const imageSchema = z.custom<MulterFile>((file) => {
   return (
     'mimetype' in file &&
     allowedTypes.includes((file as MulterFile).mimetype) &&
-    (file as MulterFile).size < 2 * 1024 * 1024 
+    (file as MulterFile).size <= 2 * 1024 * 1024 
   );
 }, {
   message: 'Invalid image file (must be JPEG/PNG/WEBP and <5MB)',
