@@ -36,13 +36,13 @@ export default function projetRouter(upload: Multer) {
     router.patch('/:projectId', upload.single('image'), parseProjectData, validate(updateProjectSchema) , updateProjet);
 
     // add member to project
-    router.post('/:projectId/members', addmembers);
+    router.post('/:projectId/members', validate( memberIdSchema ) , addmembers);
 
     // get All member in Projects
     router.get('/:projectId/members', getMemberByprojectId);
 
     // remove the member from the projects
-    router.delete('/:projectId/members/:memberId', validate( memberIdSchema ) , removeMember);
+    router.delete('/:projectId/members/:memberId',  removeMember);
 
     return router;
 }

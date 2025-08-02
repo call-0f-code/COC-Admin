@@ -4,8 +4,8 @@ type MulterFile = Express.Multer.File;
 export const createProjectSchema = z.object({
    projectData : z.object({
      name : z.string(),
-    githubUrl : z.string(),
-    deployUrl : z.string(),
+    githubUrl : z.url(),
+    deployUrl : z.url(),
    })
 })
 
@@ -27,8 +27,8 @@ export const imageSchema = z.custom<MulterFile>((file) => {
 export const updateProjectSchema = z.object({
     projectData: z.object({
         name : z.string().optional(),
-        githubUrl : z.string().optional(),
-        deployUrl : z.string().optional()
+        githubUrl : z.url().optional(),
+        deployUrl : z.url().optional()
     })
 })
 

@@ -12,12 +12,11 @@ export const createProject = async (req: Request, res: Response) => {
 
     const adminId = req.adminId;
 
-    if ( !parseFile || !file) throw new ApiError("Image is not Uploaded in correct format !!!", 401);
+    if ( !parseFile || !file) throw new ApiError("Image is not Uploaded in correct format !!!", 400);
 
     const  formData = new FormData();
 
-    let data = req.body.projectData;
-    data.adminId = adminId
+    const data = { ...req.body.projectData, adminId };
     
     formData.append("projectData", JSON.stringify(data));
     formData.append("image", file.buffer, file.originalname);
@@ -41,7 +40,7 @@ export const deleteProject = async (req: Request, res: Response) => {
 
     const projectId = req.params.projectId;
 
-    if (!projectId) throw new ApiError('ProjectId is missing ', 401);
+    if (!projectId) throw new ApiError('ProjectId is missing ', 400);
 
     const response = await api.delete(`/projects/${projectId}`);
 
@@ -70,7 +69,7 @@ export const getProjects = async (req: Request, res: Response) => {
 export const getProjectById = async (req: Request, res: Response) => {
 
     const projectId = req.params.projectId;
-    if (!projectId) throw new ApiError("ProjectId is missing", 401);
+    if (!projectId) throw new ApiError("ProjectId is missing", 400);
 
     const response = await api.get(`/projects/${projectId}`);
     const project = response.data;
@@ -84,26 +83,22 @@ export const getProjectById = async (req: Request, res: Response) => {
 export const updateProjet = async (req: Request, res: Response) => {
 
     const projectId = req.params.projectId;
-
-    if (!projectId) throw new ApiError('The projectId is missing ', 401);
-
-     // const adminId = req.AdminId;
-    const adminId = req.adminId;
+    
+    if (!projectId) throw new ApiError('The projectId is missing ', 400);
+    const updatedById = req.adminId;
 
     const file = req.file;
     const formData = new FormData();
 
     if( file ){
         const parseFile = imageSchema.safeParse(file);
-        if( !parseFile.success) throw new ApiError("File is not correct format !!!" , 401);
+        if( !parseFile.success) throw new ApiError("File is not correct format " , 400);
         formData.append('image', file.buffer, file.originalname);
     }
 
-    let data = req.body.projectData;
-    data.updatedById = adminId;
+      const data = {...req.body.projectData , updatedById}
  
     formData.append("projectData", JSON.stringify(data));
-
 
      const response = await api.patch(`/projects/${projectId}`,  formData , {
         headers: formData.getHeaders(),
@@ -122,11 +117,7 @@ export const updateProjet = async (req: Request, res: Response) => {
 export const addmembers = async (req: Request, res: Response) => {
 
     const projectId = req.params.projectId;
-    if (!projectId) throw new ApiError("ProjectId is missing ", 401);
-
-    const parseData = memberIdSchema.safeParse(req.body);
-
-    if( !parseData.success) throw new ApiError('Send data in correct format' , 401);
+    if (!projectId) throw new ApiError("ProjectId is missing ", 400);
     
     const memberId = req.body;
 
@@ -142,7 +133,7 @@ export const addmembers = async (req: Request, res: Response) => {
 
 export const getMemberByprojectId = async (req: Request, res: Response) => {
     const projectId = req.params.projectId;
-    if (!projectId) throw new ApiError("ProjectId is missing ", 401);
+    if (!projectId) throw new ApiError("ProjectId is missing ", 400);
 
     const response = await api.get(`/projects/${projectId}/members`);
 
@@ -156,9 +147,10 @@ export const getMemberByprojectId = async (req: Request, res: Response) => {
 
 export const removeMember = async (req: Request, res: Response) => {
     const projectId = req.params.projectId;
-    if (!projectId) throw new ApiError("ProjectId is missing ", 401);
+    if (!projectId) throw new ApiError("ProjectId is missing ", 400);
     const memberId = req.params.memberId;
-
+    
+    if( !memberId ) throw new ApiError("memeberId is missaing" , 400);
     const response = await api.delete(`/projects/${projectId}/members/${memberId}`);
 
     const  removeMemeber  = response.data;
