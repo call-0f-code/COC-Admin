@@ -18,4 +18,5 @@
   "peerDependencies": {
     "typescript": "^5.8.3"
   }
+  
 }

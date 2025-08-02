@@ -6,7 +6,10 @@ import achievementRouter from "./achievement.routes";
 import { Multer } from "multer";
 import { auth } from "../middleware/adminAuth";
 
-export default function routes(upload: Multer){
+import projetRouter from "./project.routes";
+
+export default function routes(upload: Multer ){
+
     const router = Router();
 
     router.use('/members', memberRouter(upload));
@@ -16,6 +19,7 @@ export default function routes(upload: Multer){
     router.use('/topics',topicRouter());
      router.use('/questions',questionRoutes());
     router.use("/achievements", achievementRouter(upload));
+    router.use('/projects', projetRouter( upload ));
 
     return router;
 }

@@ -25,7 +25,6 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    
     if (error.response && error.response.status >= 500) {
       throw new ApiError('Internal Server Error', 500);
     }
