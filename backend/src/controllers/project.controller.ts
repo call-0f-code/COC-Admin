@@ -9,10 +9,9 @@ export const createProject = async (req: Request, res: Response) => {
     
     const file = req.file;
     const parseFile = imageSchema.safeParse(file);
-
     const adminId = req.adminId;
 
-    if ( !parseFile || !file) throw new ApiError("Image is not Uploaded in correct format !!!", 400);
+    if ( !parseFile.success || !file) throw new ApiError("Image is not Uploaded in correct format !!!", 400);
 
     const  formData = new FormData();
 
