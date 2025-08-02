@@ -19,9 +19,9 @@ export const getAchievements = async (req: Request, res: Response) => {
 
 
 export const getAchievementById = async (req: Request, res: Response) => {
-  const achievementId = parseInt(req.params.achievementId);
+  const achievementId = req.params.achievementId;
 
-  if (!achievementId || isNaN(achievementId)) {
+  if (!achievementId) {
     throw new ApiError("Invalid achievement ID", 400);
   }
 

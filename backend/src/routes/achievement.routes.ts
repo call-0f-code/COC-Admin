@@ -38,15 +38,3 @@ export default function achievementRouter(upload: Multer) {
 }
 
 
-// const router = Router();
-
-// // GET /achievements
-// router.get("/", achievementCtrl.getAchievements);
-// router.get("/:achievementId", achievementCtrl.getAchievementById);
-// // create 
-// // update
-// router.delete("/:achievementId", achievementCtrl.deleteAchievementById);
-// router.delete("/:achievementId/members/:memberId", achievementCtrl.removeMemberFromAchievement);
-
-
-// export default router;
