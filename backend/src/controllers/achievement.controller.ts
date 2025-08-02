@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import api from "../utils/api";
 import { ApiError } from "../utils/apiError";
 import FormData from "form-data";
+import { imageSchema } from "../validation/achievement.validation";
 
 export const getAchievements = async (req: Request, res: Response) => {
   const response = await api.get("/achievements");
@@ -42,8 +43,10 @@ export const createAchievement = async (req: Request, res: Response) => {
   const file = req.file;
   const adminId = req.adminId;
 
-  if (!file) {
-    throw new ApiError("Image file is missing", 400);
+  const parseFile = imageSchema.safeParse(file)
+
+  if (!parseFile.success || !file) {
+    throw new ApiError("Image file is missing or format not supported", 400);
   }
 
   if (!adminId) {
@@ -111,6 +114,8 @@ export const updateAchievement = async (req: Request, res: Response) => {
   const formData = new FormData();
   formData.append("achievementData", JSON.stringify(achievementData));
   if (file) {
+    const parseFile = imageSchema.safeParse(file)
+    if( !parseFile.success) throw new ApiError("File is not in a correct format " , 400);
     formData.append("image", file.buffer, file.originalname);
   }
 
