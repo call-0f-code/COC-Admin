@@ -2,7 +2,7 @@ import { NextFunction, Router, Request, Response } from "express";
 import { addmembers, createProject, deleteProject, getMemberByprojectId, getProjectById, getProjects, removeMember, updateProjet } from "../controllers/project.controller";
 import { Multer } from "multer";
 import { validate } from "../middleware/validates";
-import { createProjectSchema, memberIdSchema, updateProjectSchema } from "../validation/projects.validators";
+import { createProjectSchema, memberIdSchema, updateProjectSchema } from "../validation/projects.validation";
 
 function parseProjectData(req: Request, res: Response, next: NextFunction) {
     if (req.body.projectData) {
