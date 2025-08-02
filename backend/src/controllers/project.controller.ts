@@ -3,7 +3,7 @@ import { ApiError } from "../utils/apiError";
 import api from "../utils/api";
 import FormData from 'form-data';
 import { constants } from "buffer";
-import { imageSchema } from "../validation/projects.validators";
+import { imageSchema } from "../validation/projects.validation";
 
 export const createProject = async (req: Request, res: Response) => {
     
