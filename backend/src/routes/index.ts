@@ -1,7 +1,6 @@
 import { Router } from "express";
 import memberRouter from "./members.routes";
 import topicRouter from "./topics.routes";
-// import projetRouter from "./project.routes";
 import questionRoutes from "./question.routes";
 import achievementRouter from "./achievement.routes";
 import { Multer } from "multer";
@@ -17,6 +16,6 @@ export default function routes(upload: Multer){
     router.use('/topics',topicRouter());
      router.use('/questions',questionRoutes());
     router.use("/achievements", achievementRouter(upload));
-    // router.use('/projects', projetRouter( upload ))
+
     return router;
 }
