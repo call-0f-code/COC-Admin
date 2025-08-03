@@ -1,6 +1,15 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"] }
-  }
+    "paths": { "@/*": ["./src/*"] },
+    "composite": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "target": "ESNext",
+    "strict": true,
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "esModuleInterop": true
+      },
+      "include": ["src"]
 }
