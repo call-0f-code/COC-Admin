@@ -30,7 +30,7 @@ export default function Login({ onBack, onLoginSuccess }: LoginProps) {
     setError("")
 
     try {
-      const response = await fetch("https://localhost:8000/api/v1/signin", {
+      const response = await fetch("http://localhost:8000/api/v1/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
