@@ -1,3 +1,11 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: black; /* Optional fallback */
+  font-family: "Courier New", "Lucida Console", "Monaco", "Consolas", monospace !important;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
