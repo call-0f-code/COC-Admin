@@ -1,4 +1,3 @@
-"use client"
 import { useState } from "react"
 import { Lock, Terminal, Code } from 'lucide-react'
 import Login from "./login"
