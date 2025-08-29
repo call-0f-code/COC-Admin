@@ -105,7 +105,7 @@ export default function Login({ onBack }: LoginProps) {
       <div className="flex items-center justify-center min-h-screen relative z-10">
         <div className="w-full max-w-md">
           {/* Main container */}
-          <div className="bg-black border-6 border-black p-8 shadow-[12px_12px_0_0_#00FFFF]">
+          <div className="bg-black border-[6px] border-black p-8 shadow-[12px_12px_0_0_#00FFFF]">
             {/* Header */}
             <div className="text-center mb-8">
               <div className="mb-4">
@@ -199,7 +199,7 @@ export default function Login({ onBack }: LoginProps) {
   <div className="flex items-center justify-center gap-3">
     {isLoading ? (
       <>
-        <div className="w-6 h-6 border-3 border-black border-t-transparent animate-spin"></div>
+        <div className="w-6 h-6 border-[3px] border-black border-t-transparent animate-spin"></div> 
         <span>AUTHENTICATING...</span>
       </>
     ) : (
