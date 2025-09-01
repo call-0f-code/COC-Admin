@@ -1,63 +1,82 @@
 import React, { useState } from 'react';
-import { Lock, Mail, Cpu, AlertCircle, ArrowLeft } from 'lucide-react';
+import {
+  Lock,
+  Mail,
+  Cpu,
+  AlertCircle,
+  ArrowLeft,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 
 interface LoginProps {
   onBack: () => void;
 }
 
+interface Credentials {
+  email: string;
+  password: string;
+}
+
 export default function Login({ onBack }: LoginProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string>("");
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
+  const [error, setError] = useState<string>('');
+  const [credentials, setCredentials] = useState<Credentials>({
+    email: '',
+    password: '',
   });
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError('');
 
     try {
       // API call to your backend
-      const response = await fetch("http://localhost:8000/api/v1/members/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-        }),
-      });
+      const response = await fetch(
+        'http://localhost:8000/api/v1/members/signin',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.message || 'Login failed');
       }
 
       if (data.success && data.token) {
-        localStorage.setItem("adminToken", data.token);
-        console.log("Login successful:", data.message);
+        localStorage.setItem('adminToken', data.token);
+        console.log('Login successful:', data.message);
         // You can add redirect logic here or call a success callback
       } else {
-        throw new Error("Invalid response from server");
+        throw new Error('Invalid response from server');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred during login");
+      setError(
+        err instanceof Error ? err.message : 'An error occurred during login'
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCredentials({
-      ...credentials,
-      [e.target.name]: e.target.value,
-    });
-    if (error) setError("");
+    const target = e.target as HTMLInputElement & { name: keyof Credentials };
+    setCredentials((prev) => ({
+      ...prev,
+      [target.name]: target.value,
+    }));
+    if (error) setError('');
   };
 
   return (
@@ -65,17 +84,17 @@ export default function Login({ onBack }: LoginProps) {
       {/* Geometric background pattern */}
       <div className="absolute inset-0">
         {/* Grid pattern */}
-        <div 
+        <div
           className="absolute inset-0 opacity-5"
           style={{
             backgroundImage: `
               linear-gradient(to right, #000 1px, transparent 1px),
               linear-gradient(to bottom, #000 1px, transparent 1px)
             `,
-            backgroundSize: '40px 40px'
+            backgroundSize: '40px 40px',
           }}
         />
-        
+
         {/* Geometric shapes */}
         <div className="absolute top-32 left-16 w-12 h-12 bg-cyan-400 border-4 border-black"></div>
         <div className="absolute top-60 right-24 w-8 h-20 bg-black"></div>
@@ -93,7 +112,7 @@ export default function Login({ onBack }: LoginProps) {
             top: `${Math.random() * 100}%`,
           }}
         >
-          <div 
+          <div
             className={`w-3 h-3 border-2 border-black ${
               i % 2 === 0 ? 'bg-cyan-400' : 'bg-cyan-400'
             }`}
@@ -116,9 +135,7 @@ export default function Login({ onBack }: LoginProps) {
               <h2 className="text-3xl font-black text-white mb-3 tracking-tight">
                 AUTHENTICATION
               </h2>
-              <h3 className="text-xl font-black text-white mb-2">
-                REQUIRED
-              </h3>
+              <h3 className="text-xl font-black text-white mb-2">REQUIRED</h3>
               <div className="w-full h-1 bg-cyan-400 border-2 border-black mt-3"></div>
             </div>
 
@@ -138,7 +155,10 @@ export default function Login({ onBack }: LoginProps) {
             <form onSubmit={handleLogin} className="space-y-6">
               {/* Email Field */}
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-lg font-black text-white tracking-wider">
+                <label
+                  htmlFor="email"
+                  className="block text-lg font-black text-white tracking-wider"
+                >
                   EMAIL
                 </label>
                 <div className="relative">
@@ -160,7 +180,10 @@ export default function Login({ onBack }: LoginProps) {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label htmlFor="password" className="block text-lg font-black text-white tracking-wider">
+                <label
+                  htmlFor="password"
+                  className="block text-lg font-black text-white tracking-wider"
+                >
                   PASSWORD
                 </label>
                 <div className="relative">
@@ -170,7 +193,7 @@ export default function Login({ onBack }: LoginProps) {
                   <input
                     id="password"
                     name="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••••"
                     value={credentials.password}
                     onChange={handleInputChange}
@@ -180,39 +203,48 @@ export default function Login({ onBack }: LoginProps) {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-pressed={showPassword}
+                    aria-label={
+                      showPassword ? 'Hide password' : 'Show password'
+                    }
+                    title={showPassword ? 'Hide password' : 'Show password'}
                     className="absolute right-3 top-3 w-6 h-6 bg-black border-2 border-black flex items-center justify-center text-white hover:bg-cyan-400 hover:text-black transition-colors"
                   >
+                    {showPassword ? (
+                      <EyeOff className="w-3 h-3" />
+                    ) : (
+                      <Eye className="w-3 h-3" />
+                    )}
                   </button>
                 </div>
               </div>
 
               {/* Submit Button */}
               <button
-  type="submit"
-  disabled={isLoading}
-  className="w-full py-4 bg-[#1edfff] font-black text-xl text-black
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-4 bg-[#1edfff] font-black text-xl text-black
              shadow-[6px_6px_0_0_#000] hover:shadow-[3px_3px_0_0_#000]
              hover:translate-x-1 hover:translate-y-1
              active:translate-x-2 active:translate-y-2 active:shadow-[2px_2px_0_0_#000]
              transition-all duration-150"
->
-  <div className="flex items-center justify-center gap-3">
-    {isLoading ? (
-      <>
-        <div className="w-6 h-6 border-[3px] border-black border-t-transparent animate-spin"></div> 
-        <span>AUTHENTICATING...</span>
-      </>
-    ) : (
-      <>
-        <div className="w-6 h-6 bg-black flex items-center justify-center">
-          <Cpu className="w-4 h-4 text-white" />
-        </div>
-        <span>./LOGIN.SH</span>
-      </>
-    )}
-  </div>
-</button>
-
+              >
+                <div className="flex items-center justify-center gap-3">
+                  {isLoading ? (
+                    <>
+                      <div className="w-6 h-6 border-[3px] border-black border-t-transparent animate-spin"></div>
+                      <span>AUTHENTICATING...</span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-6 h-6 bg-black flex items-center justify-center">
+                        <Cpu className="w-4 h-4 text-white" />
+                      </div>
+                      <span>./LOGIN.SH</span>
+                    </>
+                  )}
+                </div>
+              </button>
 
               {/* Back Button */}
               <button

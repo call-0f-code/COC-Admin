@@ -1,13 +1,6 @@
 {
   "name": "coc-admin",
   "module": "index.ts",
-  "type": "module",
-  "scripts": {
-    "dev": "concurrently \"bun run backend-dev\" \"bun run frontend-dev\"",
-    "backend-dev": "cd backend && bun run dev",
-    "frontend-dev": "cd frontend && bun run dev"
-  },
-  "private": true,
   "devDependencies": {
     "@types/bun": "latest",
     "concurrently": "^9.2.0",
@@ -18,7 +11,11 @@
   "peerDependencies": {
     "typescript": "^5.8.3"
   },
-  "dependencies": {
-    "lucide-react": "^0.542.0"
-  }
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"bun run backend-dev\" \"bun run frontend-dev\"",
+    "backend-dev": "cd backend && bun run dev",
+    "frontend-dev": "cd frontend && bun run dev"
+  },
+  "type": "module"
 }

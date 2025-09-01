@@ -1,11 +1,8 @@
-import './App.css'
+import './App.css';
 import Authentication from './pages/Authentication';
 
 function App() {
-return (
-    <Authentication />
-  );
-
+  return <Authentication />;
 }
 
-export default App
+export default App;
