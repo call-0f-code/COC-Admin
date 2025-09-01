@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: config.allowed_origins.split(","),
+    origin: config.allowed_origins,
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
   }),
