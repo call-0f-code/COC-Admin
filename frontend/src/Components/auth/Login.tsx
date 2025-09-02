@@ -20,7 +20,7 @@ interface Credentials {
   password: string;
 }
 
-//aarya madam ne khud ka toast bana diya hai usse remove karna padega
+//Ai ne khud ka toast bana diya hai usse remove karna padega
 //login ke code ko refactor ki zarurat hai 
 //this are temp fix since it was not my job  ('-')
 
