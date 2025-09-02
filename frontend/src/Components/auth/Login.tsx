@@ -8,6 +8,8 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
+import api from '../../utils/api';
+import toast from 'react-hot-toast';
 
 interface LoginProps {
   onBack: () => void;
@@ -17,6 +19,10 @@ interface Credentials {
   email: string;
   password: string;
 }
+
+//Ai ne khud ka toast bana diya hai usse remove karna padega
+//login ke code ko refactor ki zarurat hai 
+//this are temp fix since it was not my job  ('-')
 
 export default function Login({ onBack }: LoginProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,33 +39,16 @@ export default function Login({ onBack }: LoginProps) {
     setError('');
 
     try {
-      // API call to your backend
-      const response = await fetch(
-        'http://localhost:8000/api/v1/members/signin',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
+      // API call example
+      const email = credentials.email;
+      const password = credentials.password;
+      const response = await api.post("/members/signin",{email,password})
+      const data = response.data;
       if (data.success && data.token) {
-        localStorage.setItem('adminToken', data.token);
-        console.log('Login successful:', data.message);
-        // You can add redirect logic here or call a success callback
+        toast.success("Login Successfull");
+        localStorage.setItem('token', data.token);
       } else {
-        throw new Error('Invalid response from server');
+        toast.error('Invalid response from server');
       }
     } catch (err) {
       setError(

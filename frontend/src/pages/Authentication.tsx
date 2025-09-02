@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Lock, Terminal, Code } from 'lucide-react';
-import Login from '../components/auth/Login';
+import Login from '../Components/auth/Login';
 
 export default function Authentication() {
   const [showLogin, setShowLogin] = useState(false);
