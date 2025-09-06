@@ -1,78 +1,122 @@
-import { FileText, Plus } from "lucide-react";
-import { ActionButton } from "../ActionButton";
-import { Header } from "../Header";
-import { SearchBar } from "../SearchBar";
-import { LoadingSpinner } from "../LoadingSpinner";
-import { TopicCard } from "./TopicCard";
-import { EmptyState } from "../EmptyState";
-import { useTopics } from "../../../hooks/useTopics";
+import { FileText, Plus, X } from 'lucide-react';
+import { ActionButton } from '../ActionButton';
+import { Header } from '../Header';
+import { SearchBar } from '../SearchBar';
+import { LoadingSpinner } from '../LoadingSpinner';
+import { TopicCard } from './TopicCard';
+import { EmptyState } from '../EmptyState';
+import { useTopics } from '../../../hooks/useTopics';
+import { useState } from 'react';
+import { TopicForm } from './TopicForm';
 
 interface TopicsViewProps {
-  searchTerm:string;
-  onSearchChange : React.Dispatch<React.SetStateAction<string>>;
-  onCreateTopic : (topic? :null)=>void;
-  onEditTopic: (topic?: topicData | null) => void;
-  onViewQuestions: (topic: topicData) => void;
+  onViewQuestions: (topic: Topic) => void;
 }
 
+export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [editingTopicId, setEditingTopicId] = useState<string | null>(null);
+  const [showNewTopicForm, setShowNewTopicForm] = useState(false);
+  const [topicForm, setTopicForm] = useState<TopicForm>({
+    title: '',
+    description: '',
+  });
+
+  const { topics, isLoading, deleteCurrentTopic } = useTopics();
+
+  const handleEditClick = (topic: Topic) => {
+    setEditingTopicId(topic.id);
+    setTopicForm(topic);
+    setShowNewTopicForm(false);
+  };
+
+  const handleCancel = () => {
+    setEditingTopicId(null);
+    setShowNewTopicForm(false);
+    setTopicForm({
+      title: '',
+      description: '',
+    });
+  };
+  const handleToggleNewTopicForm = () => {
+    if (!showNewTopicForm) {
+        setEditingTopicId(null);
+        setTopicForm({
+      title: '',
+      description: '',
+    });
+    }
+    setShowNewTopicForm(!showNewTopicForm);
+  };
 
 
-export const TopicsView : React.FC<TopicsViewProps> = ({ 
-  searchTerm, 
-  onSearchChange, 
-  onCreateTopic, 
-  onEditTopic, 
-  onViewQuestions,
-}) => {
 
-  const {topics,isLoading,deleteCurrentTopic} = useTopics();
-  
-  
-  const onDelete = (topicId:string) =>{
-    deleteCurrentTopic.mutate(topicId);
-  }
-  
-
-  const filteredTopics = topics.filter(topic =>
-    topic.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    topic.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTopics = topics.filter(
+    (topic) =>
+      topic.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      topic.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="space-y-6">
-      <Header title="COC.ADMIN" subtitle="TOPIC_MANAGEMENT" onBack={undefined} />
-      
-      <SearchBar 
-        searchTerm={searchTerm} 
-        onSearchChange={onSearchChange}
+      <Header
+        title="COC.ADMIN"
+        subtitle="TOPIC_MANAGEMENT"
+        onBack={undefined}
+      />
+
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
         placeholder="SEARCH_TOPICS..."
       />
 
       <div className="flex justify-end mb-6">
-        <ActionButton onClick={onCreateTopic}>
+        <ActionButton onClick={handleToggleNewTopicForm}>
           <div className="flex items-center gap-2">
-            <Plus className="w-5 h-5" />
-            <span>NEW_TOPIC</span>
+            {showNewTopicForm ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+            <span>{showNewTopicForm ? 'CANCEL' : 'NEW_TOPIC'}</span>
           </div>
         </ActionButton>
       </div>
+        {showNewTopicForm && (
+        <TopicForm
+          topicForm={topicForm}
+          setTopicForm={setTopicForm}
+          onCancel={handleCancel}
+          onSuccess={handleCancel}
+          isEditing={false}
+        />
+      )}
 
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-4 ">
           {filteredTopics.map((topic) => {
             const isDeleting = deleteCurrentTopic.isPending && deleteCurrentTopic.variables === topic.id;
-            return (
-            <TopicCard
-              key={topic.id}
-              topic={topic}
-              onViewQuestions={onViewQuestions}
-              onEdit={onEditTopic}
-              onDelete={onDelete}
-              isDeleting={isDeleting}
-            />
-          )})}
+            
+            
+            return editingTopicId === topic.id ? (
+              <TopicForm
+                key={topic.id}
+                topicForm={topicForm}
+                setTopicForm={setTopicForm}
+                onCancel={handleCancel}
+                onSuccess={handleCancel} 
+                isEditing={true}
+              />
+            ) : (
+              <TopicCard
+                key={topic.id}
+                topic={topic}
+                onViewQuestions={onViewQuestions}
+                onEdit={handleEditClick}
+                onDelete={() => deleteCurrentTopic.mutate(topic.id)}
+                isDeleting={isDeleting}
+              />
+            );
+          })}
 
           {filteredTopics.length === 0 && !isLoading && (
             <EmptyState icon={FileText} message="NO_TOPICS_FOUND" />

@@ -3,30 +3,33 @@ import { ActionButton } from "../ActionButton";
 import { useTopics } from "../../../hooks/useTopics";
 
 interface topicFormProps {
-  topicForm : topicData;
-  setTopicForm: React.Dispatch<React.SetStateAction<topicData>>;
-  onCancel : () => void;
-  isEditing : boolean
+  topicForm: TopicForm;
+  setTopicForm: React.Dispatch<React.SetStateAction<TopicForm>>;
+  onCancel: () => void;
+  onSuccess: () => void;
+  isEditing: boolean;
 }
 
 export const TopicForm :React.FC<topicFormProps> = ({ 
   topicForm, 
   setTopicForm,  
   onCancel, 
+  onSuccess,
   isEditing = false 
 }) => {
   const {createNewTopic,updateCurrentTopic} = useTopics();
-  const onSave = async () => {
-    if(!topicForm?.title) return;
-    if (!topicForm?.title.trim()) return;
+  const onSave = () => {
+    if (!topicForm?.title?.trim()) return;
     
-    if(isEditing){
-      updateCurrentTopic.mutate(topicForm);
-    }else{
+    const mutation = isEditing ? updateCurrentTopic : createNewTopic;
+    
+    mutation.mutate(topicForm, {
+      onSuccess: () => {
+        onSuccess(); 
+      },
 
-      createNewTopic.mutate(topicForm);
-    }
-    
+     
+    });
   };
 
   return (

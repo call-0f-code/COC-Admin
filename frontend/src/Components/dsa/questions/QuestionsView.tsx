@@ -11,7 +11,7 @@ import { useQuesiton } from "../../../hooks/useQuestions";
 
 
 interface QuestionsViewProps {
-  selectedTopic: topicData;
+  selectedTopic: Topic;
   onBack: () => void;
 }
 

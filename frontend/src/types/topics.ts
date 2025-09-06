@@ -7,13 +7,13 @@ declare global {
     difficulty: "Easy" | "Medium" | "Hard";
     link: string;
   }
-  interface topicData {
+  interface Topic {
     id: string;
     title: string;
     description: string;
   }
 
-   type updateTopic = Omit<topicData,'id'>;
+   type TopicForm = Omit<Topic,'id'>;
    type QuestionForm = Omit<Question,'id'>
 
 }

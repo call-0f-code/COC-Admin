@@ -1,11 +1,11 @@
 import { Edit3, HelpCircle, Loader2, Trash2 } from "lucide-react";
 
 interface topicCardProps {
-  topic : topicData;
-  onViewQuestions : (topic: topicData) => void;
-  onEdit :  (topic?: topicData | null) => void;
-  onDelete :  (topicId: string) => void;
-  isDeleting : boolean;
+  topic: Topic;
+  onViewQuestions: (topic: Topic) => void;
+  onEdit: (topic: Topic) => void;
+  onDelete: (topicId: string) => void;
+  isDeleting: boolean;
 }
 
 
