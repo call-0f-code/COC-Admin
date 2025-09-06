@@ -1,6 +1,7 @@
 import { Save, X } from "lucide-react";
 import { ActionButton } from "../ActionButton";
 import { useTopics } from "../../../hooks/useTopics";
+import { globalToast } from "../../../utils/toast";
 
 interface topicFormProps {
   topicForm: TopicForm;
@@ -22,10 +23,13 @@ export const TopicForm :React.FC<topicFormProps> = ({
     if (!topicForm?.title?.trim()) return;
     
     const mutation = isEditing ? updateCurrentTopic : createNewTopic;
+    const msg = isEditing ? "Topic Updated Successfully" : "Topic Created Succeddfully";
     
     mutation.mutate(topicForm, {
       onSuccess: () => {
+        globalToast.success(msg)
         onSuccess(); 
+
       },
 
      

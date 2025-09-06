@@ -8,6 +8,7 @@ import { EmptyState } from '../EmptyState';
 import { useTopics } from '../../../hooks/useTopics';
 import { useState } from 'react';
 import { TopicForm } from './TopicForm';
+import { globalToast } from '../../../utils/toast';
 
 interface TopicsViewProps {
   onViewQuestions: (topic: Topic) => void;
@@ -112,7 +113,11 @@ export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
                 topic={topic}
                 onViewQuestions={onViewQuestions}
                 onEdit={handleEditClick}
-                onDelete={() => deleteCurrentTopic.mutate(topic.id)}
+                onDelete={() => deleteCurrentTopic.mutate(topic.id,{
+                  onSuccess:()=>{
+                    globalToast.warning("Topic Deleted Successfully");
+                  }
+                })}
                 isDeleting={isDeleting}
               />
             );
