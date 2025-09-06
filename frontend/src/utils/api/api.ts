@@ -34,8 +34,6 @@ api.interceptors.response.use(
 
     toast.error("Your session has expired. Please login again");
 
-
-
     if (window.location.pathname !== "/login") {
       window.location.href = "/login";
     }
