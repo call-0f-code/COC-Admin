@@ -5,12 +5,12 @@ export const getAllTopics = async() =>{
     return response.data;
 }
 
-export const createTopic = async(topic:topicData):Promise<Omit<questionData,'id'>> =>{
+export const createTopic = async(topic:TopicForm) =>{
     const response = await api.post('/topics/',{title:topic.title,description:topic.description});
     return response.data;
 }
 
-export const updateTopic = async(topicId:string,updateData:updateTopic):Promise<topicData>=>{
+export const updateTopic = async(topicId:string,updateData:TopicForm)=>{
     const response = await api.patch(`/topics/${topicId}`,{updateData});
     return response.data;
 }
