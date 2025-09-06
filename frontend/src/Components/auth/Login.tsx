@@ -8,7 +8,7 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
-import api from '../../utils/api';
+import api from '../../utils/api/api';
 import toast from 'react-hot-toast';
 
 interface LoginProps {
@@ -20,7 +20,7 @@ interface Credentials {
   password: string;
 }
 
-//aarya madam ne khud ka toast bana diya hai usse remove karna padega
+//Ai ne khud ka toast bana diya hai usse remove karna padega
 //login ke code ko refactor ki zarurat hai 
 //this are temp fix since it was not my job  ('-')
 
@@ -39,7 +39,6 @@ export default function Login({ onBack }: LoginProps) {
     setError('');
 
     try {
-      // API call example
       const email = credentials.email;
       const password = credentials.password;
       const response = await api.post("/members/signin",{email,password})
