@@ -27,7 +27,7 @@ export const createNewTopic = async(req:Request,res:Response)=>{
     const response = await api.post('/topics',{title,description,adminId});
     const topic = response.data;
     res.status(200).json({
-        status:"SUCCESS",
+        success: true,
         topic
     })
 }
@@ -39,7 +39,6 @@ export const deleteTopic = async(req:Request,res:Response)=>{
     }
     await api.delete(`/topics/${topicId}`);
     res.status(200).json({
-        status:"SUCCESS"
     })
 
 }
@@ -49,7 +48,6 @@ export const getAllTopics = async(req:Request,res:Response)=>{
     const topics =response.data;
     
     res.status(200).json({
-        status:"SUCCESS",
         topics
     }) 
 }
@@ -64,7 +62,6 @@ export const getQuestionBytopicId = async(req:Request,res:Response)=>{
     const {questions} = response.data;
 
     res.status(200).json({
-        status:"SUCCESS",
         questions
     })
 }
@@ -81,7 +78,6 @@ export const updateTopic = async(req:Request,res:Response)=>{
     const updatedTopic = response.data;
 
     res.status(200).json({
-        status:"SUCCESS",
         updatedTopic
     })
 }   
