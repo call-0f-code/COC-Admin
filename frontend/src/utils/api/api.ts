@@ -39,7 +39,11 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (status >= 500) {
+    if (window.location.pathname !== "/login") {
+      window.location.href = "/login";
+    }
+
+    if (error.response && error.response.status >= 500) {
       toast.error("Server error. Please try again later.");
     } else if (!error.response || error.code === "ERR_NETWORK") {
       toast.error("Network error. Please check your connection.");
