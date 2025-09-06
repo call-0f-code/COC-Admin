@@ -2,6 +2,7 @@ import { Save, X, Code2, Link as LinkIcon, AlertCircle } from "lucide-react";
 import { useQuesiton } from "../../../hooks/useQuestions";
 import React from "react";
 import { ActionButton } from "../ActionButton";
+import { globalToast } from "../../../utils/toast";
 
 interface QuestionFormProps {
   questionForm: QuestionForm;
@@ -24,8 +25,10 @@ export const QuestionForm = ({
   
   const handleSave = () => {
     const mutation = isEditing ? updateCurrentQuestion : createNewQuestion;
+    const msg = isEditing ? "Question Updated Successfully" : "Question Created Successfully";
     mutation.mutate(questionForm, {
       onSuccess: () => {
+        globalToast.success(msg);
         onSuccess(); 
       },
      

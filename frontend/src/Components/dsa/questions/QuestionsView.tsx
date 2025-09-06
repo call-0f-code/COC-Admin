@@ -8,6 +8,7 @@ import { ActionButton } from "../ActionButton";
 import { QuestionForm } from "./QuestionForm";
 import { QuestionCard } from "./QuestionCard";
 import { useQuesiton } from "../../../hooks/useQuestions";
+import { globalToast } from "../../../utils/toast";
 
 
 interface QuestionsViewProps {
@@ -108,7 +109,11 @@ export const QuestionsView = ({ selectedTopic, onBack }: QuestionsViewProps) => 
                 index={index}
                 question={question}
                 onEdit={() => handleEditClick(question)}
-                onDelete={() => deleteCurrentQuestion.mutate(question.id)}
+                onDelete={() => deleteCurrentQuestion.mutate(question.id,{
+                  onSuccess : ()=>{
+                    globalToast.warning("Question Deleted Successfully");
+                  }
+                })}
               />
             )
           ))}
