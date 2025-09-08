@@ -3,6 +3,8 @@ import { addQuestionBytopicId, createNewTopic, deleteTopic, getAllTopics, getQue
 import { validate } from "../middleware/validates";
 import { questionSchema, topicSchema, updateTopicSchema } from "../validation/topic.validation";
 
+
+
 export default function topicRouter(){
     const router = Router();
 

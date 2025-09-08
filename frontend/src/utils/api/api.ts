@@ -1,7 +1,9 @@
 import axios from "axios";
-import toast from "react-hot-toast";
+import { globalToast as toast } from "../toast";
+
 
 const apiurl = import.meta.env.VITE_API_URL;
+
 
 const api = axios.create({
   baseURL: `${apiurl}/api/v1`,
@@ -30,21 +32,30 @@ api.interceptors.response.use(
   (error) => {
     const status = error?.response?.status;
 
+
     if (status === 401) {
-      try {
-        localStorage.removeItem("token");
-      } catch {}
-      toast.error("Your session has expired. Please login again");
-      if (typeof window !== "undefined" && window.location.pathname !== "/login") {
-        window.location.replace("/login");
-      }
+      toast.error("Your session has expired. Please login again")
+      // if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+      //   window.location.replace("/login");
+      // }
       return Promise.reject(error);
     }
 
-    if (status >= 500) {
-      toast.error("Server error. Please try again later.");
+    if(status === 403){
+      const msg = error.response.data?.message || "Access Denied";
+     
+      toast.error(msg);
+      // if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+      //   window.location.replace("/login");
+      // }
+      return Promise.reject(error);
+    }
+
+    if (error.response && error.response.status >= 500) {
+      toast.error("Server error. Please try again later.")
+
     } else if (!error.response || error.code === "ERR_NETWORK") {
-      toast.error("Network error. Please check your connection.");
+      toast.error("Network error. Please check your connection")
     } else if (status === 400) {
       const msg = error.response.data?.message || "Bad request.";
       toast.error(msg);

@@ -8,8 +8,9 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
-import api from '../../utils/api';
-import toast from 'react-hot-toast';
+import api from '../../utils/api/api';
+import { useToast } from '../common/Toast';
+
 
 interface LoginProps {
   onBack: () => void;
@@ -32,6 +33,7 @@ export default function Login({ onBack }: LoginProps) {
     email: '',
     password: '',
   });
+  const {addToast} = useToast()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,16 +41,15 @@ export default function Login({ onBack }: LoginProps) {
     setError('');
 
     try {
-      // API call example
       const email = credentials.email;
       const password = credentials.password;
       const response = await api.post("/members/signin",{email,password})
       const data = response.data;
       if (data.success && data.token) {
-        toast.success("Login Successfull");
+        addToast({ type: 'success', message: "Login Successful" });
         localStorage.setItem('token', data.token);
       } else {
-        toast.error('Invalid response from server');
+        addToast({ type: 'error', message: 'Invalid response from server' });
       }
     } catch (err) {
       setError(

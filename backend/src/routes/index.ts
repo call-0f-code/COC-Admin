@@ -17,7 +17,7 @@ export default function routes(upload: Multer ){
     router.use(auth);
 
     router.use('/topics',topicRouter());
-     router.use('/questions',questionRoutes());
+    router.use('/questions',questionRoutes());
     router.use("/achievements", achievementRouter(upload));
     router.use('/projects', projetRouter( upload ));
 

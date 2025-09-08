@@ -11,7 +11,7 @@ export const deleteQuestionById = async(req:Request,res:Response)=>{
     await api.delete(`/questions/${questionId}`);
 
     res.status(200).json({
-        status:"SUCCESS"
+
     })
     
 }
@@ -29,7 +29,6 @@ export const getQuestionByQuestionId = async(req:Request,res:Response)=>{
     const {question} = response.data;
     
     res.status(200).json({
-        status:"SUCCESS",
         question
     })
 
@@ -46,7 +45,6 @@ export const updateQuestionById = async(req:Request,res:Response)=>{
     const response = await api.patch(`/questions/${questionId}`,{questionData,adminId});
     const {question} = response.data;
     res.status(200).json({
-        status:"SUCCESS",
         question
     })
 
