@@ -6,7 +6,7 @@ import { createTopic, deletetopic, getAllTopics, updateTopic } from "../utils/ap
 export function useTopics(){
     const queryclient = useQueryClient();
 
-    const {data:topics = [],isLoading,isError} = useQuery<topicData[],Error>({
+    const {data:topics = [],isLoading,isError} = useQuery({
         queryKey:['topics'],
         queryFn: async () => {
             const data = await getAllTopics();
@@ -15,14 +15,14 @@ export function useTopics(){
     })
 
     const createNewTopic = useMutation({
-        mutationFn: (topic:topicData)=>createTopic(topic),
+        mutationFn: (topic:TopicForm)=>createTopic(topic),
         onSuccess: ()=>{
             queryclient.invalidateQueries({queryKey:['topics']})
         }
     })
 
     const updateCurrentTopic = useMutation({
-        mutationFn :(topic:topicData)=>updateTopic(topic.id,{title:topic.title,description:topic.description}),
+        mutationFn :(topic:Topic)=>updateTopic(topic.id,{title:topic.title,description:topic.description}),
         onSuccess:()=>{
             queryclient.invalidateQueries({queryKey:['topics']})
         }

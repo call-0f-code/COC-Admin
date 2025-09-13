@@ -49,7 +49,7 @@ export const QuestionsView = ({ selectedTopic, onBack }: QuestionsViewProps) => 
     setQuestionForm(initialQuestionFormState); // Reset form for the new entry
   };
 
-  const filteredQuestions = questions?.filter(question =>
+  const filteredQuestions = questions?.filter((question:Question) =>
     question.questionName.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
@@ -92,7 +92,7 @@ export const QuestionsView = ({ selectedTopic, onBack }: QuestionsViewProps) => 
         <LoadingSpinner />
       ) : (
         <div className="grid gap-4">
-          {filteredQuestions.map((question, index) => (
+          {filteredQuestions.map((question :Question, index) => (
             editingQuestionId === question.id ? (
               <QuestionForm
                 key={question.id}

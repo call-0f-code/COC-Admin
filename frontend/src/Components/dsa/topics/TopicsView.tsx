@@ -53,7 +53,7 @@ export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
 
 
   const filteredTopics = topics.filter(
-    (topic) =>
+    (topic:Topic) =>
       topic.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       topic.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -87,6 +87,8 @@ export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
           onCancel={handleCancel}
           onSuccess={handleCancel}
           isEditing={false}
+          editingTopicId = {editingTopicId}
+          
         />
       )}
 
@@ -94,7 +96,7 @@ export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
         <LoadingSpinner />
       ) : (
         <div className="grid gap-4 ">
-          {filteredTopics.map((topic) => {
+          {filteredTopics.map((topic:Topic) => {
             const isDeleting = deleteCurrentTopic.isPending && deleteCurrentTopic.variables === topic.id;
             
             
@@ -106,6 +108,8 @@ export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
                 onCancel={handleCancel}
                 onSuccess={handleCancel} 
                 isEditing={true}
+                editingTopicId = {editingTopicId}
+               
               />
             ) : (
               <TopicCard
