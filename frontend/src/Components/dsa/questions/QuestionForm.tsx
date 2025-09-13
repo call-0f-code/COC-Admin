@@ -8,7 +8,7 @@ interface QuestionFormProps {
   questionForm: QuestionForm;
   setQuestionForm: React.Dispatch<React.SetStateAction<QuestionForm>>;
   onCancel: () => void;
-  onSuccess: () => void; // New prop to handle successful submission
+  onSuccess: () => void;
   isEditing?: boolean;
   selectedTopicId: string;
 }
