@@ -9,6 +9,7 @@ interface topicFormProps {
   onCancel: () => void;
   onSuccess: () => void;
   isEditing: boolean;
+  editingTopicId :string | null;
 }
 
 export const TopicForm :React.FC<topicFormProps> = ({ 
@@ -16,16 +17,22 @@ export const TopicForm :React.FC<topicFormProps> = ({
   setTopicForm,  
   onCancel, 
   onSuccess,
-  isEditing = false 
+  isEditing = false,
+  editingTopicId
 }) => {
   const {createNewTopic,updateCurrentTopic} = useTopics();
   const onSave = () => {
     if (!topicForm?.title?.trim()) return;
     
+    const topic : any = topicForm;
     const mutation = isEditing ? updateCurrentTopic : createNewTopic;
-    const msg = isEditing ? "Topic Updated Successfully" : "Topic Created Succeddfully";
+    if(isEditing){
+      topic.id = editingTopicId;
+    }
+    const msg = isEditing ? "Topic Updated Successfully" : "Topic Created Successfully";
+   
     
-    mutation.mutate(topicForm, {
+    mutation.mutate(topic, {
       onSuccess: () => {
         globalToast.success(msg)
         onSuccess(); 

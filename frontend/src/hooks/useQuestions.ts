@@ -16,7 +16,7 @@ export function useQuesiton(topicId: string) {
     data: questions = [],
     isLoading,
     error,
-  } = useQuery<questionData[],Error>({
+  } = useQuery({
     queryKey: ['questions', topicId],
     queryFn: async () => {
       const {questions} = await getQuestionBytopic(topicId);
@@ -26,7 +26,7 @@ export function useQuesiton(topicId: string) {
   });
 
   const createNewQuestion = useMutation({
-    mutationFn: (questiondata: updateQuestion) =>
+    mutationFn: (questiondata: QuestionForm) =>
       addQuestion(topicId, questiondata),
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ['questions', topicId] });
@@ -41,7 +41,7 @@ export function useQuesiton(topicId: string) {
   });
 
   const updateCurrentQuestion = useMutation({
-    mutationFn: (question: questionData) =>
+    mutationFn: (question: Question) =>
       updateQuestion(question.id,{
         questionName: question.questionName,
         difficulty: question.difficulty,

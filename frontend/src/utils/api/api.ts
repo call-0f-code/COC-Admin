@@ -43,7 +43,6 @@ api.interceptors.response.use(
 
     if(status === 403){
       const msg = error.response.data?.message || "Access Denied";
-     
       toast.error(msg);
       // if (typeof window !== "undefined" && window.location.pathname !== "/login") {
       //   window.location.replace("/login");
