@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Lock,
   Mail,
@@ -34,6 +35,8 @@ export default function Login({ onBack }: LoginProps) {
     password: '',
   });
   const {addToast} = useToast()
+  const navigate = useNavigate();
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +50,7 @@ export default function Login({ onBack }: LoginProps) {
       const data = response.data;
       if (data.success && data.token) {
         addToast({ type: 'success', message: "Login Successful" });
-        localStorage.setItem('token', data.token);
+        navigate('/Dashboard');
       } else {
         addToast({ type: 'error', message: 'Invalid response from server' });
       }
