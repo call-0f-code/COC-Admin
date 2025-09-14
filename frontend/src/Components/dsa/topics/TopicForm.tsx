@@ -29,7 +29,7 @@ export const TopicForm :React.FC<topicFormProps> = ({
     if(isEditing){
       topic.id = editingTopicId;
     }
-    const msg = isEditing ? "Topic Updated Successfully" : "Topic Created Succeddfully";
+    const msg = isEditing ? "Topic Updated Successfully" : "Topic Created Successfully";
    
     
     mutation.mutate(topic, {
