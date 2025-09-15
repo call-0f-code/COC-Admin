@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Lock, Terminal, Code } from 'lucide-react';
 import Login from '../Components/auth/Login';
 

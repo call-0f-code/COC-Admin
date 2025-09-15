@@ -1,5 +1,5 @@
 import { Save, X } from "lucide-react";
-import { ActionButton } from "../ActionButton";
+import { ActionButton } from "../../common/ActionButton";
 import { useTopics } from "../../../hooks/useTopics";
 import { globalToast } from "../../../utils/toast";
 
