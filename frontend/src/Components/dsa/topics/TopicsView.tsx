@@ -1,10 +1,10 @@
 import { FileText, Plus, X } from 'lucide-react';
-import { ActionButton } from '../ActionButton';
-import { Header } from '../Header';
-import { SearchBar } from '../SearchBar';
-import { LoadingSpinner } from '../LoadingSpinner';
+import { ActionButton } from '../../common/ActionButton';
+import { Header } from '../../common/Header';
+import { SearchBar } from '../../common/SearchBar';
+import { LoadingSpinner } from '../../common/LoadingSpinner';
 import { TopicCard } from './TopicCard';
-import { EmptyState } from '../EmptyState';
+import { EmptyState } from '../../common/EmptyState';
 import { useTopics } from '../../../hooks/useTopics';
 import { useState } from 'react';
 import { TopicForm } from './TopicForm';

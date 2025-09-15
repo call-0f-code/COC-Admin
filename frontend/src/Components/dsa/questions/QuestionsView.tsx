@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { HelpCircle, Plus, X } from "lucide-react";
-import { EmptyState } from "../EmptyState";
-import { Header } from "../Header";
-import { LoadingSpinner } from "../LoadingSpinner";
-import { SearchBar } from "../SearchBar";
-import { ActionButton } from "../ActionButton";
+import { EmptyState } from "../../common/EmptyState";
+import { Header } from "../../common/Header";
+import { LoadingSpinner } from "../../common/LoadingSpinner";
+import { SearchBar } from "../../common/SearchBar";
+import { ActionButton } from "../../common/ActionButton";
 import { QuestionForm } from "./QuestionForm";
 import { QuestionCard } from "./QuestionCard";
 import { useQuesiton } from "../../../hooks/useQuestions";
