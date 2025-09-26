@@ -1,7 +1,7 @@
 import { Save, X, Code2, Link as LinkIcon, AlertCircle } from "lucide-react";
 import { useQuesiton } from "../../../hooks/useQuestions";
 import React from "react";
-import { ActionButton } from "../ActionButton";
+import { ActionButton } from "../../common/ActionButton";
 import { globalToast } from "../../../utils/toast";
 
 interface QuestionFormProps {
