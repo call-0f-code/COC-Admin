@@ -4,7 +4,6 @@ import { GeometricBackground } from '../Components/auth/GeometricBackground';
 import { DefaultView } from '../Components/auth/DefaultView';
 
 export default function Authentication() {
-  const [showLogin, setShowLogin] = useState(false);
   const [currentView, setCurrentView] = useState<'default' | 'login'>('default');
 
 
