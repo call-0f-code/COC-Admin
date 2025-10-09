@@ -1,4 +1,4 @@
-import { FileText, Plus, X } from 'lucide-react';import { Header } from '../common/Header';
+import { FileText } from 'lucide-react';import { Header } from '../common/Header';
 import { SearchBar } from '../common/SearchBar';
 import { LoadingSpinner } from '../common/LoadingSpinner';
 import { MemberCard } from './MemberCard';
@@ -19,7 +19,6 @@ export const MembersView = () => {
       member.name.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
-    console.log(members);
   return (
     <div className="space-y-6">
       <Header
