@@ -21,7 +21,7 @@ export function useMembers(){
     })
 
     const login = useMutation({
-        mutationFn: async (member: LoginForm) => {
+        mutationFn: async (member: LoginCreds) => {
             const data = await signIn(member.email, member.password);
             return data.token;
         },

@@ -16,7 +16,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
     onBack
 }) => {
 
-    const {login, isLoading} = useMembers();
+    const {login} = useMembers();
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -34,7 +34,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
 
 
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             {/* Email Field */}
             <div className="space-y-2">
             <label
@@ -103,8 +103,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
 
             {/* Submit Button */}
             <button
-            disabled={isLoading}
-            onClick={handleSubmit}
+            disabled={login.isPending}
             className=" w-full py-4 bg-[#1edfff] font-black text-xl text-black
             shadow-[6px_6px_0_0_#000] hover:shadow-[3px_3px_0_0_#000]
             hover:translate-x-1 hover:translate-y-1
@@ -112,7 +111,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
             transition-all duration-150 mt-4 mb-2"
             >
             <div className="flex items-center justify-center gap-3">
-                {isLoading ? (
+                {login.isPending ? (
                 <>
                     <div className="w-6 h-6 border-[3px] border-black border-t-transparent animate-spin"></div>
                     <span>AUTHENTICATING...</span>

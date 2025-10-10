@@ -67,8 +67,10 @@ export const approveMember = async(req: Request, res: Response) => {
 
 export const getAllMembers = async(req: Request, res: Response) => {
 
-  const approvedMembers = await api.get('/members/');
-  const unapprovedMembers = await api.get('/members/unapproved');
+  const [approvedMembers, unapprovedMembers] = await Promise.all([
+    api.get('/members/'),
+    api.get('/members/unapproved')
+  ]);
 
   const members = [
   ...approvedMembers.data.user,

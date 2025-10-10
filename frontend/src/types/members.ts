@@ -3,8 +3,11 @@ declare global {
         id: string,
         name: string,
         email: string,
-        password: string
     }
 
-    type LoginForm = Omit<Member,'id' | 'name'>;
+    interface LoginCreds {
+        email: string,
+        password: string
+    }
+    type LoginForm = LoginCreds;
 }
