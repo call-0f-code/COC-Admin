@@ -39,10 +39,11 @@ export const LoginForm: React.FC<loginFormProps> = ({
             <div className="space-y-2">
             <label
                 htmlFor="email"
+                className="block text-lg font-black text-white tracking-wider"
             >
                 EMAIL
             </label>
-            <div className="relative ">
+            <div className="relative">
                 <div className="absolute left-3 top-3 w-6 h-6 bg-cyan-400 border-2 border-black flex items-center justify-center">
                 <Mail className="w-3 h-3 text-black" />
                 </div>
@@ -60,7 +61,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
             </div> 
 
             {/* Password Field */}
-            <div className="space-y-2">
+            <div className="space-y-2 pt-4">
             <label
                 htmlFor="password"
                 className="block text-lg font-black text-white tracking-wider"
@@ -108,7 +109,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
             shadow-[6px_6px_0_0_#000] hover:shadow-[3px_3px_0_0_#000]
             hover:translate-x-1 hover:translate-y-1
             active:translate-x-2 active:translate-y-2 active:shadow-[2px_2px_0_0_#000]
-            transition-all duration-150"
+            transition-all duration-150 mt-4 mb-2"
             >
             <div className="flex items-center justify-center gap-3">
                 {isLoading ? (
