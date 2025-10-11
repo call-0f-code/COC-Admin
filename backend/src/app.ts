@@ -27,7 +27,7 @@ const upload = multer({ storage: multer.memoryStorage(),
 app.use("/api/v1",routes(upload));
 
 app.use((req, res) => {
-  res.status(404).json({ message: "Not Found mem" });
+  res.status(404).json({ message: "Not Found" });
 });
 
 app.use(errorHandler);

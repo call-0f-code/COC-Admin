@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUnapprovedMembers, approveMember, signIn } from "../utils/api/memberApi";
+import { getUnapprovedMembers, approveMember, signIn , allMember} from "../utils/api/memberApi";
 
 
 export function useMembers(){
@@ -9,6 +9,14 @@ export function useMembers(){
         queryKey:['members'],
         queryFn: async () => {
             const data = await getUnapprovedMembers();
+            return data.members;
+        }
+    })
+    
+    const {data: getAllmembers = []} = useQuery<Member[]>({
+        queryKey:['allmembers'],
+        queryFn: async () => {
+            const data = await allMember();
             return data.members;
         }
     })
@@ -37,6 +45,7 @@ export function useMembers(){
         members,
         isLoading,
         isError,
+        getAllmembers,
         approveCurrentMember,
         login
     }

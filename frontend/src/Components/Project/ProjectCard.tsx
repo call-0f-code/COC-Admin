@@ -37,39 +37,34 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   const displayMembers = project.members.slice(0, 3);
   const remainingCount = project.members.length - 3;
-  // const [ memberId , setMemberId] = useState<string | null>(null);
   const [isCreating , setisCreating] = useState<boolean>(true);
   const [addmember , setAddmember] = useState<boolean>(false);
-  const [editingId , seteditingId] = useState<string | null>(null);
-  const [btnValue , setbtnValue] = useState('');
   const [confirmationBox, setconfirmationBox] = useState<boolean>(false);
-  const { members } = useMembers();
-  const { addMember , removeMember } = useProjects();
+ const { addMember , removeMember  } = useProjects();
+ const { getAllmembers } = useMembers();
 
-
+  
   const  handleToggel = () =>{
+    setisCreating(true);
     if( !addmember ){
       setAddmember(true);
-      // setdeleteMember(true)
     }else{
       setAddmember(false)
-      // setdeleteMember(false);
     }
   }
 
 
   const  handleRemoveToggel = () =>{
+    setAddmember(false)
     if( isCreating ){
       setisCreating(false);
-      // setdeleteMember(true)
     }else{
       setisCreating(true);
-      // setdeleteMember(false);
     }
   }
 
   function handleAddUser( id : string) {
-      const msg = "member add succussfully !!!"
+      const msg = "member add succussfully"
       const projectMember = [id]
        addMember.mutate(
                { memberId: projectMember , projectId : project.id },
@@ -214,7 +209,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   className="w-11 h-11 bg-red-400 border-3 border-black flex items-center justify-center hover:bg-red-300 hover:translate-y-[-2px] active:translate-y-[0px] transition-all shadow-[3px_3px_0_0_rgba(0,0,0,1)] hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
                   title="Add Member"
                   onClick={() => {
-                          setbtnValue("Add member");
                           handleToggel();
                         }}
                 >
@@ -224,7 +218,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 <button
                   className="w-11 h-11 bg-red-400 border-3 border-black flex items-center justify-center hover:bg-red-300 hover:translate-y-[-2px] active:translate-y-[0px] transition-all shadow-[3px_3px_0_0_rgba(0,0,0,1)] hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
                   title="Delete member"
-                   onClick={ () => {setbtnValue("remove member") ; setisCreating(false) ; handleRemoveToggel();} }
+                   onClick={ () => { setisCreating(false) ; handleRemoveToggel(); } }
                 >
                   <Trash2 className="w-5 h-5 text-black" />
                 </button>
@@ -294,7 +288,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
               <ProjectMcard
                      handleUser = {handleAddUser} 
-                     members ={members}      />
+                     members ={getAllmembers}      />
                
             ) }
 

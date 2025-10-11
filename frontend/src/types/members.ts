@@ -5,5 +5,10 @@ declare global {
         email: string,
         profilePhoto? : string | null
     }
+
+    interface LoginCreds {
+        email: string,
+        password: string
+    }
     type LoginForm = LoginCreds;
 }

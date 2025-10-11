@@ -15,7 +15,7 @@ interface ProjectMcardProps {
 }
 
 const ProjectMcard: React.FC<ProjectMcardProps> = ({ handleUser, members }) => {
-  // Normalize members (unwrap `.member` if nested)
+
   const normalizedMembers: Member[] = useMemo(() => {
     if (!Array.isArray(members)) return [];
     return members
@@ -39,12 +39,9 @@ const ProjectMcard: React.FC<ProjectMcardProps> = ({ handleUser, members }) => {
     const confirmed = window.confirm('Do you want to add this member?');
 
     if (confirmed) {
-      // Send control to parent handler
       handleUser(memberId);
-      // Update local selection
       setSelectedMember(memberId);
     } else {
-      // User cancelled -> do nothing (terminate local flow)
       return;
     }
   };

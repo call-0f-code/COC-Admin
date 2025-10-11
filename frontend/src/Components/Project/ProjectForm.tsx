@@ -1,9 +1,6 @@
-import { Save, RotateCcw, Upload, Image as ImageIcon } from 'lucide-react';
-import { ActionButton } from '../common/ActionButton';
 import { useRef, useState } from 'react';
 import { useProjects } from '../../hooks/useProjects';
 import { globalToast } from '../../utils/toast';
-
 
 interface ProjectFormProps {
   projectForm: projectForm;
@@ -83,7 +80,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
 
     if (isEditing && editingProjectId) {
       updatecurrentProject.mutate(
-         { projectForm: projectForm, image: image  , editingProjectId },
+        { projectForm: projectForm, image: image, editingProjectId },
         {
           onSuccess: () => {
             globalToast.success(msg);

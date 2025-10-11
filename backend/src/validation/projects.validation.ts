@@ -5,7 +5,10 @@ export const createProjectSchema = z.object({
    projectData : z.object({
      name : z.string(),
     githubUrl : z.url(),
-    deployUrl : z.url(),
+    deployUrl: z.preprocess(
+      (val) => (val === "" ? undefined : val), // convert empty string to undefined
+      z.string().url().optional()
+    ),
    })
 })
 

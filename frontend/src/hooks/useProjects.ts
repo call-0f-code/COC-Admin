@@ -11,8 +11,6 @@ export function useProjects() {
         queryKey: ['projects'],
         queryFn: async () => {
             const data = await getAllProject();
-            console.log(" the data is ", data)
-
             return data.data;
         }
     })
