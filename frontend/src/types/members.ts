@@ -5,4 +5,5 @@ declare global {
         email: string,
         profilePhoto? : string | null
     }
+    type LoginForm = LoginCreds;
 }

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUnapprovedMembers, approveMember } from "../utils/api/memberApi";
+import { getUnapprovedMembers, approveMember, signIn } from "../utils/api/memberApi";
 
 
 export function useMembers(){
@@ -20,10 +20,24 @@ export function useMembers(){
         }
     })
 
+    const login = useMutation({
+        mutationFn: async (member: LoginCreds) => {
+            const data = await signIn(member.email, member.password);
+            return data.token;
+        },
+        onSuccess: (token) => {
+            queryclient.invalidateQueries({ queryKey: ['members'] });
+            if (token) {
+            localStorage.setItem('token', token);
+            }
+        },
+    });
+
     return {
         members,
         isLoading,
         isError,
         approveCurrentMember,
+        login
     }
 }

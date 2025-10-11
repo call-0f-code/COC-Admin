@@ -16,6 +16,7 @@ export default function memberRouter(
 
     router.patch('/approve/:memberId', memberCtrl.approveMember);
     router.get('/unapproved', memberCtrl.getunapprovedMembers);
+    router.get('/allMembers', memberCtrl.getAllMembers);
 
     return router;
 }
