@@ -57,6 +57,7 @@ api.interceptors.response.use(
       toast.error("Network error. Please check your connection")
     } else if (status === 400) {
       const msg = error.response.data?.message || "Bad request.";
+      console.log("msg from backlend" , msg);
       toast.error(msg);
     }
     return Promise.reject(error);

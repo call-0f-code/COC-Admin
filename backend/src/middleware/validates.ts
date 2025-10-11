@@ -5,12 +5,13 @@ import { ApiError } from '../utils/apiError';
 export const validate = (schema:z.ZodSchema) =>{
     return (req:Request , res:Response ,next:NextFunction)=>{
         try{
-           
+            console.log(req.body);
             const validatedData = schema.parse(req.body);
             req.body = validatedData;
             
             next();
         } catch(error){
+            console.log(error)
 
             if(error instanceof z.ZodError){
                 const errorMessages = error.issues.map((err:any) => {

@@ -6,7 +6,7 @@ import { constants } from "buffer";
 import { imageSchema } from "../validation/projects.validation";
 
 export const createProject = async (req: Request, res: Response) => {
-    
+
     const file = req.file;
     const parseFile = imageSchema.safeParse(file);
     const adminId = req.adminId;
@@ -20,12 +20,10 @@ export const createProject = async (req: Request, res: Response) => {
     formData.append("projectData", JSON.stringify(data));
     formData.append("image", file.buffer, file.originalname);
 
-
     const response = await api.post('/projects',  formData , {
                 headers: formData.getHeaders(), 
   
     });
-
     const project = response.data;
 
     res.status(200).json({
@@ -117,7 +115,7 @@ export const addmembers = async (req: Request, res: Response) => {
 
     const projectId = req.params.projectId;
     if (!projectId) throw new ApiError("ProjectId is missing ", 400);
-    
+    console.log(req.body);
     const memberId = req.body;
 
     const response = await api.post(`/projects/${projectId}/members`,  memberId );
@@ -150,6 +148,8 @@ export const removeMember = async (req: Request, res: Response) => {
     const memberId = req.params.memberId;
     
     if( !memberId ) throw new ApiError("memeberId is missaing" , 400);
+    console.log(projectId , "memberId is " , memberId);
+    
     const response = await api.delete(`/projects/${projectId}/members/${memberId}`);
 
     const  removeMemeber  = response.data;
