@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import config from "../config";
 import jwt from 'jsonwebtoken';
 import { ApiError } from "../utils/apiError";
+import { success } from "zod";
 
 
 export const login = async(req: Request, res:Response) => {
@@ -56,10 +57,28 @@ export const approveMember = async(req: Request, res: Response) => {
       throw new ApiError(" required field missing", 400);
     }
 
-    const approval = await api.patch(`/members/approve/${memberId}`, {isApproved, adminId});
+    await api.patch(`/members/approve/${memberId}`, {isApproved, adminId});
     
     res.status(200).json({
       success: true,
       message: "Request approved successfully"
     })
+}
+
+export const getAllMembers = async(req: Request, res: Response) => {
+
+  const [approvedMembers, unapprovedMembers] = await Promise.all([
+    api.get('/members/'),
+    api.get('/members/unapproved')
+  ]);
+
+  const members = [
+  ...approvedMembers.data.user,
+  ...unapprovedMembers.data.unapprovedMembers
+];
+  
+  res.json({
+    success: true,
+    members
+  })
 }
