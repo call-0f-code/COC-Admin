@@ -3,6 +3,7 @@ declare global {
         id: string,
         name: string,
         email: string,
+        profilePhoto? : string | null
     }
 
     interface LoginCreds {
