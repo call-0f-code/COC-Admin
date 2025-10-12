@@ -15,3 +15,8 @@ export const approveMember = async(memberId: string) => {
     const response = await api.patch(`/members/approve/${memberId}`, {isApproved: true});
     return response.data;
 }
+
+export const allMember =  async () => {
+    const response = await  api.get(`/members/allMembers`);
+    return response.data;
+}

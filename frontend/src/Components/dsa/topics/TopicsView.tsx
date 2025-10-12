@@ -15,6 +15,8 @@ interface TopicsViewProps {
 }
 
 export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
+
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [editingTopicId, setEditingTopicId] = useState<string | null>(null);
   const [showNewTopicForm, setShowNewTopicForm] = useState(false);
