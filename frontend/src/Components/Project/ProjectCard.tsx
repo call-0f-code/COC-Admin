@@ -8,24 +8,9 @@ import { globalToast } from '../../utils/toast';
 
 
 
-interface Member {
-  member: any;
-  id: string;
-  name: string;
-  profilePhoto?: string;
-}
-
-interface Project {
-  id: string;
-  name: string;
-  imageUrl?: string;
-  githubUrl?: string;
-  deployUrl?: string;
-  members: Member[];
-}
 
 interface ProjectCardProps {
-  project: Project;
+  project: project;
   onDelete: (projectId: string) => void;
   onEdit: (projectId: string) => void;
 }

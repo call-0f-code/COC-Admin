@@ -55,6 +55,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
       githubUrl: '',
       deployUrl: '',
     });
+    setFile(null)
     setImagePreview(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';

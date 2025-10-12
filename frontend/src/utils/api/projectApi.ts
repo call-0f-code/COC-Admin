@@ -1,5 +1,4 @@
 import api from "./api"
-import FormData from 'form-data';
 
 export const getAllProject = async() =>{
     const response  = await api.get("/projects/");

@@ -30,7 +30,7 @@ declare global {
     id: string,
     project_name?: string,
     github_url?: URL,
-    deployed_url?: URL
+    deployed_url?: string
 
   }
   type addMembersData = {

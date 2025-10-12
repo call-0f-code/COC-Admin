@@ -2,14 +2,14 @@ import * as z from 'zod';
 type MulterFile = Express.Multer.File;
 
 export const createProjectSchema = z.object({
-   projectData : z.object({
-     name : z.string(),
-    githubUrl : z.url(),
+  projectData: z.object({
+    name: z.string(),
+    githubUrl: z.url(),
     deployUrl: z.preprocess(
-      (val) => (val === "" ? undefined : val), // convert empty string to undefined
+      (val) => (val === "" ? undefined : val),
       z.string().url().optional()
     ),
-   })
+  })
 })
 
 export const imageSchema = z.custom<MulterFile>((file) => {
@@ -20,7 +20,7 @@ export const imageSchema = z.custom<MulterFile>((file) => {
   return (
     'mimetype' in file &&
     allowedTypes.includes((file as MulterFile).mimetype) &&
-    (file as MulterFile).size <= 2 * 1024* 1024
+    (file as MulterFile).size <= 2 * 1024 * 1024
   );
 }, {
   message: 'Invalid image file (must be JPEG/PNG/WEBP and <2MB)',
@@ -28,15 +28,19 @@ export const imageSchema = z.custom<MulterFile>((file) => {
 
 
 export const updateProjectSchema = z.object({
-    projectData: z.object({
-        name : z.string().optional(),
-        githubUrl : z.url().optional(),
-        deployUrl : z.url().optional()
-    })
+  projectData: z.object({
+    name: z.string().optional(),
+    githubUrl: z.url().optional(),
+    deployUrl: z.preprocess(
+      (val) => (val === "" || val === null ? undefined : val),
+      z.string().url().optional()
+    )
+
+  })
 })
 
 export const memberIdSchema = z.object({
-    memberId : z.array(z.string())
+  memberId: z.array(z.string())
 })
 
 
