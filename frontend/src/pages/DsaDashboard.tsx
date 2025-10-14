@@ -1,7 +1,7 @@
 import  { useState } from 'react';
-import { GeometricBackground } from '../Components/dsa/GeometricBackground';
-import { TopicsView } from '../Components/dsa/topics/TopicsView';
-import { QuestionsView } from '../Components/dsa/questions/QuestionsView';
+import { GeometricBackground } from '../components/dsa/GeometricBackground';
+import { TopicsView } from '../components/dsa/topics/TopicsView';
+import { QuestionsView } from '../components/dsa/questions/QuestionsView';
 
 
 export default function DsaDashboard() {
