@@ -45,7 +45,7 @@ export const deleteProject = async ( projectId : string) => {
     return response.data;
 }
 
-export const addMemberToProject = async( memberId : addMembersData , projectId: string) => {
+export const addMemberToProject = async( memberId : string[] , projectId: string) => {
     const response = await api.post(`/projects/${projectId}/members` , { memberId });
     return response.data;
 }
