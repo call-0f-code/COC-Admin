@@ -28,7 +28,7 @@ export const QuestionForm = ({
 
 
   const handleCreate = () =>{
-    const question:QuestionForm = questionForm
+    const question:QuestionForm = {...questionForm}
     const mutation = createNewQuestion;
     mutation.mutate(question, {
       onSuccess: () => {
