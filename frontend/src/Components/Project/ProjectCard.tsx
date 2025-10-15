@@ -28,7 +28,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   isDeleting,
 }) => {
   const { getAllmembers } = useMembers();
-  const { addUser, removeUser } = useProjects();
+  const { addMember, removeMember } = useProjects();
   const [addmember, setAddmember] = useState(false);
   const [isRemoveMember, setRemoveMember] = useState(true);
 
@@ -36,15 +36,23 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const handleRemoveToggel = () => setRemoveMember(!isRemoveMember);
 
   const handleAddUser = async (id: string) => {
-    await addUser(project.id, id);
-    globalToast("Member added successfully", "success");
-    setAddmember(false);
+     try {
+      await addMember.mutateAsync({ memberId: id, projectId: project.id });
+      globalToast("Member added successfully", "success");
+      setAddmember(false);
+    } catch (error) {
+      globalToast("Failed to add member", "error");
+    }
   };
 
   const handleRemoveUser = async (id: string) => {
-    await removeUser(project.id, id);
-    globalToast("Member removed successfully", "success");
-    setRemoveMember(false);
+    try {
+      await removeMember.mutateAsync({ memberId: id, projectId: project.id });
+     globalToast("Member removed successfully", "success");
+      setRemoveMember(false);
+    } catch (error) {
+      globalToast("Failed to remove member", "error");
+    }
   };
 
   const displayMembers = project.members.slice(0, 4);
