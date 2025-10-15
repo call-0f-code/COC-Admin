@@ -12,6 +12,7 @@ interface QuestionFormProps {
   onSuccess: () => void;
   isEditing?: boolean;
   selectedTopicId: string;
+  EditingQuestionId: string | null;
 }
 
 export const QuestionForm = ({
@@ -21,19 +22,46 @@ export const QuestionForm = ({
   onSuccess,
   isEditing = false,
   selectedTopicId,
+  EditingQuestionId
 }: QuestionFormProps) => {
   const { updateCurrentQuestion, createNewQuestion } = useQuesiton(selectedTopicId);
 
-  const handleSave = () => {
-    const mutation = isEditing ? updateCurrentQuestion : createNewQuestion;
-    const msg = isEditing ? "Question Updated Successfully" : "Question Created Successfully";
-    mutation.mutate(questionForm, {
+
+  const handleCreate = () =>{
+    const question:QuestionForm = questionForm
+    const mutation = createNewQuestion;
+    mutation.mutate(question, {
       onSuccess: () => {
-        globalToast.success(msg);
+        globalToast.success("Question Created Successfully");
         onSuccess();
       },
     });
+  }
+
+  const handleUpdate = () =>{
+    if(!EditingQuestionId){
+      globalToast.error("Invalid Question")
+      return
+    }
+    const question : Question = {...questionForm,id:EditingQuestionId}
+    const mutation = updateCurrentQuestion;
+    mutation.mutate(question, {
+      onSuccess: () =>{
+        globalToast.success("Question Updated Successfully");
+        onSuccess()
+      }
+    })
+  }
+
+  const handleSave = () => {
+    if(isEditing){
+      handleUpdate()
+    }else{
+      handleCreate()
+    }
+    
   };
+
 
   const isLoading =
     createNewQuestion.isPending || updateCurrentQuestion.isPending;

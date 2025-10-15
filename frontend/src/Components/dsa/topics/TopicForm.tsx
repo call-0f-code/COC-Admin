@@ -23,18 +23,39 @@ export const TopicForm: React.FC<topicFormProps> = ({
 }) => {
   const { createNewTopic, updateCurrentTopic } = useTopics();
 
-  const onSave = () => {
-    if (!topicForm?.title?.trim()) return;
-    const topic: any = topicForm;
-    const mutation = isEditing ? updateCurrentTopic : createNewTopic;
-    if (isEditing) topic.id = editingTopicId;
-
+  const handleCreate = () =>{
+    const topic:TopicForm = topicForm
+    const mutation = createNewTopic;
     mutation.mutate(topic, {
       onSuccess: () => {
-        globalToast.success(isEditing ? "Topic Updated Successfully" : "Topic Created Successfully");
+        globalToast.success("Topic Created Successfully");
         onSuccess();
       },
     });
+  }
+
+  const handleUpdate = () =>{
+    if(!editingTopicId){
+      globalToast.error("Invalid Topic")
+      return
+    }
+    const topic : Topic = {...topicForm,id:editingTopicId}
+    const mutation = updateCurrentTopic;
+    mutation.mutate(topic, {
+      onSuccess: () =>{
+        globalToast.success("Topic Updated Successfully");
+        onSuccess()
+      }
+    })
+  }
+
+  const onSave = () => {
+    if(isEditing){
+      handleUpdate()
+    }else{
+      handleCreate()
+    }
+    
   };
 
   const isLoading = createNewTopic.isPending || updateCurrentTopic.isPending;
@@ -124,7 +145,6 @@ export const TopicForm: React.FC<topicFormProps> = ({
         <ActionButton
           onClick={onSave}
           disabled={isLoading || !topicForm.title.trim()}
-          className="min-w-[160px]"
         >
           <div className="flex items-center justify-center gap-2">
             <Save className="w-5 h-5" />

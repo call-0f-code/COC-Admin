@@ -10,7 +10,7 @@ interface topicCardProps {
   isDeleting: boolean;
 }
 
-export const TopicCard = ({ topic, onViewQuestions, onEdit, onDelete }) => {
+export const TopicCard = ({ topic, onViewQuestions, onEdit, onDelete }:topicCardProps) => {
   const [hovered, setHovered] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
