@@ -61,7 +61,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   return (
     <motion.div
       className="relative group cursor-pointer"
-      initial={{ rotate: -1, y: 0 }}
+      initial={{ y: 0 }}
       whileHover={{ y: -10 }}
     >
       {/* Layered File Effect */}
