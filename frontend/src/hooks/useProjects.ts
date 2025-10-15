@@ -40,7 +40,7 @@ export function useProjects() {
     })
 
     const addMember = useMutation({
-        mutationFn : ( {memberId , projectId } : {memberId : addMembersData , projectId : string}) =>addMemberToProject(memberId, projectId),
+        mutationFn : ( {memberId , projectId } : {memberId : string[] , projectId : string}) =>addMemberToProject(memberId, projectId),
         onSuccess: () => {
             queryclient.invalidateQueries({ queryKey: ['projects'] })
         }

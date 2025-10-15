@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   Edit3,
   ExternalLink,
@@ -8,11 +8,11 @@ import {
   Trash2,
   Users,
   X,
-} from "lucide-react";
-import ProjectMcard from "./ProjectMcard";
-import { useMembers } from "../../hooks/useMembers";
-import { useProjects } from "../../hooks/useProjects";
-import { globalToast } from "../../utils/toast";
+} from 'lucide-react';
+import ProjectMcard from './ProjectMcard';
+import { useMembers } from '../../hooks/useMembers';
+import { useProjects } from '../../hooks/useProjects';
+import { globalToast } from '../../utils/toast';
 
 interface ProjectCardProps {
   project: project;
@@ -36,23 +36,38 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const handleRemoveToggel = () => setRemoveMember(!isRemoveMember);
 
   const handleAddUser = async (id: string) => {
-     try {
-      await addMember.mutateAsync({ memberId: id, projectId: project.id });
-      globalToast("Member added successfully", "success");
-      setAddmember(false);
-    } catch (error) {
-      globalToast("Failed to add member", "error");
-    }
+    const msg = 'Member added successfully';
+    const projectMember = [id];
+    addMember.mutate(
+      { memberId: projectMember, projectId: project.id },
+      {
+        onSuccess: () => {
+          globalToast.success(msg);
+          setAddmember(false);
+        },
+        onError: (error) => {
+          globalToast.error(`Failed to Add member into project`);
+          console.error(error);
+        },
+      }
+    );
   };
 
   const handleRemoveUser = async (id: string) => {
-    try {
-      await removeMember.mutateAsync({ memberId: id, projectId: project.id });
-     globalToast("Member removed successfully", "success");
-      setRemoveMember(false);
-    } catch (error) {
-      globalToast("Failed to remove member", "error");
-    }
+    const msg = 'Member removed successfully';
+    removeMember.mutate(
+      { memberId: id, projectId: project.id },
+      {
+        onSuccess: () => {
+          globalToast.success(msg);
+          setAddmember(false);
+        },
+        onError: (error) => {
+          globalToast.error(`Failed to remove from project`);
+          console.error(error);
+        },
+      }
+    );
   };
 
   const displayMembers = project.members.slice(0, 4);
@@ -67,11 +82,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       {/* Layered File Effect */}
       <motion.div
         className="absolute inset-0 rounded-xl bg-neutral-300 border-2 border-black"
-        style={{ zIndex: 0, rotate: "-2deg" }}
+        style={{ zIndex: 0, rotate: '-2deg' }}
       />
       <motion.div
         className="absolute inset-0 rounded-xl bg-neutral-200 border-2 border-black"
-        style={{ zIndex: 1, rotate: "1deg", top: 4, left: 4 }}
+        style={{ zIndex: 1, rotate: '1deg', top: 4, left: 4 }}
       />
 
       {/* Main Card */}
@@ -81,7 +96,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         whileHover={{
           rotate: 0,
           scale: 1.02,
-          transition: { type: "spring", stiffness: 200 },
+          transition: { type: 'spring', stiffness: 200 },
         }}
       >
         {/* Project Header */}
@@ -106,7 +121,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
         {/* Card Body */}
         <div className="p-5 space-y-4">
-
           {/* Links */}
           <div className="flex flex-wrap gap-3">
             {project.githubUrl && (
@@ -151,7 +165,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     <div
                       key={member.id}
                       className="relative"
-                      style={{ marginLeft: index > 0 ? "-12px" : "0" }}
+                      style={{ marginLeft: index > 0 ? '-12px' : '0' }}
                     >
                       {member.profilePhoto ? (
                         <img
@@ -174,7 +188,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 {remainingCount > 0 && (
                   <div
                     className="relative w-10 h-10 rounded-full border-2 border-black bg-black flex items-center justify-center text-white text-xs font-bold"
-                    style={{ marginLeft: "-12px" }}
+                    style={{ marginLeft: '-12px' }}
                   >
                     +{remainingCount}
                   </div>
