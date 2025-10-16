@@ -108,7 +108,7 @@ const ProjectView = () => {
           editingProjectId={editingProjectId}
         />
       ) : (
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2">
           {filteredProjects.map((project: ProjectData) => (
             <div key={project.id}>
               <ProjectCard

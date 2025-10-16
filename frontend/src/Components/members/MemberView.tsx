@@ -38,7 +38,7 @@ export const MembersView = () => {
         <LoadingSpinner/> 
     ) : 
       (
-        <div className="flex gap-4 flex-wrap px-20 px+20 m-8">
+        <div className="flex gap-8 flex-wrap px-20 px+20 m-8">
         {filteredMembers.map((member:Member) => {
           const isApproving = approveCurrentMember.isPending && approveCurrentMember.variables === member.id;
         
