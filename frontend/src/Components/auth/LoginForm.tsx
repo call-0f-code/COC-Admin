@@ -2,6 +2,7 @@ import { Mail, Eye, EyeOff, ArrowLeft, Cpu, Lock } from "lucide-react";
 import { useMembers } from "../../hooks/useMembers";
 import { globalToast } from "../../utils/toast";
 import { useState } from "react";
+import {  useNavigate } from "react-router-dom";
 
 
 interface loginFormProps {
@@ -15,7 +16,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
     setLoginForm,
     onBack
 }) => {
-
+    const navigate = useNavigate()
     const {login} = useMembers();
     const [showPassword, setShowPassword] = useState(false);
 
@@ -26,6 +27,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
             { email: loginForm.email, password: loginForm.password },
             {
                 onSuccess: () => {
+                    navigate('/Dashboard')
                     globalToast.success("Login Successful");
                 }
             }
