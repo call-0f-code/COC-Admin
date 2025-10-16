@@ -1,12 +1,6 @@
 import { Loader2, Verified, Mail, User } from "lucide-react";
 import { motion } from "framer-motion";
 
-interface Member {
-  id: string;
-  name: string;
-  email: string;
-}
-
 interface MemberCardProps {
   member: Member;
   onApprove: (memberId: string) => void;
