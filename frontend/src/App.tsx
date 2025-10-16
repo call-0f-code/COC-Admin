@@ -4,10 +4,12 @@ import Authentication from './pages/Authentication';
 import DsaDashboard from './pages/DsaDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import { AchievementsView } from './Components/achievements/AchievementView';
+import ProjectDashboard from './pages/ProjectDashboard';
 
 function App() {
   return (<>
   <Authentication/> 
+   <ProjectDashboard/>
     <DsaDashboard/> 
    <AdminDashboard/>
    <AchievementsView/>

@@ -1,4 +1,4 @@
-import { FileText, Plus, X } from 'lucide-react';import { Header } from '../common/Header';
+import { FileText } from 'lucide-react';import { Header } from '../common/Header';
 import { SearchBar } from '../common/SearchBar';
 import { LoadingSpinner } from '../common/LoadingSpinner';
 import { MemberCard } from './MemberCard';
@@ -19,7 +19,6 @@ export const MembersView = () => {
       member.name.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
-    console.log(members);
   return (
     <div className="space-y-6">
       <Header
@@ -39,7 +38,7 @@ export const MembersView = () => {
         <LoadingSpinner/> 
     ) : 
       (
-        <div className="flex gap-4 flex-wrap px-20 px+20 m-8">
+        <div className="flex gap-8 flex-wrap px-20 px+20 m-8">
         {filteredMembers.map((member:Member) => {
           const isApproving = approveCurrentMember.isPending && approveCurrentMember.variables === member.id;
         

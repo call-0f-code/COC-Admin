@@ -85,6 +85,7 @@ export const QuestionsView = ({ selectedTopic, onBack }: QuestionsViewProps) => 
           onSuccess={() => setShowNewQuestionForm(false)} // Hide form on successful submission
           isEditing={false}
           selectedTopicId={selectedTopic.id}
+          EditingQuestionId={editingQuestionId}
         />
       )}
 
@@ -92,7 +93,7 @@ export const QuestionsView = ({ selectedTopic, onBack }: QuestionsViewProps) => 
         <LoadingSpinner />
       ) : (
         <div className="grid gap-4">
-          {filteredQuestions.map((question :Question, index) => (
+          {filteredQuestions.map((question :Question, index:number) => (
             editingQuestionId === question.id ? (
               <QuestionForm
                 key={question.id}
@@ -102,6 +103,7 @@ export const QuestionsView = ({ selectedTopic, onBack }: QuestionsViewProps) => 
                 onSuccess={handleCancelEdit}
                 isEditing={true}
                 selectedTopicId={selectedTopic.id}
+                EditingQuestionId={editingQuestionId}
               />
             ) : (
               <QuestionCard

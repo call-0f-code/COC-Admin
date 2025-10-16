@@ -14,6 +14,5 @@ declare global {
   }
 
    type TopicForm = Omit<Topic,'id'>;
-   type QuestionForm = Omit<Question,'id'>
-
+   type QuestionForm = Omit<Question,'id'>;
 }
