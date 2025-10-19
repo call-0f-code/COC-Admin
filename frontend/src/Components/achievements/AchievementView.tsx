@@ -9,26 +9,23 @@ import { useState } from 'react';
 import { useAchievement } from '../../hooks/useAchievement';
 import { useMembers } from '../../hooks/useMembers';
 
-
 export const AchievementsView = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [editingAchievementId, setEditingAchievementId] = useState<string | null>(null);
+  const [editingAchievementId, setEditingAchievementId] = useState<
+    string | null
+  >(null);
   const [showNewAchievementForm, setShowNewAchievementForm] = useState(false);
   const [achievementForm, setAchievementForm] = useState({
     title: '',
     description: '',
     achievedAt: new Date().toISOString().split('T')[0],
-    imageUrl: '' ,
-    members: [] as string[]
+    imageUrl: '',
+    members: [] as string[],
   });
 
-  const { 
-    achievements, 
-    isLoading, 
-    deleteAchievement,
-  } = useAchievement();
+  const { achievements, isLoading, deleteAchievement } = useAchievement();
 
-  const {getAllmembers} = useMembers()
+  const { getAllmembers } = useMembers();
 
   const handleEditClick = (achievement: AchievementDb) => {
     setEditingAchievementId(achievement.id);
@@ -37,7 +34,7 @@ export const AchievementsView = () => {
       description: achievement.description,
       achievedAt: new Date(achievement.achievedAt).toISOString().split('T')[0],
       imageUrl: achievement.imageUrl,
-      members: achievement.members?.map(m => m.member.id) || []
+      members: achievement.members?.map((m) => m.member.id) || [],
     });
     setShowNewAchievementForm(false);
   };
@@ -50,7 +47,7 @@ export const AchievementsView = () => {
       description: '',
       achievedAt: new Date().toISOString().split('T')[0],
       imageUrl: '',
-      members: []
+      members: [],
     });
   };
 
@@ -62,18 +59,18 @@ export const AchievementsView = () => {
         description: '',
         achievedAt: new Date().toISOString().split('T')[0],
         imageUrl: '',
-        members: []
+        members: [],
       });
     }
     setShowNewAchievementForm(!showNewAchievementForm);
   };
 
-
-  const filteredAchievements = achievements.filter(
-    (achievement: Achievement) =>
-      achievement.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      achievement.description.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  const filteredAchievements =
+    achievements.filter(
+      (achievement: Achievement) =>
+        achievement.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        achievement.description.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
 
   return (
     <div className="space-y-6">
@@ -95,7 +92,11 @@ export const AchievementsView = () => {
           className="bg-cyan-400 border-4 border-black px-6 py-3 font-black text-lg hover:bg-cyan-300 transition-colors shadow-[4px_4px_0_0_#000] hover:shadow-[6px_6px_0_0_#000] active:shadow-[2px_2px_0_0_#000]"
         >
           <div className="flex items-center gap-2">
-            {showNewAchievementForm ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+            {showNewAchievementForm ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Plus className="w-5 h-5" />
+            )}
             <span>{showNewAchievementForm ? 'CANCEL' : 'NEW_ACHIEVEMENT'}</span>
           </div>
         </button>
@@ -109,17 +110,18 @@ export const AchievementsView = () => {
           isEditing={false}
           editingAchievementId={editingAchievementId}
           availableMembers={getAllmembers}
-          
         />
       )}
 
       {isLoading ? (
-        <LoadingSpinner /> 
+        <LoadingSpinner />
       ) : (
         <div className="grid gap-4">
           {filteredAchievements.map((achievement: AchievementDb) => {
-            const isDeleting = deleteAchievement.isPending && deleteAchievement.variables === achievement.id;
-            
+            const isDeleting =
+              deleteAchievement.isPending &&
+              deleteAchievement.variables === achievement.id;
+
             return editingAchievementId === achievement.id ? (
               <AchievementForm
                 key={achievement.id}
@@ -148,4 +150,4 @@ export const AchievementsView = () => {
       )}
     </div>
   );
-}
+};

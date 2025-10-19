@@ -80,7 +80,6 @@ export const AchievementForm: React.FC<AchievementFormProps> = ({
     const memberExistsInDB = originalMembers.includes(memberId);
 
     if (isEditing && editingAchievementId && memberExistsInDB) {
-      // Member exists in DB: call API to remove
       removeMemberInAchievement.mutate(
         { achievementId: editingAchievementId, memberId },
         {
@@ -108,7 +107,6 @@ export const AchievementForm: React.FC<AchievementFormProps> = ({
         members: prev.members.filter((id) => id !== memberId),
       }));
 
-      // Show success message for newly added members being removed
       if (isEditing && !memberExistsInDB) {
         globalToast.success('Member removed from list');
       }
@@ -256,6 +254,8 @@ export const AchievementForm: React.FC<AchievementFormProps> = ({
                 className="hidden"
               />
             </label>
+
+            {/* this param make sure that image is reloaded when image is updated, for more info contact @Harish-Naruto*/}
             {imagePreview && (
               <div className="w-32 h-32 border-4 border-white overflow-hidden">
                 <img

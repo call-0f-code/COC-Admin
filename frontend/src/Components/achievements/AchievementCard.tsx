@@ -1,5 +1,4 @@
-import { Edit3, Calendar, Loader2, Trash2, Users } from "lucide-react";
-
+import { Edit3, Calendar, Loader2, Trash2, Users } from 'lucide-react';
 
 interface AchievementCardProps {
   achievement: AchievementDb;
@@ -8,18 +7,18 @@ interface AchievementCardProps {
   isDeleting: boolean;
 }
 
-export const AchievementCard: React.FC<AchievementCardProps> = ({ 
+export const AchievementCard: React.FC<AchievementCardProps> = ({
   achievement,
   onEdit,
   onDelete,
-  isDeleting
+  isDeleting,
 }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
@@ -29,10 +28,12 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
     <div className="bg-white border-4 border-black p-6 shadow-[6px_6px_0_0_#00FFFF]">
       <div className="flex gap-6">
         {/* Achievement Image */}
+        {/* this param make sure that image is reloaded when image is updated, for more info contact @Harish-Naruto*/}
+
         {achievement.imageUrl && (
           <div className="flex-shrink-0 w-48 h-48 border-4 border-black overflow-hidden">
-            <img 
-              src={`${achievement.imageUrl}?t=${Date.now()}`} 
+            <img
+              src={`${achievement.imageUrl}?t=${Date.now()}`}
               alt={achievement.title}
               className="w-full h-full object-cover"
               onError={(e) => {
@@ -48,7 +49,7 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
               <h3 className="text-2xl font-black text-black mb-2 tracking-tight">
                 {achievement.title}
               </h3>
-              
+
               {isDeleting ? (
                 <div className="flex items-center gap-2 text-lg font-bold text-red-600">
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -59,7 +60,7 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
                   <p className="text-base font-bold text-gray-700 mb-3">
                     {achievement.description}
                   </p>
-                  
+
                   <div className="flex items-center gap-2 text-sm font-bold text-gray-600">
                     <Calendar className="w-4 h-4" />
                     <span>ACHIEVED: {formatDate(achievement.achievedAt)}</span>
@@ -93,25 +94,29 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
             <div className="mt-auto">
               <div className="flex items-center gap-2 mb-3">
                 <Users className="w-5 h-5 text-black" />
-                <span className="font-black text-sm tracking-wider">TEAM_MEMBERS ({members.length})</span>
+                <span className="font-black text-sm tracking-wider">
+                  TEAM_MEMBERS ({members.length})
+                </span>
               </div>
               <div className="flex flex-wrap gap-3">
                 {members.map(({ member }) => (
-                  <div 
-                    key={member.id} 
+                  <div
+                    key={member.id}
                     className="flex items-center gap-2 bg-cyan-100 border-2 border-black px-3 py-2"
                     title={member.email}
                   >
                     {member.profilePhoto ? (
-                      <img 
-                        src={member.profilePhoto} 
+                      <img
+                        src={member.profilePhoto}
                         alt={member.name}
                         className="w-6 h-6 rounded-full border-2 border-black object-cover"
                       />
                     ) : (
                       <div className="w-6 h-6 rounded-full bg-gray-400 border-2 border-black" />
                     )}
-                    <span className="font-bold text-sm text-black">{member.name}</span>
+                    <span className="font-bold text-sm text-black">
+                      {member.name}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -121,4 +126,4 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
       </div>
     </div>
   );
-}
+};
