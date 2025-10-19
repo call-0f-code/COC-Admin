@@ -32,7 +32,7 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
         {achievement.imageUrl && (
           <div className="flex-shrink-0 w-48 h-48 border-4 border-black overflow-hidden">
             <img 
-              src={achievement.imageUrl} 
+              src={`${achievement.imageUrl}?t=${Date.now()}`} 
               alt={achievement.title}
               className="w-full h-full object-cover"
               onError={(e) => {
