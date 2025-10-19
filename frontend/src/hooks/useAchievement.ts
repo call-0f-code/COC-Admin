@@ -13,7 +13,7 @@ export function useAchievement(achievementid?:string){
             return response.data
         }
     })
-
+    // dont need this query, keeping this for future use 
     const {data:achievement,isLoading:achievementloading} = useQuery({
         queryKey:['achievement',achievementid],
         queryFn: async () => {

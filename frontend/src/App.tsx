@@ -3,8 +3,8 @@ import './App.css';
 import Authentication from './pages/Authentication';
 import DsaDashboard from './pages/DsaDashboard';
 import AdminDashboard from './pages/AdminDashboard';
-import { AchievementsView } from './Components/achievements/AchievementView';
 import ProjectDashboard from './pages/ProjectDashboard';
+import AchievementPage from './pages/AchievementPage';
 
 function App() {
   return (<>
@@ -12,7 +12,7 @@ function App() {
    <ProjectDashboard/>
     <DsaDashboard/> 
    <AdminDashboard/>
-   <AchievementsView/>
+   <AchievementPage/>
   <Toaster position="top-center" reverseOrder={false} />
   </>
 )
