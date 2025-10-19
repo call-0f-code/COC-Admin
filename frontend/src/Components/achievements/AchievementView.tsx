@@ -7,6 +7,7 @@ import { AchievementForm } from './AchievementForm';
 import { EmptyState } from '../common/EmptyState';
 import { useState } from 'react';
 import { useAchievement } from '../../hooks/useAchievement';
+import { useMembers } from '../../hooks/useMembers';
 
 
 export const AchievementsView = () => {
@@ -24,13 +25,12 @@ export const AchievementsView = () => {
   const { 
     achievements, 
     isLoading, 
-    createAchievement, 
-    updateAchievement, 
     deleteAchievement,
-    availableMembers = [] //write end point for this in backend 
   } = useAchievement();
 
-  const handleEditClick = (achievement: Achievement) => {
+  const {getAllmembers} = useMembers()
+
+  const handleEditClick = (achievement: AchievementDb) => {
     setEditingAchievementId(achievement.id);
     setAchievementForm({
       title: achievement.title,
@@ -68,19 +68,6 @@ export const AchievementsView = () => {
     setShowNewAchievementForm(!showNewAchievementForm);
   };
 
-  // const handleSave = (data: any) => {
-  //   const mutation = editingAchievementId ? updateAchievement : createAchievement;
-  //   const formattedData = {
-  //     ...data,
-  //     achievedAt: new Date(data.achievedAt).toISOString()
-  //   };
-
-  //   mutation.mutate(formattedData, {
-  //     onSuccess: () => {
-  //       handleCancel();
-  //     }
-  //   });
-  // };
 
   const filteredAchievements = achievements.filter(
     (achievement: Achievement) =>
@@ -121,8 +108,8 @@ export const AchievementsView = () => {
           onCancel={handleCancel}
           isEditing={false}
           editingAchievementId={editingAchievementId}
-          availableMembers={availableMembers}
-          isPending={createAchievement.isPending || updateAchievement.isPending}
+          availableMembers={getAllmembers}
+          
         />
       )}
 
@@ -130,7 +117,7 @@ export const AchievementsView = () => {
         <LoadingSpinner /> 
       ) : (
         <div className="grid gap-4">
-          {filteredAchievements.map((achievement: Achievement) => {
+          {filteredAchievements.map((achievement: AchievementDb) => {
             const isDeleting = deleteAchievement.isPending && deleteAchievement.variables === achievement.id;
             
             return editingAchievementId === achievement.id ? (
@@ -141,8 +128,7 @@ export const AchievementsView = () => {
                 onCancel={handleCancel}
                 isEditing={true}
                 editingAchievementId={editingAchievementId}
-                availableMembers={availableMembers}
-                isPending={createAchievement.isPending || updateAchievement.isPending}
+                availableMembers={getAllmembers}
               />
             ) : (
               <AchievementCard

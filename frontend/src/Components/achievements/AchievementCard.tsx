@@ -2,8 +2,8 @@ import { Edit3, Calendar, Loader2, Trash2, Users } from "lucide-react";
 
 
 interface AchievementCardProps {
-  achievement: Achievement;
-  onEdit: (achievement: Achievement) => void;
+  achievement: AchievementDb;
+  onEdit: (achievement: AchievementDb) => void;
   onDelete: (achievementId: string) => void;
   isDeleting: boolean;
 }
