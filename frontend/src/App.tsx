@@ -4,6 +4,7 @@ import Authentication from './pages/Authentication';
 import DsaDashboard from './pages/DsaDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import ProjectDashboard from './pages/ProjectDashboard';
+import AchievementPage from './pages/AchievementPage';
 
 function App() {
   return (<>
@@ -11,6 +12,7 @@ function App() {
    <ProjectDashboard/>
     <DsaDashboard/> 
    <AdminDashboard/>
+   <AchievementPage/>
   <Toaster position="top-center" reverseOrder={false} />
   </>
 )
