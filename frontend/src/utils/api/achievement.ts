@@ -30,6 +30,6 @@ export const deleteAchievementCall = async(achievementId:string)=>{
     await api.delete(`/achievements/${achievementId}`)
 }
 
-export const deleteMemeber = async (memberId:string,achievementId:string) => {
+export const deleteMember = async (memberId:string,achievementId:string) => {
     await api.delete(`/achievements/${achievementId}/members/${memberId}`)
 }

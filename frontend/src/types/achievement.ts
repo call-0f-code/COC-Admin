@@ -21,3 +21,4 @@ declare global {
     type Achievementform = Omit<Achievement,'id'>;
     
 }
+export {};

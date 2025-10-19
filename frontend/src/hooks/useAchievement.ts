@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createAchievementCall, deleteAchievementCall, deleteMemeber, getAchievementById, getAllAchievements, updateAchievementCall } from "../utils/api/achievement";
+import { createAchievementCall, deleteAchievementCall, deleteMember, getAchievementById, getAllAchievements, updateAchievementCall } from "../utils/api/achievement";
 
 
 
@@ -59,11 +59,11 @@ export function useAchievement(achievementid?:string){
 
     const removeMemberInAchievement  = useMutation({
         mutationFn: async({achievementId,memberId}:{achievementId:string,memberId:string}) =>{
-            await deleteMemeber(memberId,achievementId)
+            await deleteMember(memberId,achievementId)
         },
         onSuccess : ()=>{
             queryclient.invalidateQueries({
-                queryKey:['achievement',achievementid]
+                queryKey:['achievements']
             })
         }
     })
