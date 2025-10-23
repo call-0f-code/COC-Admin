@@ -1,14 +1,14 @@
-import { MembersView } from '../Components/members/MemberView';
+import { AchievementsView } from "../components/achievements/AchievementView";
 
 
-export default function AdminDashboard() {
+
+export default function AchievementPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-    
       
       <div className="relative z-10 max-w-6xl mx-auto">
-        <MembersView/>
+        <AchievementsView/>
       </div>
     </div>
   );

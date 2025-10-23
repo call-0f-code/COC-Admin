@@ -73,8 +73,8 @@ const ProjectView = () => {
   );
 
   return (
-    <div className="space-y-6">
-      <Header title="COC.ADMIN" subtitle="Project_Management" onBack={undefined} />
+    <div className="relative pt-[80px] space-y-6">
+      <Header title="" subtitle="Project_Management" onBack={undefined} />
 
       <SearchBar
         searchTerm={searchTerm}

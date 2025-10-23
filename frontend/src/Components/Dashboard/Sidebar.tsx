@@ -1,72 +1,72 @@
-import { Award, CodeXml, Star, Trash, UserRound } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Award, CodeXml, LayoutDashboard, LogOut, Users, FolderKanban } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const links = [
+    { name: "Dashboard", path: "/Dashboard", icon: <LayoutDashboard /> },
+    { name: "Achievements", path: "/Dashboard/achievements", icon: <Award /> },
+    { name: "Members", path: "/Dashboard/members", icon: <Users /> },
+    { name: "Projects", path: "/Dashboard/projects", icon: <FolderKanban /> },
+    { name: "DSA", path: "/Dashboard/dsa", icon: <CodeXml /> },
+  ];
 
   return (
-    <div className="h-screen w-64 bg-black text-white p-6 fixed left-0 shadow-[8px_0_0_#00FFFF] z-50 border-r-2 border-cyan-400">
-      {/* Logo */}
-      <div className="flex items-center justify-center mb-10">
-        <h1 className="text-3xl font-extrabold text-cyan-400 tracking-widest">COC.ADMIN</h1>
+    <div className="h-screen w-64 bg-white text-black fixed left-0 top-0 border-r-4 border-cyan-400 flex flex-col shadow-[8px_0_0_#000,12px_0_0_#00FFFF]">
+      {/* Header / Logo */}
+      <div className="p-6 border-b-4 border-black">
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="bg-black border-4 border-cyan-400 text-cyan-400 font-black text-center py-3 tracking-widest shadow-[4px_4px_0_0_#000,6px_6px_0_0_#00FFFF]"
+        >
+          COC.ADMIN
+        </motion.div>
       </div>
 
-      {/* Dashboard */}
-      <Link
-        to="/Dashboard/dashboard"
-        className="flex items-center gap-3 text-lg font-semibold mb-6 transition-all hover:text-cyan-400"
-      >
-        <Star className="w-6 h-6 text-cyan-400" />
-        <span>Dashboard</span>
-      </Link>
+      {/* Navigation */}
+      <nav className="flex-1 flex flex-col gap-4 p-6">
+        {links.map((link, i) => {
+          const active = location.pathname === link.path;
+          return (
+            <motion.div
+              key={i}
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 150 }}
+            >
+              <Link
+                to={link.path}
+                className={`flex items-center gap-3 font-bold px-4 py-3 border-2 border-black rounded-md transition-all
+                  ${
+                    active
+                      ? "bg-cyan-400 text-black shadow-[3px_3px_0_0_#000,5px_5px_0_0_#00FFFF]"
+                      : "bg-black text-white hover:bg-cyan-400 hover:text-black shadow-[3px_3px_0_0_#000,5px_5px_0_0_#00FFFF]"
+                  }`}
+              >
+                <div className="w-5 h-5">{link.icon}</div>
+                <span>{link.name}</span>
+              </Link>
+            </motion.div>
+          );
+        })}
+      </nav>
 
-      {/* Achievement */}
-      <Link
-        to="/Dashboard/achievement"
-        className="flex items-center gap-3 text-lg font-semibold mb-6 transition-all hover:text-cyan-400"
-      >
-        <Award className="w-6 h-6 text-cyan-400" />
-        <span>Achievement</span>
-      </Link>
-
-      {/* Members */}
-      <Link
-        to="/Dashboard/members"
-        className="flex items-center gap-3 text-lg font-semibold mb-6 transition-all hover:text-cyan-400"
-      >
-        <UserRound className="w-6 h-6 text-cyan-400" />
-        <span>Members</span>
-      </Link>
-
-      {/* Projects */}
-      <Link
-        to="/Dashboard/projects"
-        className="flex items-center gap-3 text-lg font-semibold mb-6 transition-all hover:text-cyan-400"
-      >
-        <Star className="w-6 h-6 text-cyan-400" />
-        <span>Projects</span>
-      </Link>
-
-      {/* DSA Questions */}
-      <Link
-        to="/Dashboard/dsa"
-        className="flex items-center gap-3 text-lg font-semibold mb-6 transition-all hover:text-cyan-400"
-      >
-        <CodeXml className="w-6 h-6 text-cyan-400" />
-        <span>DSA Questions</span>
-      </Link>
-
-      {/* Logout */}
-      <button
-        className="flex items-center gap-3 text-lg font-semibold mt-10 py-2 px-3 rounded-md border-2 border-cyan-400 hover:bg-cyan-400 hover:text-black transition-all"
-        onClick={() => {
-          localStorage.removeItem('token');
-          navigate('/');
-        }}
-      >
-        <Trash className="w-6 h-6 text-cyan-400 group-hover:text-black" />
-        <span>Log Out</span>
-      </button>
+      {/* Footer / Logout */}
+      <div className="p-6 border-t-4 border-black">
+        <button
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/");
+          }}
+          className="w-full flex items-center justify-center gap-3 bg-cyan-400 border-4 border-black text-black font-black px-4 py-3 shadow-[4px_4px_0_0_#000,6px_6px_0_0_#00FFFF] hover:bg-black hover:text-cyan-400 transition-all"
+        >
+          <LogOut className="w-5 h-5" />
+          <span>LOGOUT</span>
+        </button>
+      </div>
     </div>
   );
 };

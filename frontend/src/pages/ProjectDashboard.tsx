@@ -1,15 +1,13 @@
-import { GeometricBackground } from '../Components/members/GeometricBackground';
-import ProjectView from '../Components/Project/ProjectView';
-
+import ProjectView from "../components/Project/ProjectView";
 
 export default function ProjectDashboard() {
-
   return (
-    <div className="min-h-screen bg-white p-4 md:p-8 relative overflow-hidden">
-      <GeometricBackground />
-      
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <ProjectView/>
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="absolute inset-0 -z-10" />
+
+      {/* Full-width content */}
+      <div className="relative z-10 w-full">
+        <ProjectView />
       </div>
     </div>
   );
