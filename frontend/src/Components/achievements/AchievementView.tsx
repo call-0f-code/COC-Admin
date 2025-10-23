@@ -116,7 +116,7 @@ export const AchievementsView = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-8">
           {filteredAchievements.map((achievement: AchievementDb) => {
             const isDeleting =
               deleteAchievement.isPending &&
