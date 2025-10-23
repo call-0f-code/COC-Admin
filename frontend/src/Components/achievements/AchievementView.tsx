@@ -73,7 +73,7 @@ export const AchievementsView = () => {
     ) || [];
 
   return (
-    <div className="space-y-6">
+    <div className="relative overflow-hidden pt-[80px] space-y-6">
       <Header
         title="COC.ADMIN"
         subtitle="ACHIEVEMENT_MANAGEMENT"

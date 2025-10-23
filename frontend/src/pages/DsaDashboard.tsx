@@ -1,5 +1,4 @@
 import  { useState } from 'react';
-import { GeometricBackground } from '../Components/dsa/GeometricBackground';
 import { TopicsView } from '../Components/dsa/topics/TopicsView';
 import { QuestionsView } from '../Components/dsa/questions/QuestionsView';
 
@@ -21,8 +20,7 @@ export default function DsaDashboard() {
 
 
   return (
-    <div className="min-h-screen bg-white p-4 md:p-8 relative overflow-hidden">
-      <GeometricBackground />
+    <div className="min-h-screen  relative overflow-hidden">
       
       <div className="relative z-10 max-w-6xl mx-auto">
         {currentView === 'topics' && (

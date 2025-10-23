@@ -58,27 +58,27 @@ export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
   );
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <Header title="COC.ADMIN" subtitle="TOPIC_MANAGEMENT" onBack={undefined} />
+    <div className="relative overflow-hidden pt-[80px] space-y-12">
+      <Header title="" subtitle="TOPIC_MANAGEMENT" onBack={undefined} />
 
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        placeholder="Search topics..."
+        placeholder="SEARCH_TOPICS"
       />
 
       <div className="flex justify-end">
         <ActionButton onClick={handleToggleNewTopicForm}>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {showNewTopicForm ? (
               <>
-                <X className="w-5 h-5" />
-                <span>Close</span>
+                <X className="w-7 h-7" />
+                <span className="text-xl">Close</span>
               </>
             ) : (
               <>
-                <Plus className="w-5 h-5" />
-                <span>New Topic</span>
+                <Plus className="w-7 h-7" />
+                <span className="text-xl">New Topic</span>
               </>
             )}
           </div>
@@ -97,11 +97,11 @@ export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
       )}
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
+        <div className="flex items-center justify-center py-32">
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {filteredTopics.map((topic: Topic) => {
             const isDeleting =
               deleteCurrentTopic.isPending && deleteCurrentTopic.variables === topic.id;
@@ -141,9 +141,9 @@ export const TopicsView: React.FC<TopicsViewProps> = ({ onViewQuestions }) => {
       )}
 
       {!isLoading && filteredTopics.length > 0 && (
-        <div className="flex items-center justify-center py-8">
-          <div className="bg-black px-6 py-3 border-4 border-cyan-400 shadow-[4px_4px_0_0_#000]">
-            <span className="text-base font-black text-white">
+        <div className="flex items-center justify-center py-12">
+          <div className="bg-black px-8 py-4 border-4 border-cyan-400 shadow-[6px_6px_0_0_#000]">
+            <span className="text-xl font-black text-white">
               {filteredTopics.length} Topic{filteredTopics.length !== 1 ? 's' : ''} Found
             </span>
           </div>

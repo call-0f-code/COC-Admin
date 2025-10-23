@@ -10,7 +10,7 @@ interface MemberCardProps {
 export const MemberCard: React.FC<MemberCardProps> = ({ member, onApprove, isApproving }) => {
   return (
     <motion.div
-      className="w-full max-w-md perspective-400"
+      className="w-full max-w-lg perspective-400"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

@@ -1,8 +1,14 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";
-import { Code2, Edit3, HelpCircle, Trash2 } from "lucide-react";
+import { Code2, Edit3, Trash2 } from "lucide-react";
 
-interface topicCardProps {
+interface Topic {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface TopicCardProps {
   topic: Topic;
   onViewQuestions: (topic: Topic) => void;
   onEdit: (topic: Topic) => void;
@@ -10,7 +16,13 @@ interface topicCardProps {
   isDeleting: boolean;
 }
 
-export const TopicCard = ({ topic, onViewQuestions, onEdit, onDelete }:topicCardProps) => {
+export const TopicCard = ({
+  topic,
+  onViewQuestions,
+  onEdit,
+  onDelete,
+  isDeleting,
+}: TopicCardProps) => {
   const [hovered, setHovered] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -31,8 +43,9 @@ export const TopicCard = ({ topic, onViewQuestions, onEdit, onDelete }:topicCard
         y.set(0);
       }}
       style={{ rotateX, rotateY }}
+      onClick={() => onViewQuestions(topic)} // ✅ Card click opens questions
       className="relative bg-white border-4 border-black p-8 rounded-xl shadow-[8px_8px_0_0_#000]
-                 transition-all duration-300 hover:bg-cyan-200"
+                 transition-all duration-300 hover:bg-cyan-200 cursor-pointer"
     >
       {/* Floating cyan layer */}
       <motion.div
@@ -54,22 +67,18 @@ export const TopicCard = ({ topic, onViewQuestions, onEdit, onDelete }:topicCard
         className="mt-4 flex gap-3 justify-end"
         animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
         transition={{ duration: 0.3 }}
+        onClick={(e) => e.stopPropagation()} // ✅ Prevents click bubbling to card
       >
         <button
-          onClick={() => onViewQuestions(topic)}
-          className="px-3 py-2 bg-cyan-400 border-4 border-black shadow-[3px_3px_0_0_#000]"
-        >
-          <HelpCircle />
-        </button>
-        <button
           onClick={() => onEdit(topic)}
-          className="px-3 py-2 bg-yellow-400 border-4 border-black shadow-[3px_3px_0_0_#000]"
+          className="px-3 py-2 bg-yellow-400 border-4 border-black shadow-[3px_3px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-transform"
         >
           <Edit3 />
         </button>
         <button
           onClick={() => onDelete(topic.id)}
-          className="px-3 py-2 bg-red-400 border-4 border-black shadow-[3px_3px_0_0_#000]"
+          disabled={isDeleting}
+          className="px-3 py-2 bg-red-400 border-4 border-black shadow-[3px_3px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-transform disabled:opacity-60"
         >
           <Trash2 />
         </button>

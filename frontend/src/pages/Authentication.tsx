@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Login from '../Components/auth/LoginView';
-import { GeometricBackground } from '../Components/auth/GeometricBackground';
 import { DefaultView } from '../Components/auth/DefaultView';
 
 export default function Authentication() {
@@ -9,8 +8,7 @@ export default function Authentication() {
 
 
   return (
-    <div className="min-h-screen bg-white p-4 md:p-8 relative overflow-hidden">
-      <GeometricBackground/>
+    <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
       
       {currentView === 'default' && (
           <DefaultView

@@ -2,6 +2,7 @@ import { Mail, Eye, EyeOff, ArrowLeft, Cpu, Lock } from "lucide-react";
 import { useMembers } from "../../hooks/useMembers";
 import { globalToast } from "../../utils/toast";
 import { useState } from "react";
+import {  useNavigate } from "react-router-dom";
 
 
 interface loginFormProps {
@@ -15,7 +16,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
     setLoginForm,
     onBack
 }) => {
-
+    const navigate = useNavigate()
     const {login} = useMembers();
     const [showPassword, setShowPassword] = useState(false);
 
@@ -26,6 +27,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
             { email: loginForm.email, password: loginForm.password },
             {
                 onSuccess: () => {
+                    navigate('/Dashboard')
                     globalToast.success("Login Successful");
                 }
             }
@@ -44,7 +46,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
                 EMAIL
             </label>
             <div className="relative">
-                <div className="absolute left-3 top-3 w-6 h-6 bg-cyan-400 border-2 border-black flex items-center justify-center">
+                <div className="absolute left-3 top-5 w-6 h-6 bg-cyan-400 border-2 border-black flex items-center justify-center">
                 <Mail className="w-3 h-3 text-black" />
                 </div>
                 <input
@@ -69,7 +71,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
                 PASSWORD
             </label>
             <div className="relative my-1">
-                <div className="absolute left-3 top-3 w-6 h-6 bg-cyan-400 border-2 border-black flex items-center justify-center">
+                <div className="absolute left-3 top-5 w-6 h-6 bg-cyan-400 border-2 border-black flex items-center justify-center">
                 <Lock className="w-3 h-3 text-black" />
                 </div>
                 <input
@@ -90,7 +92,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
                     showPassword ? 'Hide password' : 'Show password'
                 }
                 title={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute right-3 top-3 w-6 h-6 bg-black border-2 border-black flex items-center justify-center text-white hover:bg-cyan-400 hover:text-black transition-colors"
+                className="absolute right-3 top-5 w-6 h-6 bg-black border-2 border-black flex items-center justify-center text-white hover:bg-cyan-400 hover:text-black transition-colors"
                 >
                 {showPassword ? (
                     <EyeOff className="w-3 h-3" />
