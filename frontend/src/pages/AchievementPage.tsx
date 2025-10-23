@@ -1,4 +1,4 @@
-import { AchievementsView } from "../components/achievements/AchievementView";
+import { AchievementsView } from "../Components/achievements/AchievementView";
 
 
 

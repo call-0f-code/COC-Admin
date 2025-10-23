@@ -4,10 +4,11 @@ import Authentication from "./pages/Authentication";
 import DsaDashboard from "./pages/DsaDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProjectDashboard from "./pages/ProjectDashboard";
-import Dashboardlayout from "./components/Dashboard/Dashboardlayout";
-import { GeometricBackground } from "./components/common/GeometricBackground";
+
 import { Routes, Route } from "react-router-dom";
 import AchievementPage from "./pages/AchievementPage";
+import Dashboardlayout from "./Components/Dashboard/Dashboardlayout";
+import { GeometricBackground } from "./Components/common/GeometricBackground";
 
 function App() {
   return (

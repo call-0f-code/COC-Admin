@@ -1,4 +1,4 @@
-import ProjectView from "../components/Project/ProjectView";
+import ProjectView from "../Components/Project/ProjectView";
 
 export default function ProjectDashboard() {
   return (
