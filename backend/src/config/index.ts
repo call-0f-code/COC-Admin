@@ -29,7 +29,7 @@ export default{
         if(!process.env.RATE_LIMIT_MAX_REQUESTS){
             return 100;
         }
-        parseInt(process.env.RATE_LIMIT_MAX_REQUESTS)
+        return parseInt(process.env.RATE_LIMIT_MAX_REQUESTS)
     }
 
 }
