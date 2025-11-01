@@ -10,7 +10,8 @@ export function useMembers(){
         queryFn: async () => {
             const data = await getUnapprovedMembers();
             return data.members;
-        }
+        },
+        enabled:false
     })
     
     const {data: getAllmembers = []} = useQuery<Member[]>({
@@ -18,7 +19,8 @@ export function useMembers(){
         queryFn: async () => {
             const data = await allMember();
             return data.members;
-        }
+        },
+        enabled:false
     })
 
     const approveCurrentMember = useMutation({
