@@ -18,5 +18,18 @@ export default{
             throw new Error("API_URL is not defined in environment variables");
         }
         return process.env.API_URL;
+    },
+    rate_limit_window_minutes: ()=>{
+        if(!process.env.RATE_LIMIT_WINDOW_MINUTES){
+            return 15;
+        }
+        return parseInt(process.env.RATE_LIMIT_WINDOW_MINUTES)
+    },
+    rate_limit_max_request: ()=>{
+        if(!process.env.RATE_LIMIT_MAX_REQUESTS){
+            return 100;
+        }
+        parseInt(process.env.RATE_LIMIT_MAX_REQUESTS)
     }
+
 }
