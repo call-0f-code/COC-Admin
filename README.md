@@ -2,11 +2,11 @@
 
 > Admin Dashboard for [Call of Code](https://callofcode.in)
 
-COC-Admin is the administrative web application for managing the Call of Code platform (callofcode.in). This application provides a comprehensive dashboard for administrators to manage users, projects, achievements, DSA questions, and other platform resources.
+COC-Admin is the administrative web application for managing the Call of Code platforms (callofcode.in and members.callofcode.in). This application provides a comprehensive dashboard for administrators to manage users, projects, achievements, DSA questions, and other platform resources.
 
 ## 📋 Overview
 
-Call of Code (COC) is a competitive programming and project showcase platform. This admin application serves as the central management system, enabling administrators to:
+This admin application serves as the central management system, enabling administrators to:
 
 - Manage user accounts and member profiles
 - Create and organize DSA (Data Structures & Algorithms) questions
@@ -36,7 +36,7 @@ COC-Admin/
 - **UI Components**: shadcn/ui
 - **State Management**: TanStack Query (React Query)
 - **Routing**: React Router v7
-- **Authentication**: Better Auth
+- **Authentication**: JWT
 - **Icons**: Lucide React
 - **Animations**: Framer Motion
 - **Notifications**: React Hot Toast
@@ -45,7 +45,7 @@ COC-Admin/
 - **Runtime**: Bun
 - **Framework**: Express 5
 - **Language**: TypeScript
-- **Authentication**: Better Auth with JWT
+- **Authentication**: JWT
 - **Validation**: Zod
 - **Security**: Helmet, CORS, Rate Limiting
 - **Password Hashing**: bcrypt
