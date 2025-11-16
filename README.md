@@ -55,7 +55,6 @@ COC-Admin/
 - **Package Manager**: Bun
 - **Linting**: ESLint
 - **Code Formatting**: Prettier
-- **Testing**: Jest
 - **Git Hooks**: Husky + lint-staged
 - **Concurrent Dev**: concurrently
 
@@ -157,7 +156,6 @@ cd frontend && bun run dev
 
 The frontend will typically run on `http://localhost:5173` and the backend on the configured API port.
 
-
 ## 🎨 Code Quality
 
 ### Linting
@@ -209,7 +207,6 @@ backend/
 │   ├── validation/      # Zod validation schemas
 │   ├── app.ts           # Express app setup
 │   └── server.ts        # Server entry point
-├── tests/               # Test files
 └── package.json
 ```
 
@@ -254,7 +251,6 @@ frontend/
 7. Open a Pull Request
 
 Please ensure your code:
-- Passes all tests
 - Follows the existing code style
 - Includes appropriate documentation
 - Has no linting errors
