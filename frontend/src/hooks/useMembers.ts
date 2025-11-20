@@ -11,7 +11,7 @@ export function useMembers(){
             const data = await getUnapprovedMembers();
             return data.members;
         },
-        enabled:false
+        enabled:!!localStorage.getItem('token')
     })
     
     const {data: getAllmembers = []} = useQuery<Member[]>({
@@ -20,7 +20,7 @@ export function useMembers(){
             const data = await allMember();
             return data.members;
         },
-        enabled:false
+        enabled:!!localStorage.getItem('token')
     })
 
     const approveCurrentMember = useMutation({
