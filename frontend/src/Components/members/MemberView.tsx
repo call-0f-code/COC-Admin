@@ -36,14 +36,14 @@ export const MembersView = () => {
       (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10  py-8">
         {filteredMembers.map((member:Member) => {
-          const isApproving = approveCurrentMember.isPending && approveCurrentMember.variables === member.id;
+          const isApproving = approveCurrentMember.isPending && approveCurrentMember.variables.memberId === member.id;
         
           return (
               <MemberCard 
                 key={member.id}
                 member={member}
                 onApprove={() =>
-                  approveCurrentMember.mutate(member.id, {
+                  approveCurrentMember.mutate({memberId:member.id,memberEmail:member.email,memberName:member.name}, {
                     onSuccess: () => {
                       globalToast.success("Member Approved Successfully");
                     },
