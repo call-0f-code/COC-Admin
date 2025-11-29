@@ -100,7 +100,7 @@ export const sendApprovalEmail = async (email: string, memberName: string) => {
   const text = `Hello ${memberName},\n\nYour membership has been approved.\nYour account is now active. Login at: https://members.callofcode.in/signup\n\nNeed help? Contact us at  ${config.CONTACT_EMAIL_ID}`;
 
   try {
-    const res = await resend.emails.send({
+    const {data, error} = await resend.emails.send({
       from: `"Call Of Code" <${config.EMAIL_ID}>`,
       to: email,
       subject: 'Membership Approved - Call Of Code',
@@ -108,7 +108,13 @@ export const sendApprovalEmail = async (email: string, memberName: string) => {
       text,
     });
 
-    return res;
+    if (error) {
+        throw new Error(
+            typeof error === 'string' ? error : JSON.stringify(error)
+        );
+    }
+
+    return data;
   } catch (err) {
     throw err;
   }
