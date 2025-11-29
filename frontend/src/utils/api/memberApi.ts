@@ -10,9 +10,9 @@ export const getUnapprovedMembers = async() => {
     return response.data
 }
 
-export const approveMember = async(memberId: string) => {
+export const approveMember = async(memberId: string,memberName:string,memberEmail:string) => {
 
-    const response = await api.patch(`/members/approve/${memberId}`, {isApproved: true});
+    const response = await api.patch(`/members/approve/${memberId}`, {isApproved: true,memberName,memberEmail});
     return response.data;
 }
 

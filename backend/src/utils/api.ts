@@ -3,7 +3,7 @@ import { ApiError } from "./apiError";
 import config from "../config";
 
 
-const apiurl = config.API_URL();
+const apiurl = config.API_URL;
 
 const api = axios.create({
   baseURL: `${apiurl}/api/v1`,

@@ -5,6 +5,7 @@ import config from "../config";
 import jwt from 'jsonwebtoken';
 import { ApiError } from "../utils/apiError";
 import { success } from "zod";
+import { sendApprovalEmail } from "../utils/nodeMailer";
 
 
 export const login = async(req: Request, res:Response) => {
@@ -26,7 +27,7 @@ export const login = async(req: Request, res:Response) => {
     }
 
 
-    const token = jwt.sign({ adminId }, config.JWT_SECRET(), { expiresIn: "1d" });
+    const token = jwt.sign({ adminId }, config.JWT_SECRET, { expiresIn: "1d" });
 
     // Send response
     res.status(200).json({
@@ -50,14 +51,17 @@ export const getunapprovedMembers = async(req: Request, res: Response) => {
 export const approveMember = async(req: Request, res: Response) => {
 
     const {memberId} = req.params;
-    const {isApproved} = req.body;
+    const {isApproved,memberEmail,memberName} = req.body;
     const adminId = req.adminId;
 
-    if(!isApproved===undefined || !memberId) {
+
+    if(!isApproved===undefined || !memberId || !memberEmail || !memberName) {
       throw new ApiError(" required field missing", 400);
     }
 
     await api.patch(`/members/approve/${memberId}`, {isApproved, adminId});
+
+    await sendApprovalEmail(memberEmail,memberName);
     
     res.status(200).json({
       success: true,
