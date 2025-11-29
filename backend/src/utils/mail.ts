@@ -1,20 +1,12 @@
-import nodemailer from 'nodemailer';
-import config from '../config/index'
+// nodemailer.ts
+import { Resend } from 'resend';
+import config from '../config/index';
 
 export const sendApprovalEmail = async (email: string, memberName: string) => {
-  const transport = nodemailer.createTransport({
-    service: config.EMAIL_SERVICES,
-    auth: {
-      user: config.EMAIL_ID,
-      pass: config.EMAIL_PASS
-    }
-  });
 
-  const mailOptions = {
-    from: `"Call Of Code" <${config.EMAIL_ID}>`,
-    to: email,
-    subject: 'Membership Approved - Call Of Code',
-    html: `
+  const resend = new Resend(config.RESEND_API_KEY);
+
+  const html = `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
 
     <!-- Header -->
@@ -97,16 +89,28 @@ export const sendApprovalEmail = async (email: string, memberName: string) => {
         </p>
         <p style="color: #999; font-size: 14px; margin: 10px 0 0 0;">
             Need help? Contact us at 
-            <a href="mailto:${config.EMAIL_ID}" style="color: #6366f1; text-decoration: none;">
-                ${config.EMAIL_ID}
+            <a href="mailto:${config.CONTACT_EMAIL_ID}" style="color: #6366f1; text-decoration: none;">
+                ${config.CONTACT_EMAIL_ID}
             </a>
         </p>
     </div>
 
 </div>
-        `,
-    text: `Hello ${memberName},\n\nYour membership has been approved.\nYour account is now active. Login at: https://members.callofcode.in/signup\n\nNeed help? Contact us at ${config.EMAIL_ID}`
-  };
+  `;
 
-  await transport.sendMail(mailOptions);
+  const text = `Hello ${memberName},\n\nYour membership has been approved.\nYour account is now active. Login at: https://members.callofcode.in/signup\n\nNeed help? Contact us at  ${config.CONTACT_EMAIL_ID}`;
+
+  try {
+    const res = await resend.emails.send({
+      from: `"Call Of Code" <${config.EMAIL_ID}>`,
+      to: email,
+      subject: 'Membership Approved - Call Of Code',
+      html,
+      text,
+    });
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
 };
