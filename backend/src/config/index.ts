@@ -24,7 +24,7 @@ export default{
     SALTING: validateEnvVar('SALTING', process.env.SALTING),
     API_URL: validateEnvVar('API_URL', process.env.API_URL),
     EMAIL_ID: validateEnvVar('EMAIL_ID', process.env.EMAIL_ID),
-    EMAIL_PASS: validateEnvVar('EMAIL_PASS', process.env.EMAIL_PASS),
-    EMAIL_SERVICES: validateEnvVar('EMAIL_SERVICES', process.env.EMAIL_SERVICES)
+    RESEND_API_KEY: validateEnvVar('RESEND_API_KEY', process.env.RESEND_API_KEY),
+    CONTACT_EMAIL_ID : validateEnvVar('CONTACT_EMAIL_ID', process.env.CONTACT_EMAIL_ID)
 
 }
