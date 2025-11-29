@@ -1,4 +1,3 @@
-// nodemailer.ts
 import { Resend } from 'resend';
 import config from '../config/index';
 
