@@ -13,7 +13,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
         throw new ApiError('not authorized, no token',401)
     }
 
-    const decoded = await jwt.verify(token, config.JWT_SECRET());
+    const decoded = await jwt.verify(token, config.JWT_SECRET);
 
     if (!decoded) {
         throw new ApiError('Invalid token or token expired',401)

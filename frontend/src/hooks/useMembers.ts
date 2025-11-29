@@ -24,7 +24,7 @@ export function useMembers(){
     })
 
     const approveCurrentMember = useMutation({
-        mutationFn : (memberId: string) => approveMember(memberId),
+        mutationFn : ({memberId,memberName,memberEmail}:{memberId:string,memberName:string,memberEmail:string}) => approveMember(memberId,memberName,memberEmail),
         onSuccess:()=>{
             queryclient.invalidateQueries({queryKey:['members']})
         }
