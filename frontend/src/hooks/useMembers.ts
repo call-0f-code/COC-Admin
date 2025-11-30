@@ -6,7 +6,7 @@ import { handleApiError } from "../utils/handleApiError";
 
 export function useMembers(){
     const queryclient = useQueryClient();
-    const {setAccessToken} = useAuth()
+    const {accessToken,setAccessToken} = useAuth()
 
     const {data: members = [], isLoading, isError} = useQuery<Member[]>({
         queryKey:['members'],
@@ -14,6 +14,7 @@ export function useMembers(){
             const data = await getUnapprovedMembers();
             return data.members;
         },
+        enabled:!!accessToken
       
     })
     
