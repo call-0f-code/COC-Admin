@@ -5,7 +5,9 @@ interface DefaultViewProps {
   onLogin: () => void;
 }
 
+
 export const DefaultView = (props: DefaultViewProps) => {
+
 
     return (
         <div>

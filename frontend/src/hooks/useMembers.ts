@@ -1,9 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUnapprovedMembers, approveMember, signIn , allMember} from "../utils/api/memberApi";
+import { getUnapprovedMembers, approveMember, signIn , allMember, signout} from "../utils/api/memberApi";
+import { useAuth } from "../context/AuthContext";
+import { handleApiError } from "../utils/handleApiError";
 
 
 export function useMembers(){
     const queryclient = useQueryClient();
+    const {setAccessToken} = useAuth()
 
     const {data: members = [], isLoading, isError} = useQuery<Member[]>({
         queryKey:['members'],
@@ -11,7 +14,7 @@ export function useMembers(){
             const data = await getUnapprovedMembers();
             return data.members;
         },
-        enabled:!!localStorage.getItem('token')
+      
     })
     
     const {data: getAllmembers = []} = useQuery<Member[]>({
@@ -20,14 +23,14 @@ export function useMembers(){
             const data = await allMember();
             return data.members;
         },
-        enabled:!!localStorage.getItem('token')
     })
 
     const approveCurrentMember = useMutation({
         mutationFn : ({memberId,memberName,memberEmail}:{memberId:string,memberName:string,memberEmail:string}) => approveMember(memberId,memberName,memberEmail),
         onSuccess:()=>{
             queryclient.invalidateQueries({queryKey:['members']})
-        }
+        },
+         onError: (err) => handleApiError(err),
     })
 
     const login = useMutation({
@@ -38,10 +41,21 @@ export function useMembers(){
         onSuccess: (token) => {
             queryclient.invalidateQueries({ queryKey: ['members'] });
             if (token) {
-            localStorage.setItem('token', token);
+                setAccessToken(token);
             }
         },
+         onError: (err) => handleApiError(err),
     });
+
+    const logout = useMutation({
+        mutationFn: signout,
+        onSuccess:()=>{
+            setAccessToken(null);
+            queryclient.setQueryData(["members"],null)
+            window.location.replace("/");
+        },
+         onError: (err) => handleApiError(err),
+    })
 
     return {
         members,
@@ -49,6 +63,7 @@ export function useMembers(){
         isError,
         getAllmembers,
         approveCurrentMember,
-        login
+        login,
+        logout
     }
 }
