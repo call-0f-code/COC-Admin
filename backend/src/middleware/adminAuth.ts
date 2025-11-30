@@ -4,22 +4,26 @@ import { Request, Response, NextFunction } from 'express';
 import { ApiError } from '../utils/apiError';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
-    let token;
-    if (req.headers.authorization?.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
+    
+    const [scheme,tokenFromHeader] = (req.headers.authorization || '').split(' ');
+    const tokenFromCookie = req.cookies.access_token;
+
+    const token = scheme ==='Bearer' && tokenFromHeader? tokenFromHeader:tokenFromCookie;
+
+    if(!token) throw new ApiError('No token provided',401)
+
+    let decoded:JwtPayload;
+
+    try{
+        decoded = jwt.verify(token, config.JWT_SECRET) as JwtPayload;
+    }catch(err:any){
+        if (err.name === 'TokenExpiredError') {
+            throw new ApiError('Token expired', 401);
+        }
+        throw new ApiError('Invalid token', 401);
     }
 
-    if (!token) {
-        throw new ApiError('not authorized, no token',401)
-    }
-
-    const decoded = await jwt.verify(token, config.JWT_SECRET);
-
-    if (!decoded) {
-        throw new ApiError('Invalid token or token expired',401)
-    }
-
-    req.adminId = (decoded as JwtPayload).adminId;
+    req.adminId = decoded.adminId;
     next();
 
 };

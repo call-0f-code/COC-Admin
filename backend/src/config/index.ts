@@ -23,8 +23,20 @@ export default{
     JWT_SECRET: validateEnvVar('JWT_SECRET', process.env.JWT_SECRET),
     SALTING: validateEnvVar('SALTING', process.env.SALTING),
     API_URL: validateEnvVar('API_URL', process.env.API_URL),
+    REFRESH_TTL: ()=>{
+        if(!process.env.REFRESH_TTL){
+            return 7;
+        }
+        return parseInt(process.env.REFRESH_TTL)
+    },
+    ACCESS_TTL: ()=>{
+        if(!process.env.ACCESS_TTL){
+            return 15;
+        }
+        return parseInt(process.env.ACCESS_TTL)
+    },
+    REFRESH_SECRET: validateEnvVar('REFRESH_SECRET', process.env.REFRESH_SECRET),
     EMAIL_ID: validateEnvVar('EMAIL_ID', process.env.EMAIL_ID),
-    EMAIL_PASS: validateEnvVar('EMAIL_PASS', process.env.EMAIL_PASS),
-    EMAIL_SERVICES: validateEnvVar('EMAIL_SERVICES', process.env.EMAIL_SERVICES)
-
+    CONTACT_EMAIL_ID: validateEnvVar('CONTACT_EMAIL_ID', process.env.CONTACT_EMAIL_ID),
+    RESEND_API_KEY: validateEnvVar('RESEND_API_KEY', process.env.RESEND_API_KEY)
 }
