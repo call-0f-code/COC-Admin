@@ -5,15 +5,15 @@ import { Response } from 'express';
 
 const ACCESS_TTL =  60*config.ACCESS_TTL();
 const REFRESH_TTL_SEC = 60*60*24*(config.REFRESH_TTL());
-const AcessJwt = config.JWT_SECRET
+const AccessJwt = config.JWT_SECRET
 const RefreshJwt = config.REFRESH_SECRET
 
 export const signAccessToken = (adminId:string)=>{
-    return jwt.sign({adminId},AcessJwt,{expiresIn:ACCESS_TTL});
+    return jwt.sign({adminId},AccessJwt,{expiresIn:ACCESS_TTL});
 }
 
-export const signRefreshToken = (memberId:string)=>{
-    return jwt.sign({memberId},RefreshJwt,{expiresIn:REFRESH_TTL_SEC})
+export const signRefreshToken = (adminId:string)=>{
+    return jwt.sign({adminId},RefreshJwt,{expiresIn:REFRESH_TTL_SEC})
 }
 
 export const setRefreshCookie = async(res:Response,refreshToken:string)=>{

@@ -1,10 +1,9 @@
 import { Award, CodeXml, LayoutDashboard, LogOut, Users, FolderKanban } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useMembers } from "../../hooks/useMembers";
 
 const Sidebar = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const {logout} = useMembers();
 
@@ -61,9 +60,6 @@ const Sidebar = () => {
         <button
           onClick={() => {
             logout.mutate()
-            if(logout.isSuccess){
-              navigate("/");
-            }
           }}
           disabled={logout.isPending}
           className="w-full flex items-center justify-center gap-3 bg-cyan-400 border-4 border-black text-black font-black px-4 py-3 shadow-[4px_4px_0_0_#000,6px_6px_0_0_#00FFFF] hover:bg-black hover:text-cyan-400 transition-all"

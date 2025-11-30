@@ -101,13 +101,16 @@ export const tokenRefresh = async(req:Request,res:Response) =>{
     throw new ApiError('Invalid or expired refresh token',401);
   }
   const adminId = decoded.adminId;
+  if(!adminId){
+    throw new ApiError('Invalid token payload',401)
+  }
   const newToken = signAccessToken(adminId);
   const refreshToken = signRefreshToken(adminId);
   setRefreshCookie(res,refreshToken);
 
   res.status(200).json({
     success: true,
-    message: "Signin successful",
+    message: "Token Refresh successful",
     token:newToken,
   });
 
