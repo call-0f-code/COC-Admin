@@ -5,7 +5,7 @@ import config from "../config";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { ApiError } from "../utils/apiError";
 import { success } from "zod";
-import { sendApprovalEmail } from "../utils/nodeMailer";
+import { sendApprovalEmail } from "../utils/mail";
 import { setRefreshCookie, signAccessToken, signRefreshToken } from "../utils/tokens";
 
 
