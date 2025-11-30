@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createProject, deleteProject, getAllProject, updateProject , addMemberToProject , removeMemberFromProjects} from "../utils/api/projectApi";
+import { handleApiError } from "../utils/handleApiError";
 
 
 
@@ -21,6 +22,7 @@ export function useProjects() {
         onSuccess: () => {
             queryclient.invalidateQueries({ queryKey: ["projects"] });
         },
+         onError: (err) => handleApiError(err),
     });
 
 
@@ -29,21 +31,24 @@ export function useProjects() {
             updateProject(projectForm, image , editingProjectId),
         onSuccess: () => {
             queryclient.invalidateQueries({ queryKey: ['projects'] })
-        }
+        },
+         onError: (err) => handleApiError(err),
     })
 
     const deletecurrentProject = useMutation({
         mutationFn: (projectId: string) => deleteProject(projectId),
         onSuccess: () => {
             queryclient.invalidateQueries({ queryKey: ['projects'] })
-        }
+        },
+         onError: (err) => handleApiError(err),
     })
 
     const addMember = useMutation({
         mutationFn : ( {memberId , projectId } : {memberId : string[] , projectId : string}) =>addMemberToProject(memberId, projectId),
         onSuccess: () => {
             queryclient.invalidateQueries({ queryKey: ['projects'] })
-        }
+        },
+         onError: (err) => handleApiError(err),
       
     })
 
@@ -53,7 +58,8 @@ export function useProjects() {
         mutationFn : ( {memberId , projectId } : {memberId : string , projectId : string}) =>removeMemberFromProjects(memberId, projectId),
         onSuccess: () => {
             queryclient.invalidateQueries({ queryKey: ['projects'] })
-        } 
+        },
+         onError: (err) => handleApiError(err),
     })
 
     return {

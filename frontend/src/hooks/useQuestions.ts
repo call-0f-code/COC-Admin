@@ -9,6 +9,7 @@ import {
   deleteQuestion,
   updateQuestion,
 } from '../utils/api/questionApi';
+import { handleApiError } from '../utils/handleApiError';
 
 export function useQuesiton(topicId: string) {
   const queryclient = useQueryClient();
@@ -32,6 +33,7 @@ export function useQuesiton(topicId: string) {
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ['questions', topicId] });
     },
+     onError: (err) => handleApiError(err),
   });
 
   const deleteCurrentQuestion = useMutation({
@@ -39,6 +41,7 @@ export function useQuesiton(topicId: string) {
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ['questions', topicId] });
     },
+     onError: (err) => handleApiError(err),
   });
 
   const updateCurrentQuestion = useMutation({
@@ -50,7 +53,8 @@ export function useQuesiton(topicId: string) {
       }),
       onSuccess : ()=>{
         queryclient.invalidateQueries({queryKey: ['questions',topicId]});
-      }
+      },
+       onError: (err) => handleApiError(err),
   });
 
   return {

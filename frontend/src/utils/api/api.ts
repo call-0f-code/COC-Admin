@@ -1,66 +1,66 @@
 import axios from "axios";
+import { AuthBridge } from "./authBridge";
 import { globalToast as toast } from "../toast";
 
-
-const apiurl = import.meta.env.VITE_API_URL;
-
+let isRefreshing = false;
+let refreshQueue: ((t: string) => void)[] = [];
 
 const api = axios.create({
-  baseURL: `${apiurl}/api/v1`,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: import.meta.env.VITE_API_URL + "/api/v1",
+  withCredentials: true,
+  headers: { "Content-Type": "application/json" },
 });
 
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+api.interceptors.request.use((config) => {
+  const token = AuthBridge.getToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
+  (res) => res,
+  async (error) => {
     const status = error?.response?.status;
+    const original = error.config;
 
+    if (status === 401 && !original._retry) {
+      original._retry = true;
 
-    if (status === 401) {
-      toast.error("Your session has expired. Please login again")
-      // if (typeof window !== "undefined" && window.location.pathname !== "/login") {
-      //   window.location.replace("/login");
-      // }
-      return Promise.reject(error);
+      // If refresh is in progress, wait
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          refreshQueue.push((newToken) => {
+            original.headers.Authorization = `Bearer ${newToken}`;
+            resolve(api(original));
+          });
+        });
+      }
+
+      isRefreshing = true;
+
+      try {
+        const res = await api.post("/members/refresh");
+        const newToken = res.data.token;
+
+        AuthBridge.setToken(newToken);
+
+        isRefreshing = false;
+        refreshQueue.forEach((cb) => cb(newToken));
+        refreshQueue = [];
+
+        original.headers.Authorization = `Bearer ${newToken}`;
+        return api(original);
+      } catch (err) {
+        isRefreshing = false;
+        refreshQueue = [];
+        toast.error("Session expired.");
+        AuthBridge.logout();
+        return Promise.reject(err);
+      }
     }
 
-    if(status === 403){
-      const msg = error.response.data?.message || "Access Denied";
-      toast.error(msg);
-      // if (typeof window !== "undefined" && window.location.pathname !== "/login") {
-      //   window.location.replace("/login");
-      // }
-      return Promise.reject(error);
-    }
-
-    if (error.response && error.response.status >= 500) {
-      toast.error("Server error. Please try again later.")
-
-    } else if (!error.response || error.code === "ERR_NETWORK") {
-      toast.error("Network error. Please check your connection")
-    } else if (status === 400) {
-      const msg = error.response.data?.message || "Bad request.";
-      toast.error(msg);
-    }
     return Promise.reject(error);
   }
 );
 
-export default api
+export default api;

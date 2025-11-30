@@ -11,7 +11,9 @@ export default function memberRouter(
     const router = Router();
     
     router.post('/signin', validate(SigninSchema), memberCtrl.login);
-
+    router.post('/refresh',memberCtrl.tokenRefresh);
+    router.post('/logout',memberCtrl.logout);
+    
     router.use(auth);
 
     router.patch('/approve/:memberId', memberCtrl.approveMember);

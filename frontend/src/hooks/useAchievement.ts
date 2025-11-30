@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createAchievementCall, deleteAchievementCall, deleteMember, getAchievementById, getAllAchievements, updateAchievementCall } from "../utils/api/achievement";
+import { handleApiError } from "../utils/handleApiError";
 
 
 
@@ -20,7 +21,9 @@ export function useAchievement(achievementid?:string){
             const response = await getAchievementById(achievementid as string);
             return response.data
         },
-        enabled: !!achievementid
+        enabled: !!achievementid,
+        
+        
     })
 
     const createAchievement = useMutation({
@@ -31,7 +34,8 @@ export function useAchievement(achievementid?:string){
             queryclient.invalidateQueries({
                 queryKey:['achievements']
             })
-        }
+        },
+         onError: (err) => handleApiError(err),
     })
 
     const updateAchievement = useMutation({
@@ -42,7 +46,8 @@ export function useAchievement(achievementid?:string){
             queryclient.invalidateQueries({
                 queryKey:['achievements']
             })
-        }
+        },
+        onError: (err) => handleApiError(err),
     })
 
     const deleteAchievement = useMutation({
@@ -53,7 +58,8 @@ export function useAchievement(achievementid?:string){
             queryclient.invalidateQueries({
                 queryKey:['achievements']
             })
-        }
+        },
+         onError: (err) => handleApiError(err),
 
     })
 
@@ -65,7 +71,8 @@ export function useAchievement(achievementid?:string){
             queryclient.invalidateQueries({
                 queryKey:['achievements']
             })
-        }
+        },
+         onError: (err) => handleApiError(err),
     })
 
     

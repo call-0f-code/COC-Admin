@@ -1,11 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Login from '../Components/auth/LoginView';
 import { DefaultView } from '../Components/auth/DefaultView';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 export default function Authentication() {
   const [currentView, setCurrentView] = useState<'default' | 'login'>('default');
+  const {accessToken} = useAuth()
+  const navigate = useNavigate();
 
-
+  useEffect(()=>{
+    if(accessToken!=null){
+      navigate('/Dashboard')
+    }
+  },[accessToken])
 
   return (
     <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
