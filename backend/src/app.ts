@@ -21,7 +21,7 @@ const limiter = rateLimit({
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: config.allowed_origins,
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
   }),
