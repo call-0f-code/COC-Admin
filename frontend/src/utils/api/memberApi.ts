@@ -20,3 +20,8 @@ export const allMember =  async () => {
     const response = await  api.get(`/members/allMembers`);
     return response.data;
 }
+
+export const signout = async ()=>{
+    await api.post('/members/logout');
+    return
+}

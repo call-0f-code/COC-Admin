@@ -7,6 +7,7 @@ import routes from './routes';
 import multer from 'multer';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import cookieParser from 'cookie-parser'
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(
 
 app.use(helmet());
 app.use(limiter)
+app.use(cookieParser());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 

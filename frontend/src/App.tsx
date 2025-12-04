@@ -9,6 +9,7 @@ import { Routes, Route } from "react-router-dom";
 import AchievementPage from "./pages/AchievementPage";
 import Dashboardlayout from "./Components/Dashboard/Dashboardlayout";
 import { GeometricBackground } from "./Components/common/GeometricBackground";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
           <Route path="/" element={<Authentication />} />
 
           {/* MAIN DASHBOARD LAYOUT */}
+          <Route element={<ProtectedRoute/>}>
+
           <Route path="/Dashboard" element={<Dashboardlayout />}>
 
             <Route path="achievements" element={<AchievementPage />} />
@@ -28,6 +31,7 @@ function App() {
             <Route path="projects" element={<ProjectDashboard />} />
             <Route path="dsa" element={<DsaDashboard />} />
           </Route>
+        </Route>
         </Routes>
       </div>
 
