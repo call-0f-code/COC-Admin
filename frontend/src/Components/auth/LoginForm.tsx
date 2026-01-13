@@ -59,7 +59,7 @@ export const LoginForm: React.FC<loginFormProps> = ({
         <>
             {/* Unauthorized Modal Popup */}
             {isUnauthorized && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 animate-fadeIn">
                     {/* Dark Overlay */}
                     <div
                         className="absolute inset-0 bg-black/90"
@@ -67,34 +67,34 @@ export const LoginForm: React.FC<loginFormProps> = ({
                     />
 
                     {/* Modal Content */}
-                    <div className="relative w-full max-w-3xl bg-black border-8 border-red-500 p-8 shadow-[0_0_50px_rgba(239,68,68,0.5)] animate-scaleIn">
+                    <div className="relative w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl bg-black border-4 sm:border-6 md:border-8 border-red-500 p-4 sm:p-6 md:p-8 shadow-[0_0_30px_rgba(239,68,68,0.5)] sm:shadow-[0_0_50px_rgba(239,68,68,0.5)] animate-scaleIn">
                         {/* Close Button */}
                         <button
                             type="button"
                             onClick={() => setIsUnauthorized(false)}
-                            className="absolute top-4 right-4 w-12 h-12 bg-red-500 border-4 border-black flex items-center justify-center hover:bg-red-600 transition-colors shadow-[4px_4px_0_0_#000] hover:shadow-[2px_2px_0_0_#000] hover:translate-x-1 hover:translate-y-1"
+                            className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-red-500 border-2 sm:border-3 md:border-4 border-black flex items-center justify-center hover:bg-red-600 transition-colors shadow-[2px_2px_0_0_#000] sm:shadow-[3px_3px_0_0_#000] md:shadow-[4px_4px_0_0_#000] hover:shadow-[1px_1px_0_0_#000] sm:hover:shadow-[2px_2px_0_0_#000] hover:translate-x-1 hover:translate-y-1"
                         >
-                            <XCircle className="w-6 h-6 text-white" />
+                            <XCircle className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                         </button>
 
                         {/* Header */}
-                        <div className="text-center mb-6">
-                            <div className="inline-block px-6 py-3 bg-red-500 border-4 border-black mb-4">
-                                <h2 className="text-3xl font-black text-white tracking-wider">
+                        <div className="text-center mb-4 sm:mb-5 md:mb-6">
+                            <div className="inline-block px-3 py-2 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-red-500 border-2 sm:border-3 md:border-4 border-black mb-2 sm:mb-3 md:mb-4">
+                                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-white tracking-wider">
                                     ⚠️ ACCESS DENIED ⚠️
                                 </h2>
                             </div>
-                            <p className="text-xl font-bold text-white">
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-white px-2">
                                 You are not authorized to access this system
                             </p>
                         </div>
 
                         {/* Large Video/Image Display */}
-                        <div className="bg-white border-6 border-black p-4 shadow-[8px_8px_0_0_#ef4444]">
+                        <div className="bg-white border-3 sm:border-4 md:border-6 border-black p-2 sm:p-3 md:p-4 shadow-[4px_4px_0_0_#ef4444] sm:shadow-[6px_6px_0_0_#ef4444] md:shadow-[8px_8px_0_0_#ef4444]">
                             <img
                                 src={gifUrl}
                                 alt="Access Denied"
-                                className="w-full h-auto border-4 border-black"
+                                className="w-full h-auto border-2 sm:border-3 md:border-4 border-black"
                             />
                             <div className="mt-4 text-center">
 
@@ -102,8 +102,8 @@ export const LoginForm: React.FC<loginFormProps> = ({
                         </div>
 
                         {/* Footer Message */}
-                        <div className="mt-6 text-center">
-                            <p className="text-white font-bold text-sm">
+                        <div className="mt-3 sm:mt-4 md:mt-6 text-center">
+                            <p className="text-white font-bold text-xs sm:text-sm">
                                 Press ESC or click the X to close
                             </p>
                         </div>
