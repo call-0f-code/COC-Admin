@@ -1,0 +1,31 @@
+services:
+    server:
+        image: coc-admin-backend
+        build:
+            context: ./backend
+            dockerfile: ../docker/Dockerfile.backend
+            target: development
+        ports:
+            - "127.0.0.1:8000:8000"
+        env_file:
+            - backend/.env
+        command: ["bun", "src/server.ts"]
+        healthcheck:
+            test: ["CMD", "curl", "-sf", "http://localhost:8000/health"]
+            interval: 30s
+            timeout: 3s
+            retries: 3
+
+    web:
+        image: coc-admin-frontend
+        build:
+            context: ./frontend
+            dockerfile: ../docker/Dockerfile.frontend
+            target: development
+        depends_on:
+            - server
+        env_file:
+            - frontend/.env
+        ports:
+            - "127.0.0.1:5173:5173"
+        command: ["bun", "run", "dev", "--host"]
