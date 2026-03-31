@@ -4,12 +4,13 @@ services:
         build:
             context: ./backend
             dockerfile: ../docker/Dockerfile.backend
-            target: development
+            target: production
         ports:
             - "127.0.0.1:8000:8000"
         env_file:
             - backend/.env
-        command: ["bun", "src/server.ts"]
+        environment:
+            - PORT=8000
         healthcheck:
             test: ["CMD", "curl", "-sf", "http://localhost:8000/health"]
             interval: 30s
@@ -21,11 +22,12 @@ services:
         build:
             context: ./frontend
             dockerfile: ../docker/Dockerfile.frontend
-            target: development
+            target: production
+            args:
+                - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
         depends_on:
             - server
         env_file:
             - frontend/.env
         ports:
             - "127.0.0.1:5173:5173"
-        command: ["bun", "run", "dev", "--host"]

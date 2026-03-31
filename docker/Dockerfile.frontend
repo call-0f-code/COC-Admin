@@ -14,16 +14,13 @@ RUN bun install --frozen-lockfile
 # -----------------------------
 FROM deps AS build
 
+# Add build argument for API URL
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
 COPY . .
-RUN bun build --outdir dist
+RUN bun run build
 
-# -----------------------------
-# prod deps stage - install only production dependencies
-# -----------------------------
-FROM base AS prod-deps
-
-COPY package.json bun.lock* ./
-RUN bun install --production --frozen-lockfile
 
 # -----------------------------
 # development stage
@@ -38,17 +35,19 @@ CMD ["bun", "run", "dev", "--port", "5173", "--host", "0.0.0.0"]
 # -----------------------------
 
     
-FROM prod-deps AS production
+FROM oven/bun:1-slim AS production
 
-RUN addgroup -g 1001 -S nodejs && adduser -S bunjs -u 1001
+WORKDIR /var/www/admin-web
+RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m bunjs
+
 COPY --from=build --chown=bunjs:nodejs /frontend/dist ./dist
-USER bunjs
-ENV NODE_ENV=production
-ENV PORT=3000
+COPY --from=build --chown=bunjs:nodejs /frontend/serve.ts ./serve.ts
+RUN chown -R bunjs:nodejs /var/www/admin-web
 
-EXPOSE 3000
+USER bunjs
+EXPOSE 5173
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget -qO- http://localhost:5173/health || exit 1
 
-CMD ["bun", "preview", "--port", "5173"]
+CMD ["bun", "run", "serve.ts"]

@@ -15,15 +15,8 @@ RUN bun install --frozen-lockfile
 FROM deps AS build
 
 COPY . .
-RUN bun build src/server.ts --outdir dist
+RUN bun build --target=bun --production --outdir=dist src/server.ts
 
-# -----------------------------
-# prod deps stage - install only production dependencies
-# -----------------------------
-FROM base AS prod-deps
-
-COPY package.json bun.lock* ./
-RUN bun install --production --frozen-lockfile
 
 # -----------------------------
 # development stage
@@ -38,15 +31,17 @@ CMD ["bun", "src/server.ts"]
 # -----------------------------
 
     
-FROM prod-deps AS production
+FROM oven/bun:1-slim AS production
 
-RUN addgroup -g 1001 -S nodejs && adduser -S bunjs -u 1001
-COPY --from=build --chown=bunjs:nodejs /backend/dist ./dist
+WORKDIR /var/www/admin-server
+RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m bunjs
+COPY --from=build --chown=bunjs:nodejs /backend/dist ./var/www/admin-server
+RUN chown -R bunjs:nodejs /var/www/admin-server
+
 USER bunjs
-
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -qO- http://localhost:3000/health || exit 1
+  CMD wget -qO- http://localhost:8000/health || exit 1
 
-CMD ["bun", "dist/server.js"]
+CMD ["bun", "/var/www/admin-server/server.js"]

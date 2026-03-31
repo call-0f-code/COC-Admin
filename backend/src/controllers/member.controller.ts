@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import api from '../utils/api';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import config from '../config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { ApiError } from '../utils/apiError';
