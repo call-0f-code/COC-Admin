@@ -1,0 +1,33 @@
+services:
+    server:
+        image: coc-admin-backend
+        build:
+            context: ./backend
+            dockerfile: ../docker/Dockerfile.backend
+            target: production
+        ports:
+            - "127.0.0.1:8000:8000"
+        env_file:
+            - backend/.env
+        environment:
+            - PORT=8000
+        healthcheck:
+            test: ["CMD", "curl", "-sf", "http://localhost:8000/health"]
+            interval: 30s
+            timeout: 3s
+            retries: 3
+
+    web:
+        image: coc-admin-frontend
+        build:
+            context: ./frontend
+            dockerfile: ../docker/Dockerfile.frontend
+            target: production
+            args:
+                - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
+        depends_on:
+            - server
+        env_file:
+            - frontend/.env
+        ports:
+            - "127.0.0.1:5173:5173"
