@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUnapprovedMembers, approveMember, signIn , allMember, signout} from "../utils/api/memberApi";
+import { getUnapprovedMembers, approveMember, signIn, allMember, signout, ghostMember, getDeadZoneMembers } from "../utils/api/memberApi";
 import { useAuth } from "../context/AuthContext";
 import { handleApiError } from "../utils/handleApiError";
 
@@ -26,6 +26,15 @@ export function useMembers(){
         },
     })
 
+    const {data: deadZoneMembers = [], isLoading: isDeadZoneLoading} = useQuery<Member[]>({
+        queryKey:['dead-zone'],
+        queryFn: async () => {
+            const data = await getDeadZoneMembers();
+            return data.members;
+        },
+        enabled: !!accessToken,
+    })
+
     const approveCurrentMember = useMutation({
         mutationFn : ({memberId,memberName,memberEmail}:{memberId:string,memberName:string,memberEmail:string}) => approveMember(memberId,memberName,memberEmail),
         onSuccess:()=>{
@@ -33,6 +42,16 @@ export function useMembers(){
         },
          onError: (err) => handleApiError(err),
     })
+
+    const ghostMemberMutation = useMutation({
+        mutationFn: ({ memberId, ghost }: { memberId: string; ghost: boolean }) =>
+            ghostMember(memberId, ghost),
+        onSuccess: () => {
+            queryclient.invalidateQueries({ queryKey: ['members'] });
+            queryclient.invalidateQueries({ queryKey: ['dead-zone'] });
+        },
+        onError: (err) => handleApiError(err),
+    });
 
     const login = useMutation({
         mutationFn: async (member: LoginCreds) => {
@@ -63,7 +82,10 @@ export function useMembers(){
         isLoading,
         isError,
         getAllmembers,
+        deadZoneMembers,
+        isDeadZoneLoading,
         approveCurrentMember,
+        ghostMemberMutation,
         login,
         logout
     }

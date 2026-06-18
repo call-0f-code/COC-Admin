@@ -1,13 +1,15 @@
-import { Loader2, Verified, Mail, User } from "lucide-react";
+import { Loader2, Verified, Mail, User, Ghost } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface MemberCardProps {
   member: Member;
   onApprove: (memberId: string) => void;
   isApproving: boolean;
+  onGhost: () => void;
+  isGhosting: boolean;
 }
 
-export const MemberCard: React.FC<MemberCardProps> = ({ member, onApprove, isApproving }) => {
+export const MemberCard: React.FC<MemberCardProps> = ({ member, onApprove, isApproving, onGhost, isGhosting }) => {
   return (
     <motion.div
       className="w-full max-w-lg perspective-400"
@@ -84,6 +86,29 @@ export const MemberCard: React.FC<MemberCardProps> = ({ member, onApprove, isApp
               <>
                 <span>Approve Member</span>
                 <Verified className="w-6 h-6" strokeWidth={2.5} />
+              </>
+            )}
+          </button>
+
+          {/* Ghost button */}
+          <button
+            onClick={onGhost}
+            disabled={isGhosting}
+            className="w-full h-12 bg-white border-4 border-black font-black text-base uppercase tracking-wide text-black
+                       hover:bg-red-500 hover:text-white hover:border-red-500 active:shadow-none active:translate-x-1 active:translate-y-1
+                       transition-all duration-150 shadow-[4px_4px_0_0_#000000]
+                       disabled:opacity-50 disabled:cursor-not-allowed
+                       flex items-center justify-center gap-3"
+          >
+            {isGhosting ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" strokeWidth={3} />
+                <span>Ghosting...</span>
+              </>
+            ) : (
+              <>
+                <span>Ghost (Dead Zone)</span>
+                <Ghost className="w-5 h-5" strokeWidth={2.5} />
               </>
             )}
           </button>
