@@ -38,9 +38,7 @@ export const getSiteContent = async (): Promise<SiteContent> => {
 };
 
 export const updateSiteContent = async (formData: FormData): Promise<SiteContent> => {
-  const res = await api.patch("/site-content", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const res = await api.patch("/site-content", formData);
   return res.data.data ?? res.data;
 };
 
