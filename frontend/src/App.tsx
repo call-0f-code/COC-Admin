@@ -5,6 +5,7 @@ import DsaDashboard from "./pages/DsaDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProjectDashboard from "./pages/ProjectDashboard";
 import SiteDashboard from "./pages/SiteDashboard";
+import EmailDashboard from "./pages/EmailDashboard";
 
 import { Routes, Route } from "react-router-dom";
 import AchievementPage from "./pages/AchievementPage";
@@ -32,6 +33,7 @@ function App() {
             <Route path="projects" element={<ProjectDashboard />} />
             <Route path="dsa" element={<DsaDashboard />} />
             <Route path="site" element={<SiteDashboard />} />
+            <Route path="email" element={<EmailDashboard />} />
           </Route>
         </Route>
         </Routes>

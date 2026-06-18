@@ -1,11 +1,20 @@
 import { Resend } from 'resend';
 import config from '../config/index';
+import api from './api';
 
-export const sendApprovalEmail = async (email: string, memberName: string) => {
+// ─── Placeholder injection ────────────────────────────────────────────────────
 
-  const resend = new Resend(config.RESEND_API_KEY);
+function injectPlaceholders(
+  template: string,
+  vars: Record<string, string>
+): string {
+  return template.replace(/\{\{(\w+)\}\}/g, (_, key) => vars[key] ?? '');
+}
 
-  const html = `
+// ─── Fallback static template ─────────────────────────────────────────────────
+
+function buildFallbackHtml(memberName: string): string {
+  return `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
 
     <!-- Header -->
@@ -63,7 +72,7 @@ export const sendApprovalEmail = async (email: string, memberName: string) => {
         <ul style="color: #6b7280; margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.55;">
             <li><strong>Log in</strong> to your account to get started</li>
             <li>Complete your profile setup</li>
-            <li>Explore events, features, & resources</li>
+            <li>Explore events, features, &amp; resources</li>
             <li>Connect with other members</li>
         </ul>
     </div>
@@ -96,22 +105,64 @@ export const sendApprovalEmail = async (email: string, memberName: string) => {
 
 </div>
   `;
+}
 
-  const text = `Hello ${memberName},\n\nYour membership has been approved.\nYour account is now active. Login at: https://members.callofcode.in/signup\n\nNeed help? Contact us at  ${config.CONTACT_EMAIL_ID}`;
+// ─── Main send function ───────────────────────────────────────────────────────
+
+export const sendApprovalEmail = async (email: string, memberName: string) => {
+  const resend = new Resend(config.RESEND_API_KEY);
+
+  // Placeholder values available in templates
+  const vars: Record<string, string> = {
+    name:           memberName,
+    email:          email,
+    whatsapp_link:  config.WHATSAPP_LINK,
+    discord_link:   config.DISCORD_LINK,
+    year:           new Date().getFullYear().toString(),
+  };
+
+  let subject = 'Membership Approved - Call Of Code';
+  let html    = buildFallbackHtml(memberName);
+  let text    = `Hello ${memberName},\n\nYour membership has been approved.\nYour account is now active. Login at: https://members.callofcode.in/signup\n\nNeed help? Contact us at ${config.CONTACT_EMAIL_ID}`;
+
+  // Attempt to load the "welcome" template from the COC-API
+  try {
+    const response = await api.get('/email/templates');
+
+    // The COC-API may wrap the array under .data or .templates
+    const raw = response.data;
+    const list: Array<{ name: string; subject: string; htmlBody: string; textBody?: string | null }> =
+      Array.isArray(raw) ? raw
+      : Array.isArray(raw?.data) ? raw.data
+      : Array.isArray(raw?.templates) ? raw.templates
+      : [];
+
+    const welcome = list.find((t) => t.name === 'welcome');
+
+    if (welcome) {
+      subject = injectPlaceholders(welcome.subject, vars);
+      html    = injectPlaceholders(welcome.htmlBody, vars);
+      if (welcome.textBody) {
+        text  = injectPlaceholders(welcome.textBody, vars);
+      }
+    }
+  } catch {
+    // Template fetch failed — fall back to static template silently
+  }
 
   try {
-    const {data, error} = await resend.emails.send({
-      from: `"Call Of Code" <${config.EMAIL_ID}>`,
-      to: email,
-      subject: 'Membership Approved - Call Of Code',
+    const { data, error } = await resend.emails.send({
+      from:    `"Call Of Code" <${config.EMAIL_ID}>`,
+      to:      email,
+      subject,
       html,
       text,
     });
 
     if (error) {
-        throw new Error(
-            typeof error === 'string' ? error : JSON.stringify(error)
-        );
+      throw new Error(
+        typeof error === 'string' ? error : JSON.stringify(error)
+      );
     }
 
     return data;

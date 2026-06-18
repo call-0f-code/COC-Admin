@@ -8,6 +8,7 @@ import { auth } from "../middleware/adminAuth";
 
 import projetRouter from "./project.routes";
 import siteContentRouter from "./site-content.routes";
+import emailRouter from "./email.routes";
 
 export default function routes(upload: Multer ){
 
@@ -22,6 +23,7 @@ export default function routes(upload: Multer ){
     router.use("/achievements", achievementRouter(upload));
     router.use('/projects', projetRouter( upload ));
     router.use('/site-content', siteContentRouter(upload));
+    router.use('/email', emailRouter());
 
     return router;
 }
