@@ -90,6 +90,33 @@ export const getAllMembers = async (req: Request, res: Response) => {
   });
 };
 
+export const ghostMember = async (req: Request, res: Response) => {
+  const { memberId } = req.params;
+  const { ghost = true } = req.body;
+  const adminId = req.adminId;
+
+  if (!memberId) {
+    throw new ApiError('memberId is required', 400);
+  }
+
+  const result = await api.patch(`/members/ghost/${memberId}`, { adminId, ghost });
+
+  res.status(200).json({
+    success: true,
+    message: ghost ? 'Member ghosted successfully' : 'Member unghosted successfully',
+    user: result.data.user,
+  });
+};
+
+export const getDeadZoneMembers = async (req: Request, res: Response) => {
+  const result = await api.get('/members/dead-zone');
+
+  res.status(200).json({
+    success: true,
+    members: result.data.members,
+  });
+};
+
 export const tokenRefresh = async (req: Request, res: Response) => {
   const token = req.cookies.refresh_token;
   if (!token) {
