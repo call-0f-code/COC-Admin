@@ -1,4 +1,4 @@
-import { Award, CodeXml, LayoutDashboard, LogOut, Users, FolderKanban } from "lucide-react";
+import { Award, CodeXml, LayoutDashboard, LogOut, Users, FolderKanban, Globe } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useMembers } from "../../hooks/useMembers";
@@ -13,6 +13,7 @@ const Sidebar = () => {
     { name: "Members", path: "/Dashboard/members", icon: <Users /> },
     { name: "Projects", path: "/Dashboard/projects", icon: <FolderKanban /> },
     { name: "DSA", path: "/Dashboard/dsa", icon: <CodeXml /> },
+    { name: "Site", path: "/Dashboard/site", icon: <Globe /> },
   ];
 
   return (

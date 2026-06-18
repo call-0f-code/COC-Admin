@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs';
 import config from '../config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { ApiError } from '../utils/apiError';
-import { success } from 'zod';
 import { sendApprovalEmail } from '../utils/mail';
 import {
   setRefreshCookie,
@@ -12,23 +11,25 @@ import {
   signRefreshToken,
 } from '../utils/tokens';
 
+const ALLOWED_ROLES = ['SUPER_ADMIN', 'ADMIN'] as const;
+type AllowedRole = typeof ALLOWED_ROLES[number];
+
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const check = await api.get(`/members/?email=${email}`);
 
-  const adminId = check.data.user.id;
-  const hashedPassword = check.data.user.accounts[0];
-  const isManager = check.data.user.isManager;
+  const adminId   = check.data.user.id;
+  const account   = check.data.user.accounts[0];
+  const role      = check.data.user.role as string;
   const isApproved = check.data.user.isApproved;
 
-  if (!isManager || !isApproved) {
+  const hasAdminRole = ALLOWED_ROLES.includes(role as AllowedRole);
+
+  if (!hasAdminRole || !isApproved) {
     throw new ApiError('Unauthorized access detected', 403);
   }
 
-  const isPasswordValid = await bcrypt.compare(
-    password,
-    hashedPassword.password,
-  );
+  const isPasswordValid = await bcrypt.compare(password, account.password);
   if (!isPasswordValid) {
     throw new ApiError('Invalid password', 403);
   }
@@ -37,7 +38,6 @@ export const login = async (req: Request, res: Response) => {
   const refreshToken = signRefreshToken(adminId);
   await setRefreshCookie(res, refreshToken);
 
-  // Send response
   res.status(200).json({
     success: true,
     message: 'Signin successful',
