@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as memberCtrl from "../controllers/member.controller";
-import { auth } from "../middleware/adminAuth";
+import { auth, superAdminAuth } from "../middleware/adminAuth";
 import {Multer} from "multer";
 import { validate } from "../middleware/validates";
 import { SigninSchema } from "../validation/member.validation";
@@ -21,6 +21,9 @@ export default function memberRouter(
     router.get('/allMembers', memberCtrl.getAllMembers);
     router.patch('/ghost/:memberId', memberCtrl.ghostMember);
     router.get('/dead-zone', memberCtrl.getDeadZoneMembers);
+
+    // Super-Admin only: change a member's role
+    router.patch('/:memberId/role', superAdminAuth, memberCtrl.updateMemberRole);
 
     return router;
 }

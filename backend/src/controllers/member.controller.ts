@@ -42,6 +42,8 @@ export const login = async (req: Request, res: Response) => {
     success: true,
     message: 'Signin successful',
     token,
+    role,
+    adminId,
   });
 };
 
@@ -80,8 +82,8 @@ export const getAllMembers = async (req: Request, res: Response) => {
   ]);
 
   const members = [
-    ...approvedMembers.data.user,
-    ...unapprovedMembers.data.unapprovedMembers,
+    ...(approvedMembers.data.members || approvedMembers.data.user || []),
+    ...(unapprovedMembers.data.unapprovedMembers || []),
   ];
 
   res.json({
@@ -117,6 +119,31 @@ export const getDeadZoneMembers = async (req: Request, res: Response) => {
   });
 };
 
+const VALID_ROLES = ['SUPER_ADMIN', 'ADMIN', 'FOUNDER', 'MEMBER'] as const;
+type ValidRole = typeof VALID_ROLES[number];
+
+export const updateMemberRole = async (req: Request, res: Response) => {
+  const { memberId } = req.params;
+  const { role } = req.body;
+  const adminId = req.adminId;
+
+  if (!memberId || !role) {
+    throw new ApiError('memberId and role are required', 400);
+  }
+
+  if (!VALID_ROLES.includes(role as ValidRole)) {
+    throw new ApiError(`Invalid role. Must be one of: ${VALID_ROLES.join(', ')}`, 400);
+  }
+
+  const result = await api.patch(`/members/${memberId}/role`, { adminId, role });
+
+  res.status(200).json({
+    success: true,
+    user: result.data.user,
+    message: result.data.message ?? `Role updated to ${role}`,
+  });
+};
+
 export const tokenRefresh = async (req: Request, res: Response) => {
   const token = req.cookies.refresh_token;
   if (!token) {
@@ -137,6 +164,11 @@ export const tokenRefresh = async (req: Request, res: Response) => {
   if (!adminId) {
     throw new ApiError('Invalid token payload', 401);
   }
+
+  // Fetch role so the frontend can restore the full adminUser state on reload
+  const memberData = await api.get(`/members/?id=${adminId}`);
+  const role = memberData.data?.user?.role as string | undefined;
+
   const newToken = signAccessToken(adminId);
   const refreshToken = signRefreshToken(adminId);
   setRefreshCookie(res, refreshToken);
@@ -145,6 +177,8 @@ export const tokenRefresh = async (req: Request, res: Response) => {
     success: true,
     message: 'Token Refresh successful',
     token: newToken,
+    adminId,
+    role,
   });
 };
 

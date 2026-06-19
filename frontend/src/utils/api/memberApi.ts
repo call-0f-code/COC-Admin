@@ -35,3 +35,8 @@ export const getDeadZoneMembers = async () => {
     const response = await api.get('/members/dead-zone');
     return response.data;
 }
+
+export const updateMemberRole = async (memberId: string, role: Role) => {
+    const response = await api.patch(`/members/${memberId}/role`, { role });
+    return response.data;
+}
