@@ -25,3 +25,18 @@ export const signout = async ()=>{
     await api.post('/members/logout');
     return
 }
+
+export const ghostMember = async (memberId: string, ghost: boolean) => {
+    const response = await api.patch(`/members/ghost/${memberId}`, { ghost });
+    return response.data;
+}
+
+export const getDeadZoneMembers = async () => {
+    const response = await api.get('/members/dead-zone');
+    return response.data;
+}
+
+export const updateMemberRole = async (memberId: string, role: Role) => {
+    const response = await api.patch(`/members/${memberId}/role`, { role });
+    return response.data;
+}

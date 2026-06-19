@@ -38,6 +38,8 @@ export default{
     REFRESH_SECRET: validateEnvVar('REFRESH_SECRET', process.env.REFRESH_SECRET),
     EMAIL_ID: validateEnvVar('EMAIL_ID', process.env.EMAIL_ID),
     RESEND_API_KEY: validateEnvVar('RESEND_API_KEY', process.env.RESEND_API_KEY),
-    CONTACT_EMAIL_ID : validateEnvVar('CONTACT_EMAIL_ID', process.env.CONTACT_EMAIL_ID)
+    CONTACT_EMAIL_ID : validateEnvVar('CONTACT_EMAIL_ID', process.env.CONTACT_EMAIL_ID),
+    WHATSAPP_LINK: process.env.WHATSAPP_LINK ?? '',
+    DISCORD_LINK: process.env.DISCORD_LINK ?? '',
 
 }

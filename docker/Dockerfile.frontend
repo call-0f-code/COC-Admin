@@ -1,0 +1,53 @@
+FROM oven/bun:1.3 AS base
+WORKDIR /frontend
+
+# -----------------------------
+# deps stage - cache dependencies
+# -----------------------------
+FROM base AS deps
+
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile
+
+# -----------------------------
+# build stage - compile TypeScript to JavaScript
+# -----------------------------
+FROM deps AS build
+
+# Add build argument for API URL
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
+COPY . .
+RUN bun run build
+
+
+# -----------------------------
+# development stage
+# -----------------------------
+FROM deps AS development
+COPY . .
+EXPOSE 5173
+CMD ["bun", "run", "dev", "--port", "5173", "--host", "0.0.0.0"]
+
+# -----------------------------
+# production stage
+# -----------------------------
+
+    
+FROM oven/bun:1-slim AS production
+
+WORKDIR /var/www/admin-web
+RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m bunjs
+
+COPY --from=build --chown=bunjs:nodejs /frontend/dist ./dist
+COPY --from=build --chown=bunjs:nodejs /frontend/serve.ts ./serve.ts
+RUN chown -R bunjs:nodejs /var/www/admin-web
+
+USER bunjs
+EXPOSE 5173
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://localhost:5173/health || exit 1
+
+CMD ["bun", "run", "serve.ts"]
