@@ -4,6 +4,8 @@ interface AuthContextType {
   accessToken: string | null;
   setAccessToken: (t: string | null) => void;
   SignOut: () => void;
+  adminUser: AdminUser | null;
+  setAdminUser: (u: AdminUser | null) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

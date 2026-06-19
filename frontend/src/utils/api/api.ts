@@ -23,7 +23,10 @@ api.interceptors.response.use(
     const status = error?.response?.status;
     const original = error.config;
 
-    if (status === 401 && !original._retry) {
+    // Never retry the refresh endpoint itself — avoids infinite loops
+    const isRefreshRequest = (original?.url as string | undefined)?.includes("/members/refresh");
+
+    if (status === 401 && !original._retry && !isRefreshRequest) {
       original._retry = true;
 
       // If refresh is in progress, wait
@@ -43,6 +46,11 @@ api.interceptors.response.use(
         const newToken = res.data.token;
 
         AuthBridge.setToken(newToken);
+
+        // Restore adminUser if the refresh response includes role info
+        if (res.data.adminId && res.data.role) {
+          AuthBridge.setAdminUser({ id: res.data.adminId, role: res.data.role });
+        }
 
         isRefreshing = false;
         refreshQueue.forEach((cb) => cb(newToken));
