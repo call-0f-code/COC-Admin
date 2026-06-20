@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // On mount: try to silently restore the session using the httpOnly refresh cookie.
   // Uses raw axios (no interceptors) so a missing cookie just silently fails —
-  // no retry loop, no blank page, user simply sees the login form.
   useEffect(() => {
     const bootstrap = async () => {
       try {

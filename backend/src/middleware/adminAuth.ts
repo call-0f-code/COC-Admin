@@ -37,9 +37,9 @@ export const superAdminAuth = async (req: Request, res: Response, next: NextFunc
     const adminId = req.adminId;
     if (!adminId) throw new ApiError('Not authenticated', 401);
 
-    const result = await api.get(`/members/?id=${adminId}`);
+    const result = await api.get(`/members/${adminId}`);
     const role: string = result.data?.user?.role ?? '';
-
+    
     if (role !== 'SUPER_ADMIN') {
         throw new ApiError('Forbidden: Only Super Admins can perform this action', 403);
     }
