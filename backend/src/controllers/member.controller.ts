@@ -166,7 +166,7 @@ export const tokenRefresh = async (req: Request, res: Response) => {
   }
 
   // Fetch role so the frontend can restore the full adminUser state on reload
-  const memberData = await api.get(`/members/?id=${adminId}`);
+  const memberData = await api.get(`/members/${adminId}`);
   const role = memberData.data?.user?.role as string | undefined;
 
   const newToken = signAccessToken(adminId);
