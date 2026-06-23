@@ -254,21 +254,31 @@ docker compose up coc-api -d
 
 ## 🤖 CI/CD — Automated Image Publishing
 
-The backend image (`coc-admin-backend`) is **not** automatically published to Docker Hub — it is always built locally by Docker Compose from source.
+The workflow at `.github/workflows/docker-image.yml` (**Docker Image CI**) automatically builds and pushes both the backend and frontend **development** images to Docker Hub on every push to `main`.
 
-However, the **COC API** image (`callofcode07/coc-api:latest`) is automatically built and pushed to Docker Hub via a GitHub Actions workflow on every push to `main`. The workflow authenticates using two repository secrets:
+| Event              | Build | Push to Docker Hub |
+| ------------------ | ----- | ------------------ |
+| Push → `main`      | ✅    | ✅                 |
+| Pull Request → `main` | ✅ | ❌ (build-only)    |
 
-| Secret             | Description                          |
-| ------------------ | ------------------------------------ |
-| `DOCKER_USERNAME`  | Docker Hub username (`callofcode07`) |
-| `DOCKER_PASSWORD`  | Docker Hub access token              |
+### Images published
 
-To consume the latest published `coc-api` image locally, run:
+| Image                                   | Registry tag                             |
+| --------------------------------------- | ---------------------------------------- |
+| `callofcode07/coc-admin-backend:latest` | Built from `docker/Dockerfile.backend` (`production` target) |
+| `callofcode07/coc-admin-frontend:latest`| Built from `docker/Dockerfile.frontend` (`production` target) |
 
-```bash
-docker compose pull coc-api
-docker compose up coc-api -d
-```
+### Required repository secrets
+
+Go to **Settings → Secrets and variables → Actions** in the GitHub repo and add:
+
+| Secret             | Description                                                    |
+| ------------------ | -------------------------------------------------------------- |
+| `DOCKER_USERNAME`  | Docker Hub username (`callofcode07`)                           |
+| `DOCKER_PASSWORD`  | Docker Hub access token (generate at hub.docker.com → Security) |
+| `VITE_API_URL`     | Production backend URL injected as a build-arg into the frontend image (e.g. `https://api.example.com`) |
+
+> **Note:** The `coc-api` image (`callofcode07/coc-api:latest`) is managed by a separate upstream repository and workflow — it is only **consumed** here via `docker compose pull`.
 
 ---
 

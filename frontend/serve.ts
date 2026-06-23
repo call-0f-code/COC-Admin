@@ -12,6 +12,14 @@ serve({
         const url = new URL(req.url);
         let path = url.pathname;
 
+        // Health-check endpoint — used by Docker HEALTHCHECK
+        if (path === "/health") {
+            return new Response(JSON.stringify({ status: "ok" }), {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
+
         // Default to index.html for root
         if (path === "/") path = "/index.html";
 

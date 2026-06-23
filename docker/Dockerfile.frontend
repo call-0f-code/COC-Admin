@@ -21,7 +21,6 @@ ENV VITE_API_URL=$VITE_API_URL
 COPY . .
 RUN bun run build
 
-
 # -----------------------------
 # development stage
 # -----------------------------
@@ -33,16 +32,13 @@ CMD ["bun", "run", "dev", "--port", "5173", "--host"]
 # -----------------------------
 # production stage
 # -----------------------------
-
-    
-FROM oven/bun:1-slim AS production
+FROM oven/bun:1-alpine AS production
 
 WORKDIR /var/www/admin-web
-RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m bunjs
+RUN addgroup -g 1001 nodejs && adduser -u 1001 -G nodejs -D bunjs
 
 COPY --from=build --chown=bunjs:nodejs /frontend/dist ./dist
 COPY --from=build --chown=bunjs:nodejs /frontend/serve.ts ./serve.ts
-RUN chown -R bunjs:nodejs /var/www/admin-web
 
 USER bunjs
 EXPOSE 5173
