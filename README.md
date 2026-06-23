@@ -23,6 +23,14 @@ This is a monorepo containing both frontend and backend applications:
 COC-Admin/
 ├── frontend/          # React + TypeScript + Vite frontend
 ├── backend/           # Express + Bun backend API
+├── docker/            # Dockerfiles and env templates
+│   ├── Dockerfile.backend
+│   ├── Dockerfile.frontend
+│   ├── .env.example.coc-api   # Template — copy to .env.local.coc-api
+│   ├── .env.local.backend
+│   ├── .env.local.coc-api     # Gitignored — fill in Supabase credentials
+│   └── .env.local.frontend
+├── docker-compose.yml # Compose orchestration
 ├── package.json       # Root package with dev scripts
 └── README.md          # This file
 ```
@@ -87,7 +95,36 @@ COC-Admin/
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### 🐳 Docker (Recommended)
+
+The fastest way to run the full stack locally is with Docker Compose — no Bun or Node installation required.
+
+The stack spins up three services:
+
+| Service   | Image                              | Port   | Description                |
+| --------- | ---------------------------------- | ------ | -------------------------- |
+| `coc-api` | `callofcode07/coc-api:latest`      | `3000` | External COC platform API  |
+| `server`  | Built from `docker/Dockerfile.backend`  | `8000` | COC-Admin backend     |
+| `web`     | Built from `docker/Dockerfile.frontend` | `5173` | COC-Admin frontend    |
+
+See **[DOCKER.md](DOCKER.md)** for the complete setup guide covering environment configuration, service startup, watch mode (hot-reload), and troubleshooting.
+
+```bash
+# 1. Copy and fill in the COC API credentials (gitignored)
+cp docker/.env.example.coc-api docker/.env.local.coc-api
+
+# 2. Start the full stack with live hot-reload (recommended for development)
+docker compose up --build --watch
+
+# Or without watch mode
+docker compose up --build
+```
+
+---
+
+### Manual Setup (Without Docker)
+
+#### Prerequisites
 
 - [Bun](https://bun.sh) (v1.2.18 or higher)
 - Node.js (for compatibility)
@@ -124,11 +161,33 @@ COC-Admin/
 
    Backend (`backend/.env`):
    ```env
-   API_URL=your_api_url
-   SALTING=your_salt_rounds
+   PORT=8000
+
+   # Auth secrets — use long random strings in production
    JWT_SECRET=your_jwt_secret
+   REFRESH_SECRET=your_refresh_secret
+
+   # Token lifetimes
+   ACCESS_TTL=15           # minutes
+   REFRESH_TTL=7           # days
+
+   # Rate limiting
    RATE_LIMIT_WINDOW_MINUTES=15
    RATE_LIMIT_MAX_REQUESTS=100
+
+   # Password hashing cost factor
+   SALTING=8
+
+   # Email service (Resend)
+   EMAIL_ID=your-sender@example.com
+   RESEND_API_KEY=re_xxxxxxxxxxxxxxxx
+
+   # CORS — must match the frontend URL visible to your browser
+   ALLOWED_ORIGINS=http://localhost:5173
+
+   # Community links injected into email templates
+   WHATSAPP_LINK=https://chat.whatsapp.com/your-group
+   DISCORD_LINK=https://discord.gg/your-server
    ```
 
    Refer to `backend/.env.example` for all available options.
