@@ -1,4 +1,4 @@
-FROM oven/bun:1.3 AS base
+FROM oven/bun:1-alpine AS base
 WORKDIR /backend
 
 # -----------------------------
@@ -24,7 +24,7 @@ RUN bun build --target=bun --production --outdir=dist src/server.ts
 FROM deps AS development
 COPY . .
 EXPOSE 8000
-CMD ["bun", "src/server.ts"]
+CMD ["bun", "dev"]
 
 # -----------------------------
 # production stage

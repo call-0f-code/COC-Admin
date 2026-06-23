@@ -1,33 +1,83 @@
 services:
+
+    coc-api:
+        image: callofcode07/coc-api:latest
+        pull_policy: missing          # pull only if not already present locally
+        ports:
+            - "3000:3000"
+        env_file:
+            - docker/.env.local.coc-api
+        environment:
+            - NODE_ENV=development
+        healthcheck:
+            test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+            interval: 15s
+            timeout: 5s
+            retries: 3
+            start_period: 15s
+        restart: unless-stopped
+
     server:
         image: coc-admin-backend
         build:
             context: ./backend
             dockerfile: ../docker/Dockerfile.backend
-            target: production
+            target: development
         ports:
-            - "127.0.0.1:8000:8000"
+            - "8000:8000"
         env_file:
-            - backend/.env
+            - docker/.env.local.backend
         environment:
             - PORT=8000
+            - API_URL=http://coc-api:3000
+        depends_on:
+            coc-api:
+                condition: service_healthy
         healthcheck:
-            test: ["CMD", "curl", "-sf", "http://localhost:8000/health"]
+            test: ["CMD", "wget", "-qO-", "http://localhost:8000/health"]
             interval: 30s
             timeout: 3s
             retries: 3
+            start_period: 10s
+        develop:
+            watch:
+                # sync source changes directly into the running container
+                - path: ./backend/src
+                  action: sync
+                  target: /backend/src
+                # rebuild image when dependencies change
+                - path: ./backend/package.json
+                  action: rebuild
+                - path: ./backend/bun.lock
+                  action: rebuild
 
     web:
         image: coc-admin-frontend
         build:
             context: ./frontend
             dockerfile: ../docker/Dockerfile.frontend
-            target: production
+            target: development
             args:
                 - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
         depends_on:
-            - server
+            server:
+                condition: service_healthy
         env_file:
-            - frontend/.env
+            - docker/.env.local.frontend
         ports:
-            - "127.0.0.1:5173:5173"
+            - "5173:5173"
+        develop:
+            watch:
+                # sync source changes — Vite HMR handles hot-reload inside container
+                - path: ./frontend/src
+                  action: sync
+                  target: /frontend/src
+                # also sync public assets
+                - path: ./frontend/public
+                  action: sync
+                  target: /frontend/public
+                # rebuild image when dependencies change
+                - path: ./frontend/package.json
+                  action: rebuild
+                - path: ./frontend/bun.lock
+                  action: rebuild
