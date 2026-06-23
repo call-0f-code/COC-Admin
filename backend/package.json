@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "bun src/server.ts",
+    "dev": "bun --watch src/server.ts",
     "test": "jest",
     "lint": "eslint src/",
     "format": "prettier --write src/",
